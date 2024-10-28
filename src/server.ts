@@ -1,14 +1,28 @@
-import express, { Request, Response } from 'express';
+import cors from 'cors';
+import express from 'express';
+import userRoutes from './user/routes/userRoutes';
+import AppDataSource from "./dataBase/dataSource";
+import {errorHandler} from "./middlewares/errorHandler";
 
 const app = express();
-const PORT = 3003;
+const PORT = process.env.SERVEUR_PORT
 
-// Route de base
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello, BINCHOdsqdqsdNNNNN!');
-});
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// Démarrer le serveur
-app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
-});
+
+AppDataSource.initialize()
+    .then(() => {
+        console.log("Connected to MariaDB!");
+        app.use('/api/users', userRoutes);
+        app.use(errorHandler);
+        app.listen(PORT, () => {
+            console.log(`Server is running on http://localhost:${PORT}`);
+        });
+    })
+    .catch((error) => {
+        console.error("Error connecting to MariaDB:", error);
+    });
+
+
