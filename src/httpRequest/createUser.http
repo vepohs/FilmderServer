@@ -1,0 +1,16 @@
+@port = 3007
+
+POST http://localhost:{{port}}/api/users/createUser
+Content-Type: application/json
+
+{
+  "firstName": "dffdfd",
+  "lastName": "Doe",
+  "email": "jd55mplezzzzzeeee@eee.com",
+  "age" : 25,
+  "password":"p1aezeaeazeza",
+  "confirmPassword":"p1aezeaeazeza",
+  "countryId": 1,
+  "ppPath": "https://example.com/johndoe.jpg"
+}
+
