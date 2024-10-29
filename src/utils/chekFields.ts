@@ -8,7 +8,7 @@ import {
     WeakPasswordError
 } from "../user/error/userError";
 
-
+// todo peut etre qu'on peut faire mieux en utilisant une bibliothèque de validation comme Joi ou validator.js et on a pas clean l'entree de l'utilisateur
 export const checkField = async (userData: UserType, userRepository: UserRepository) => {
     await isEmailAlreadyUsed(userData, userRepository);
     isEmailValid(userData);

@@ -3,14 +3,13 @@ import {UserService} from "../services/userService";
 import {UserError} from "../error/userError";
 import {UserType} from "../type/userType";
 
-
 const userService = new UserService();
 
 export const addUser = async (req: Request, res: Response , next: NextFunction) => {
 
     try {
         const userData = getData(req);
-        const newUser = await userService.addUser(userData);
+        const newUser  = await userService.addUser(userData);
         res.status(201).json({ message: "User created successfully", user: newUser });
     } catch (error : any) {
        next(error)

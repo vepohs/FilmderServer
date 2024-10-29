@@ -1,6 +1,7 @@
 import {DataSource, DataSourceOptions} from "typeorm";
 import { User } from "../user/entities/userEntity";
 import dotenv from "dotenv";
+import {RefreshToken} from "../authentification/entities/refreshTokenEntity";
 dotenv.config({ path: 'secret.env' });
 
 
@@ -19,9 +20,9 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    synchronize: false, // Utilise les migrations en production
+    synchronize: true, // Utilise les migrations en production
     logging: true,
-    entities: [User],
+    entities: [User,RefreshToken]
 });
 
 export default AppDataSource;
