@@ -1,7 +1,7 @@
 import {DataSource, DataSourceOptions} from "typeorm";
 import { User } from "../user/entities/userEntity";
 import dotenv from "dotenv";
-dotenv.config({ path: '.env' });
+dotenv.config({ path: 'secret.env' });
 
 
 // Permet de verif si les variables d'environnement sont bien définies mais ducoup ca plant s'il manque un truc
