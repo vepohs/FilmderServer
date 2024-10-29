@@ -1,8 +1,8 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
-import {RefreshToken} from "../../authentification/entities/refreshTokenEntity";
+import {RefreshTokenEntity} from "../../authentification/entities/refreshTokenEntity";
 
 @Entity({ name: 'users' })
-export class User{
+export class UserEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
@@ -26,6 +26,7 @@ export class User{
 
     @Column({ type: 'int' })
     countryId?: number;
-    @OneToMany(() => RefreshToken, token => token.user)
-    refreshTokens!: RefreshToken[];
+
+    @OneToMany(() => RefreshTokenEntity, token => token.user)
+    refreshTokens!: RefreshTokenEntity[];
 }

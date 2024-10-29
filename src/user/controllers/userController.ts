@@ -17,6 +17,7 @@ export const addUser = async (req: Request, res: Response , next: NextFunction) 
 };
 
 function getData(req: Request) {
+
     const userData: UserType = {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
@@ -29,6 +30,7 @@ function getData(req: Request) {
         ppPath: req.body.ppPath, // `ppPath` est optionnel
 
     };
+
     return userData;
 }
 

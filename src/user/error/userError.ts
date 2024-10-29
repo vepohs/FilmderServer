@@ -39,3 +39,9 @@ export class WeakPasswordError extends UserError {
         super(resource, 400,`${resource} is too weak`);
     }
 }
+
+export class NotValideNumber extends UserError {
+    constructor(resource: string) {
+        super(resource, 400,`${resource} is not a valide number`);
+    }
+}

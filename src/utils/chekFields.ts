@@ -1,18 +1,20 @@
 import {UserType} from "../user/type/userType";
-import {UserRepository} from "../user/repositories/userRepositories";
+import {UserRepository} from "../user/repositories/userRepository";
 import {
     AlreadyExistsError,
     ComparePasswordsError,
-    EmptyFieldError,
+    EmptyFieldError, NotValideNumber,
     SyntaxError,
     WeakPasswordError
 } from "../user/error/userError";
 
 // todo peut etre qu'on peut faire mieux en utilisant une bibliothèque de validation comme Joi ou validator.js et on a pas clean l'entree de l'utilisateur
 export const checkField = async (userData: UserType, userRepository: UserRepository) => {
-    await isEmailAlreadyUsed(userData, userRepository);
-    isEmailValid(userData);
+    checkCountryId(userData)
+    checkAge(userData);
     checkForEmptyFields(userData);
+    isEmailValid(userData);
+    await isEmailAlreadyUsed(userData, userRepository);
     comparePasswords(userData);
     checkIsStrongPassword(userData);
 }
@@ -35,11 +37,13 @@ const  isEmailValid =(userData: UserType) =>{
 
 const checkForEmptyFields = (userData: UserType) => {
     for (const [key, value] of Object.entries(userData)) {
-        if (value === null || value === undefined || value.toString().length <= 0) {
+
+        if (value === null || value === undefined || (typeof value === 'string' && value.trim().length === 0)) {
             throw new EmptyFieldError(key)
         }
     }
 }
+
 const comparePasswords =(userData:UserType) => {
     if(!(userData.password == userData.confirmPassword))
         throw new ComparePasswordsError("confirmPassword")
@@ -52,4 +56,15 @@ const checkIsStrongPassword =(userData:UserType) => {
     const hasNumber = /\d/.test(password);
     if(!(hasNumber && hasMinLength))
         throw new WeakPasswordError("password");
+}
+
+const checkAge =(userData:UserType) => {
+    if (typeof userData.age.valueOf() !== 'number' || isNaN(userData.age) || userData.age < 1 || userData.age > 130){
+        throw new NotValideNumber("age");
+    }
+}
+const checkCountryId =(userData:UserType) => {
+    if (typeof userData.countryId.valueOf() !== 'number' || isNaN(userData.countryId) || userData.countryId < 1){
+        throw new NotValideNumber("countryId");
+    }
 }

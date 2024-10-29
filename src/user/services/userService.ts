@@ -1,5 +1,5 @@
-import {UserRepository} from "../repositories/userRepositories";
-import {User} from "../entities/userEntity";
+import {UserRepository} from "../repositories/userRepository";
+import {UserEntity} from "../entities/userEntity";
 import {hash} from "../../utils/hashing";
 import {AlreadyExistsError, EmptyFieldError, UserError} from "../error/userError";
 import {UserType} from "../type/userType";
@@ -13,7 +13,7 @@ export class UserService {
         this.userRepository = new UserRepository();
     }
 
-    async addUser(userData:UserType): Promise<User> {
+    async addUser(userData:UserType): Promise<UserEntity> {
         await checkField(userData, this.userRepository);
 
         userData.password = await hash(userData.password);
@@ -23,7 +23,7 @@ export class UserService {
 
 
     private createUser(userData:UserType) {
-        const user = new User();
+        const user = new UserEntity();
         user.firstName = userData.firstName;
         user.lastName = userData.lastName;
         user.email = userData.email;
