@@ -4,6 +4,9 @@ import userRoutes from './user/routes/userRoutes';
 import AppDataSource from "./dataBase/dataSource";
 import {errorHandler} from "./middlewares/errorHandler";
 import authRoutes from "./authentification/routes/authRoutes";
+import protectedRoutes from "./protected/protectedRoutes";
+import {authMiddleware} from "./middlewares/authMiddleware";
+
 
 const app = express();
 const PORT = process.env.SERVEUR_PORT
@@ -17,6 +20,7 @@ AppDataSource.initialize()
         console.log("Connected to MariaDB!");
         app.use('/api/users', userRoutes);
         app.use('/api/auth',authRoutes);
+        app.use('/api/protected',authMiddleware,protectedRoutes);
         app.use(errorHandler);
         app.listen(PORT, () => {
             console.log(`Server is running on http://localhost:${PORT}`);

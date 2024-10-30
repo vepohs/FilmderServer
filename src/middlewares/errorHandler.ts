@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 import {AlreadyExistsError, EmptyFieldError, UserError} from "../user/error/userError";
 import {AuthError} from "../authentification/error/authError";
 
-export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler = (err: Error, req: Request, res: Response) => {
     if (err instanceof UserError) {
         console.error("User error:", err);
         res.status(err.statusCode).json({ message: err.message,resource: err.resource });

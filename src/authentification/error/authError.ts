@@ -8,8 +8,26 @@ export class AuthError extends Error {
     }
 }
 
-export class badCredentialsError extends AuthError {
+export class BadCredentialsError extends AuthError {
     constructor() {
         super(401, `Mail or password incorrect`);
+    }
+}
+
+export class RefreshTokenError extends AuthError {
+    constructor() {
+        super(400, `Refresh token is missing`);
+    }
+}
+
+export class BadRefreshToken extends AuthError {
+    constructor() {
+        super(400, `BadRefreshToken`);
+    }
+}
+
+export class NoPayload extends AuthError {
+    constructor() {
+        super(400, `No payload`);
     }
 }
