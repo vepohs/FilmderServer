@@ -8,21 +8,20 @@ import {UserEntity} from "../../user/entities/userEntity";
 import {AuthType} from "../type/authType";
 import { Response } from 'express';
 import {PayloadType} from "../type/UserPayLoad";
+import {UserService} from "../../user/services/userService";
 
 
 export class AuthService {
-    private userRepository: UserRepository;
+    private userService: UserService;
     private jwtService: JwtService;
-    private jwtRepository : JwtRepository;
 
     constructor() {
-        this.userRepository = new UserRepository();
+        this.userService = new UserService();
         this.jwtService = new JwtService();
-        this.jwtRepository = new JwtRepository();
     }
 
     async login(authData: AuthType): Promise<{ refreshToken: string, accessToken: string }> {
-        const user = await this.userRepository.findByEmail(authData.email);
+        const user = await this.userService.findByEmail(authData.email);
 
         if (!user)
             throw new BadCredentialsError();
@@ -41,19 +40,22 @@ export class AuthService {
         };
     };
 
-    async logout(refreshToken: string): Promise<void> {
+    async logout(refreshToken: string, res:Response): Promise<void> {
         // TODO voir si c est grave qu'on vérif pas si c est un bon token genre si il est pas dans la db y a pas d erreur
-        await this.jwtRepository.deleteToken(refreshToken);
+        this.clearToken(res);
+        await this.jwtService.deleteRefreshToken(refreshToken);
+    }
+
+    clearToken(res:Response){
+        res.clearCookie('refreshToken');
+        //todo a voir si il garde le accesstoken ou si ou doit le tej ou quoi
     }
     private async saveTokenInDb(refreshToken: string, user: UserEntity) {
         const refreshTokenObject = new RefreshTokenEntity();
         refreshTokenObject.refreshToken = refreshToken;
         refreshTokenObject.user = user;
-        await this.jwtRepository.saveToken(refreshTokenObject);
+         await this.jwtService.saveToken(refreshTokenObject);
     }
 
-    clearToken(res:Response){
-        res.clearCookie('refreshToken');
-        res.clearCookie('accessToken');
-    }
+
 }

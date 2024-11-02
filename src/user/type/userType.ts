@@ -5,6 +5,6 @@ export type UserType = {
     age: number;
     password:string,
     confirmPassword:string
-    countryId: number;
+    countryId?: number;
     ppPath?: string; // Propriété optionnelle
 };

@@ -1,13 +1,12 @@
 import {UserRepository} from "../repositories/userRepository";
 import {UserEntity} from "../entities/userEntity";
-import {hash} from "../../utils/hashing";
-import {AlreadyExistsError, EmptyFieldError, UserError} from "../error/userError";
+import {hash} from "../utils/hashing";
 import {UserType} from "../type/userType";
-import {checkField} from "../../utils/chekFields";
+import {checkField} from "../utils/chekFields";
 
 
 export class UserService {
-    private userRepository: UserRepository;
+    private readonly userRepository: UserRepository;
 
     constructor() {
         this.userRepository = new UserRepository();
@@ -20,6 +19,9 @@ export class UserService {
          const user = this.createUser(userData);
         return await this.userRepository.saveUser(user);
     }
+    async findByEmail(email: string): Promise<UserEntity | null> {
+        return await this.userRepository.findByEmail(email);
+    }
 
 
     private createUser(userData:UserType) {
@@ -29,8 +31,6 @@ export class UserService {
         user.email = userData.email;
         user.password = userData.password;
         user.age = userData.age;
-        user.countryId = userData.countryId;
-        user.ppPath = userData.ppPath;
         return user;
     }
 }

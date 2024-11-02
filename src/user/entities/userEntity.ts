@@ -1,5 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany} from 'typeorm';
-import {RefreshTokenEntity} from "../../authentification/entities/refreshTokenEntity";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { RefreshTokenEntity } from "../../authentification/entities/refreshTokenEntity";
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -18,13 +18,13 @@ export class UserEntity {
     @Column({ type: 'varchar', length: 255 })
     password!: string;
 
-    @Column({ type: 'varchar', length: 255})
+    @Column({ type: 'varchar', length: 255, default: 'default/path/to/profile.jpg' }) // Définit un chemin par défaut
     ppPath?: string;
 
-    @Column({ type: 'int'})
+    @Column({ type: 'int' })
     age?: number;
 
-    @Column({ type: 'int' })
+    @Column({ type: 'int', default: 0 }) // Définit une valeur par défaut pour countryId
     countryId?: number;
 
     @OneToMany(() => RefreshTokenEntity, token => token.user)

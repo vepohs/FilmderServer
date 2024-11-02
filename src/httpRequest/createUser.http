@@ -1,18 +1,17 @@
-@port = 3011
+@port = 3013
 
 ### YO
 POST http://localhost:{{port}}/api/users/createUser
 Content-Type: application/json
 
 {
-  "firstName": "aaaaaaaaaaaaaa",
-  "lastName": "LePlusBeau",
-  "email": "mattapdsqsqddsqdqsdqsdddsqdqsqqdqsqeeeeeeezaeezzzeo@ghot.com",
+  "firstName": "dqsdqs",
+  "lastName": "sds",
+  "email": "qdddsqdsfffq54DddqsdsqdddDDD@ghot.com",
   "age" : "10",
-  "password":"p1aezeaeazeza",
-  "confirmPassword":"p1aezeaeazeza",
-  "ppPath": "https://example.com/johndoe.jpg",
-  "countryId": "36"
+  "password":"password1234",
+  "confirmPassword":"password1234",
+  "countryId": "dsqdq"
 }
 
 
@@ -23,7 +22,7 @@ Content-Type: application/json
 {
   "firstName": "matthias",
   "lastName": "LePlusBeau",
-  "email": "test3@test.com",
+  "email": "test3@eetest.com",
   "age" : 25,
   "password":"password1234",
   "confirmPassword":"password1234",

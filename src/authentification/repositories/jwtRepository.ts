@@ -14,11 +14,11 @@ export class JwtRepository {
     return await this.jwtRepository.find({ where: { user } });
     }
 
-    async saveToken(token: RefreshTokenEntity): Promise<RefreshTokenEntity> {
-        return await this.jwtRepository.save(token);
+    async saveToken(token: RefreshTokenEntity): Promise<void> {
+        await this.jwtRepository.save(token);
     }
 
-    async deleteToken(refreshToken: string): Promise<void> {
-        await this.jwtRepository.delete({refreshToken });
+    async deleteRefreshToken(refreshToken: string): Promise<void> {
+        await this.jwtRepository.delete({refreshToken});
     }
 }

@@ -16,18 +16,30 @@ export class BadCredentialsError extends AuthError {
 
 export class RefreshTokenError extends AuthError {
     constructor() {
-        super(400, `Refresh token is missing`);
+        super(401, `Refresh token is missing`);
     }
 }
 
-export class BadRefreshToken extends AuthError {
+export class BadAccessTokenError extends AuthError {
     constructor() {
-        super(400, `BadRefreshToken`);
+        super(401, `BadAccessToken`);
     }
 }
 
-export class NoPayload extends AuthError {
+export class BadRefreshTokenError extends AuthError {
     constructor() {
-        super(400, `No payload`);
+        super(401, `BadRefreshToken`);
+    }
+}
+
+export class NoRefreshTokenError extends AuthError {
+    constructor() {
+        super(401, `NoRefreshToken`);
+    }
+}
+
+export class NoAccessTokenError extends AuthError {
+    constructor() {
+        super(401, `NoRefreshToken`);
     }
 }

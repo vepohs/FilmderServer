@@ -1,6 +1,7 @@
 import jwt, {TokenExpiredError} from 'jsonwebtoken';
-import {AuthError, BadRefreshToken, BadCredentialsError} from "../error/authError";
 import {PayloadType} from "../type/UserPayLoad";
+import {JwtRepository} from "../repositories/jwtRepository";
+import {RefreshTokenEntity} from "../entities/refreshTokenEntity";
 
 const ACCES_TOKEN_SECRET = process.env.ACCES_TOKEN_SECRET as string;
 const RFRESH_TOKEN_SECRET = process.env.RFRESH_TOKEN_SECRET as string;
@@ -11,7 +12,13 @@ const JWT_ACCESS_EXPIRATION = process.env.JWT_ACCESS_EXPIRATION as string;
 const JWT_REFRESH_EXPIRATION = process.env.JWT_REFRESH_EXPIRATION as string;
 
 
+
 export class JwtService{
+    private jwtRepository:JwtRepository;
+
+    constructor() {
+        this.jwtRepository = new JwtRepository();
+    }
 
 generateAccessToken(payload: PayloadType): string {
     return jwt.sign(payload, ACCES_TOKEN_SECRET, { expiresIn: JWT_ACCESS_EXPIRATION });
@@ -36,4 +43,11 @@ verifyAccessToken(token: string): PayloadType | null {
     } catch (error) {
         return null;
     }}
+
+  async deleteRefreshToken(token: string): Promise<void> {
+      await this.jwtRepository.deleteRefreshToken(token);
+  }
+   async saveToken(token : RefreshTokenEntity) {
+       await this.jwtRepository.saveToken(token);
+    }
 }

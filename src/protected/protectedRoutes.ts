@@ -1,6 +1,6 @@
 
 import express from 'express';
-import {test} from "../authentification/controllers/testController";
+import {test} from "../authentification/controllers/protectedTestController";
 
 const router = express.Router();
 router.post('/test', test);

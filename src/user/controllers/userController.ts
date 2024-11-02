@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import {UserService} from "../services/userService";
-import {UserError} from "../error/userError";
 import {UserType} from "../type/userType";
 
 const userService = new UserService();
@@ -30,7 +29,8 @@ function getData(req: Request) {
         ppPath: req.body.ppPath, // `ppPath` est optionnel
 
     };
-
+    console.log("userDataaaaaaa")
+    console.log(userData);
     return userData;
 }
 
