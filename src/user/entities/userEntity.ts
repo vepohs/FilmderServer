@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { RefreshTokenEntity } from "../../authentification/entities/refreshTokenEntity";
+import {HistoryEntity} from "../../movie/entites/HistoryEntity";
 
 @Entity({ name: 'users' })
 export class UserEntity {
@@ -29,4 +30,6 @@ export class UserEntity {
 
     @OneToMany(() => RefreshTokenEntity, token => token.user)
     refreshTokens!: RefreshTokenEntity[];
+    @OneToMany(() => HistoryEntity, history => history.user)
+    histories!: HistoryEntity[];
 }
