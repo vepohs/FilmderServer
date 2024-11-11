@@ -1,4 +1,4 @@
-import {ProviderEntity} from "../../../movie/entites/ProviderEntity";
+import {ProviderEntity} from "../../movie/entites/ProviderEntity";
 import {ProviderRepository} from "../repository/providerRepository";
 import axios from "axios";
 import {ProviderType} from "../type/providerType";
@@ -35,7 +35,7 @@ export class ProviderService {
         return bestProviders.slice(0, numberOfBestProvider);
     }
 
-    async saveProviders(): Promise<ProviderEntity[]> {
+    async saveBestProviders(): Promise<ProviderEntity[]> {
         const bestProviderData = await this.getBestProvider()
         const providerList = bestProviderData.map((providerData: any) => this.createProvider(providerData))
         return Promise.all(providerList.map((provider: ProviderEntity) => this.providerRepository.saveProvider(provider)));

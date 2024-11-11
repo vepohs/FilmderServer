@@ -1,5 +1,5 @@
-import {ProviderEntity} from "../../../movie/entites/ProviderEntity";
-import dataSource from "../../../dataBase/dataSource";
+import {ProviderEntity} from "../../movie/entites/ProviderEntity";
+import dataSource from "../../dataBase/dataSource";
 import {Repository} from "typeorm";
 
 export class ProviderRepository {

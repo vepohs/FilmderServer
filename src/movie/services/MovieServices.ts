@@ -2,7 +2,7 @@ import {MovieEntity} from "../entites/MovieEntity";
 import {MovieRepository} from "../repositories/MovieRepository";
 import axios from "axios";
 import {GenreService} from "../../genre/GenreServices";
-import {ProviderService} from "../../authentification/provider/service/providerService";
+import {ProviderService} from "../../provider/service/providerService";
 
 
 export class MovieServices {
@@ -25,8 +25,6 @@ export class MovieServices {
     private createMovie(movieData: any): MovieEntity {
         const movie = new MovieEntity();
         movie.adult = movieData.adult;
-        console.log('genreeeeee')
-        console.log(movieData.genres);
         movie.genres = movieData.genres;
         movie.id = movieData.id;
         movie.title = movieData.title;
@@ -36,8 +34,6 @@ export class MovieServices {
         movie.votes = movieData.votes;
         movie.duration = movieData.duration;
         movie.imagePath = movieData.imagePath;
-        console.log('testtttt')
-        console.log(movieData.providers);
         movie.providers = movieData.providers;
         return movie;
     }
