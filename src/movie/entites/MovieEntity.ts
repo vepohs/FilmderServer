@@ -15,7 +15,7 @@ export class MovieEntity {
     @Column({type: 'varchar', length: 255,default: 'default.jpg'})
     imagePath!: string;
 
-    @Column({type: 'varchar', length: 500, nullable: true})
+    @Column({type: 'varchar', length: 2000, nullable: true})
     synopsis?: string;
 
     @Column({type: 'date', nullable: true})

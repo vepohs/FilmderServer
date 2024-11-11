@@ -1,0 +1,88 @@
+import {ProviderEntity} from "../../../movie/entites/ProviderEntity";
+import {ProviderRepository} from "../repository/providerRepository";
+import axios from "axios";
+import {ProviderType} from "../type/providerType";
+
+
+export class ProviderService {
+    private providerRepository: ProviderRepository;
+
+    constructor() {
+        this.providerRepository = new ProviderRepository();
+    }
+
+
+    async getProvidersByTMDB() {
+        const BaseUrl = 'https://api.themoviedb.org/3/watch/providers/movie';
+        const response = await axios.get(`${BaseUrl}`, {
+            headers: {
+                Authorization: `Bearer ${process.env.TMDB_API_KEY}`
+            },
+            params: {
+                language: 'fr-FR',
+                watch_region: 'BE'
+            }
+        });
+        return response.data.results;
+    }
+
+    async getBestProvider() {
+        const numberOfBestProvider = 10;
+        const providers = await this.getProvidersByTMDB();
+        const bestProviders = providers
+            .filter((provider: any) => provider.display_priorities?.BE !== undefined)
+            .sort((a: any, b: any) => a.display_priorities.BE - b.display_priorities.BE);
+        return bestProviders.slice(0, numberOfBestProvider);
+    }
+
+    async saveProviders(): Promise<ProviderEntity[]> {
+        const bestProviderData = await this.getBestProvider()
+        const providerList = bestProviderData.map((providerData: any) => this.createProvider(providerData))
+        return Promise.all(providerList.map((provider: ProviderEntity) => this.providerRepository.saveProvider(provider)));
+    }
+
+    createProvider(providerData: ProviderType) {
+        const providerEntity = new ProviderEntity();
+        providerEntity.id = providerData.provider_id
+        providerEntity.logoPath = providerData.logo_path
+        providerEntity.name = providerData.provider_name
+        return providerEntity
+    }
+
+    async getProvidersByMovieId(movieId: number) {
+        const BaseUrl = `https://api.themoviedb.org/3/movie/${movieId}/watch/providers`;
+
+        const response = await axios.get(BaseUrl, {
+            headers: {
+                Authorization: `Bearer ${process.env.TMDB_API_KEY}`
+            }
+        });
+        return response.data.results.BE;
+    }
+
+    async getProviderData(movieId: number): Promise<ProviderEntity[]> {
+        const providers = await this.getProvidersByMovieId(movieId);
+        const allproviderIdInDb = await this.providerRepository.getAllProviderId();
+        const allProviders = [
+            ...(providers.buy || []),
+            ...(providers.rent || []),
+            ...(providers.flatrate || [])
+        ];
+
+
+        const filteredProviders = allProviders.filter((provider: any) =>
+            allproviderIdInDb.includes(provider.provider_id)
+        );
+
+        const uniqueProviders = filteredProviders.filter((provider, index, self) =>
+            index === self.findIndex((p) => p.provider_id === provider.provider_id)
+        );
+        console.log(uniqueProviders);
+        return uniqueProviders;
+    }
+
+    async getProvider(movieId: number) {
+        const uniqueProviders = await this.getProviderData(movieId)
+        return uniqueProviders.map((provider: any) => this.createProvider(provider));
+    }
+}

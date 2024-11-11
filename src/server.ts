@@ -5,7 +5,9 @@ import AppDataSource from "./dataBase/dataSource";
 import {errorHandler} from "./middlewares/errorHandler";
 import authRoutes from "./authentification/routes/authRoutes";
 import protectedRoutes from "./protected/protectedRoutes";
+import movieRoutes from "./movie/routes/MovieRoutes";
 import {authMiddleware} from "./middlewares/authMiddleware";
+
 
 
 const app = express();
@@ -18,6 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 AppDataSource.initialize()
     .then(() => {
         console.log("Connected to MariaDB!");
+        app.use('/api/movie',movieRoutes );
         app.use('/api/users', userRoutes);
         app.use('/api/auth',authRoutes);
         app.use('/api/protected',authMiddleware,protectedRoutes);

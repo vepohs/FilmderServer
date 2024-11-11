@@ -1,7 +1,11 @@
-import {DataSource, DataSourceOptions} from "typeorm";
+import {DataSource} from "typeorm";
 import { UserEntity } from "../user/entities/userEntity";
 import dotenv from "dotenv";
 import {RefreshTokenEntity} from "../authentification/entities/refreshTokenEntity";
+import {MovieEntity} from "../movie/entites/MovieEntity";
+import {ProviderEntity} from "../movie/entites/ProviderEntity";
+import {HistoryEntity} from "../movie/entites/HistoryEntity";
+import {GenreEntity} from "../movie/entites/GenreEntity";
 dotenv.config({ path: '.env' });
 
 
@@ -22,7 +26,7 @@ export const AppDataSource = new DataSource({
     database: process.env.DB_NAME,
     synchronize: false, // Utilise les migrations en production
     logging: true,
-    entities: [UserEntity,RefreshTokenEntity]
+    entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,HistoryEntity,GenreEntity]
 });
 
 export default AppDataSource;

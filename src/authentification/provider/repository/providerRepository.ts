@@ -13,7 +13,14 @@ export class ProviderRepository {
         return await this.repository.save(provider);
     }
 
-    async getProvidersByIFilmd(id: number): Promise<ProviderEntity[] | null >{
+    async getProviderByID(id: number): Promise<ProviderEntity[] | null> {
         return await this.repository.find({where: {id}});
+    }
+
+    async getAllProviderId(): Promise<number[]> {
+        const providers = await this.repository.find({
+            select: ['id']
+        });
+        return providers.map(provider => provider.id);
     }
 }

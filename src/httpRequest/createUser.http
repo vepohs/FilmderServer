@@ -1,4 +1,4 @@
-@port = 3013
+@port = 3016
 
 ### YO
 POST http://localhost:{{port}}/api/users/createUser
@@ -59,3 +59,12 @@ Content-Type: application/json
 "accessToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QzQHRlc3QuY29tIiwidXNlcklkIjo1LCJpYXQiOjE3MzAyODU5MDUsImV4cCI6MTczMDI4NjgwNX0.89pCGa06foZvDA6q0qPfffaHX76titrhRwonxR59zU3QDM",
 "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3QzQHRlc3QuY29tIiwidXNlcklkIjo1LCJpYXQiOjE3MzAyODU5MjgsImV4cCI6MTczMDg5MDcyOH0.eplQIpLxj6hUDJE9MsK5ECD9FFAnqr9MuvDOTcWEftE"
 }
+### Ya
+
+POST http://localhost:{{port}}/api/movie/getMovie
+Content-Type: application/json
+
+{
+}
+
+

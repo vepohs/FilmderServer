@@ -1,9 +1,8 @@
 import {MovieEntity} from "../entites/MovieEntity";
 import {MovieRepository} from "../repositories/MovieRepository";
-import {Movie} from "../type/Movie";
 import axios from "axios";
 import {GenreService} from "../../genre/GenreServices";
-import {ProviderService} from "../../authentification/Provider/service/providerService";
+import {ProviderService} from "../../authentification/provider/service/providerService";
 
 
 export class MovieServices {
@@ -17,33 +16,57 @@ export class MovieServices {
         this.providerService = new ProviderService();
     }
 
-//TODO: voir si on garde ou pas cette fonction
-    async addMovie(movieData: any): Promise<MovieEntity> {
-        const movie = this.createMovie(movieData);
-        return await this.movieRepository.saveMovie(movie);
+    async addMovie(genre: number[], adult: boolean, providers: number[]): Promise<MovieEntity[]> {
+        const movieData = await this.getMoviesByTMDB(genre, adult, providers);
+        const movieList = movieData.map((movie: any) => this.createMovie(movie));
+        return  Promise.all(movieList.map((movie: MovieEntity) => this.movieRepository.saveMovie(movie)));
     }
 
-    private createMovie(movieData: Movie): MovieEntity {
+    private createMovie(movieData: any): MovieEntity {
         const movie = new MovieEntity();
-        movie.title = movieData.getTitle();
-        movie.releaseDate = movieData.getReleaseDate();
-        movie.duration = movieData.getDuration();
-        movie.synopsis = movieData.getSynopsis();
-        movie.imagePath = movieData.getImagePath();
+        movie.adult = movieData.adult;
+        console.log('genreeeeee')
+        console.log(movieData.genres);
+        movie.genres = movieData.genres;
+        movie.id = movieData.id;
+        movie.title = movieData.title;
+        movie.synopsis = movieData.synopsis;
+        movie.releaseDate = movieData.releaseDate;
+        movie.averageGrade = movieData.averageGrade;
+        movie.votes = movieData.votes;
+        movie.duration = movieData.duration;
+        movie.imagePath = movieData.imagePath;
+        console.log('testtttt')
+        console.log(movieData.providers);
+        movie.providers = movieData.providers;
         return movie;
     }
 
-    async getMoviesByTMDB(genre: number[], adult: boolean, providers: number[]): Promise<Movie[]> {
-        const responce = await axios.get(``, {
+//todo géer les erreurs
+    async getMoviesByTMDB(genre: number[], adult: boolean, providers: number[]): Promise<MovieEntity[]> {
+        const BaseUrl = 'https://api.themoviedb.org/3/discover/movie';
+        const response = await axios.get(`${BaseUrl}`, {
             headers: {
                 Authorization: `Bearer ${process.env.TMDB_API_KEY}`
+            },
+            params: {
+                with_genres: genre.join('|'),
+                include_adult: adult,
+                include_video: false,
+                with_watch_providers: providers.join('|'),
+                watch_region: 'BE',
+                sort_by: 'popularity.desc'
             }
         });
-        const movieData = responce.data.results;
+        const movieData = response.data.results;
+        return  this.transformData(movieData);
 
+    }
+
+    private async transformData(movieData: any): Promise<MovieEntity[]> {
         const movieList = await Promise.all(movieData.map(async (movie: any) => ({
             adult: movie.adult,
-            genres: movie.genre_ids.map((genreId: number) => (this.genreService.getGenreById(genreId))),
+            genres: await Promise.all(movie.genre_ids.map((genreId: number) => this.genreService.getGenreById(genreId))),
             id: movie.id,
             synopsis: movie.overview,
             //TODO: voir la taille que l'on envoie
@@ -53,7 +76,7 @@ export class MovieServices {
             averageGrade: movie.vote_average,
             votes: movie.vote_count,
             duration: await this.getMovieDuration(movie.id),
-            providerList: await this.providerService.getProvidersByFilmId(movie.id)
+            providers: await this.providerService.getProvider(movie.id)
         })));
         return movieList;
     }
