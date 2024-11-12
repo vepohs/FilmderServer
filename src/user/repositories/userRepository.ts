@@ -1,5 +1,5 @@
 import {Repository} from "typeorm";
-import {UserEntity} from "../entities/userEntity";
+import {UserEntity} from "../entities/UserEntity";
 import AppDataSource from "../../dataBase/dataSource";
 
 export class UserRepository {

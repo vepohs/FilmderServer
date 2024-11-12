@@ -1,7 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 
 import { MovieEntity } from './MovieEntity';
-import {UserEntity} from "../../user/entities/userEntity";
+import {UserEntity} from "../../user/entities/UserEntity";
 
 @Entity({ name: 'history' })
 export class HistoryEntity {

@@ -11,7 +11,4 @@ export class MovieRepository {
     async saveMovie(movie: MovieEntity): Promise<MovieEntity> {
         return await this.repository.save(movie);
     }
-    async findById(id: number): Promise<MovieEntity | null> {
-        return await this.repository.findOne({ where: { id } });
-    }
 }

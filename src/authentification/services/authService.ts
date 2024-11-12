@@ -4,7 +4,7 @@ import {compare} from "bcrypt";
 import {JwtService} from "./jwtService";
 import {RefreshTokenEntity} from "../entities/refreshTokenEntity";
 import {JwtRepository} from "../repositories/jwtRepository";
-import {UserEntity} from "../../user/entities/userEntity";
+import {UserEntity} from "../../user/entities/UserEntity";
 import {AuthType} from "../type/authType";
 import { Response } from 'express';
 import {PayloadType} from "../type/UserPayLoad";

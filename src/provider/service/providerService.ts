@@ -49,7 +49,7 @@ export class ProviderService {
         return providerEntity
     }
 
-    async getProvidersByMovieId(movieId: number) {
+    async fetchProvidersFromTMDB(movieId: number) {
         const BaseUrl = `https://api.themoviedb.org/3/movie/${movieId}/watch/providers`;
 
         const response = await axios.get(BaseUrl, {
@@ -60,29 +60,26 @@ export class ProviderService {
         return response.data.results.BE;
     }
 
-    async getProviderData(movieId: number): Promise<ProviderEntity[]> {
-        const providers = await this.getProvidersByMovieId(movieId);
-        const allproviderIdInDb = await this.providerRepository.getAllProviderId();
+    async getAllProviderData(movieId: number): Promise<ProviderEntity[]> {
+        const providers = await this.fetchProvidersFromTMDB(movieId);
+        const allProvidersInDB = await this.providerRepository.getAllProviderId();
         const allProviders = [
             ...(providers.buy || []),
             ...(providers.rent || []),
             ...(providers.flatrate || [])
         ];
 
-
         const filteredProviders = allProviders.filter((provider: any) =>
-            allproviderIdInDb.includes(provider.provider_id)
+            allProvidersInDB.includes(provider.provider_id)
         );
 
-        const uniqueProviders = filteredProviders.filter((provider, index, self) =>
+        return filteredProviders.filter((provider, index, self) =>
             index === self.findIndex((p) => p.provider_id === provider.provider_id)
         );
-        console.log(uniqueProviders);
-        return uniqueProviders;
     }
 
-    async getProvider(movieId: number) {
-        const uniqueProviders = await this.getProviderData(movieId)
+    async getProviderForMovieId(movieId: number) {
+        const uniqueProviders = await this.getAllProviderData(movieId)
         return uniqueProviders.map((provider: any) => this.createProvider(provider));
     }
 }

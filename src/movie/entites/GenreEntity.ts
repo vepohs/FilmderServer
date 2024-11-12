@@ -1,6 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
-import {MovieEntity} from "./MovieEntity";
-
+import { MovieEntity } from "./MovieEntity";
 
 @Entity({ name: 'genres' })
 export class GenreEntity {
@@ -13,7 +12,7 @@ export class GenreEntity {
     @Column({ type: 'varchar', length: 255, nullable: true })
     imagePath?: string;
 
-    // Relation Many-to-Many avec les films
-    @ManyToMany(() => MovieEntity, movie => movie.genres)
+    @ManyToMany(() => MovieEntity, (movie) => movie.genres)
     movies!: MovieEntity[];
+
 }

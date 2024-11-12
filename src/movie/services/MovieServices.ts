@@ -3,6 +3,7 @@ import {MovieRepository} from "../repositories/MovieRepository";
 import axios from "axios";
 import {GenreService} from "../../genre/GenreServices";
 import {ProviderService} from "../../provider/service/providerService";
+import {MovieType} from "../type/movieType";
 
 
 export class MovieServices {
@@ -16,13 +17,13 @@ export class MovieServices {
         this.providerService = new ProviderService();
     }
 
-    async addMovie(genre: number[], adult: boolean, providers: number[]): Promise<MovieEntity[]> {
-        const movieData = await this.getMoviesByTMDB(genre, adult, providers);
-        const movieList = movieData.map((movie: any) => this.createMovie(movie));
+    async saveMovies(genre: number[], adult: boolean, providers: number[]): Promise<MovieEntity[]> {
+        const movieData = await this.fetchMoviesFromTMDB(genre, adult, providers);
+        const movieList = movieData.map((movie: any) => this.createMovieEntity(movie));
         return  Promise.all(movieList.map((movie: MovieEntity) => this.movieRepository.saveMovie(movie)));
     }
 
-    private createMovie(movieData: any): MovieEntity {
+    private createMovieEntity(movieData: MovieEntity): MovieEntity {
         const movie = new MovieEntity();
         movie.adult = movieData.adult;
         movie.genres = movieData.genres;
@@ -39,7 +40,7 @@ export class MovieServices {
     }
 
 //todo géer les erreurs
-    async getMoviesByTMDB(genre: number[], adult: boolean, providers: number[]): Promise<MovieEntity[]> {
+    async fetchMoviesFromTMDB(genre: number[], adult: boolean, providers: number[]): Promise<MovieEntity[]> {
         const BaseUrl = 'https://api.themoviedb.org/3/discover/movie';
         const response = await axios.get(`${BaseUrl}`, {
             headers: {
@@ -55,29 +56,28 @@ export class MovieServices {
             }
         });
         const movieData = response.data.results;
-        return  this.transformData(movieData);
+        return  this.transformTMDBDataToEntities(movieData);
 
     }
 
-    private async transformData(movieData: any): Promise<MovieEntity[]> {
+    private async transformTMDBDataToEntities(movieData: any): Promise<MovieEntity[]> {
         const movieList = await Promise.all(movieData.map(async (movie: any) => ({
             adult: movie.adult,
             genres: await Promise.all(movie.genre_ids.map((genreId: number) => this.genreService.getGenreById(genreId))),
             id: movie.id,
             synopsis: movie.overview,
-            //TODO: voir la taille que l'on envoie
             imagePath: 'https://image.tmdb.org/t/p/w500' + movie.poster_path,
             releaseDate: movie.release_date,
             title: movie.title,
             averageGrade: movie.vote_average,
             votes: movie.vote_count,
-            duration: await this.getMovieDuration(movie.id),
-            providers: await this.providerService.getProvider(movie.id)
+            duration: await this.fetchMovieDuration(movie.id),
+            providers: await this.providerService.getProviderForMovieId(movie.id)
         })));
         return movieList;
     }
 
-    async getMovieDuration(id: number): Promise<number> {
+    async fetchMovieDuration(id: number): Promise<number> {
         const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, {
             headers: {
                 Authorization: `Bearer ${process.env.TMDB_API_KEY}`

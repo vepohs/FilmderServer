@@ -13,9 +13,6 @@ export class ProviderRepository {
         return await this.repository.save(provider);
     }
 
-    async getProviderByID(id: number): Promise<ProviderEntity[] | null> {
-        return await this.repository.find({where: {id}});
-    }
 
     async getAllProviderId(): Promise<number[]> {
         const providers = await this.repository.find({

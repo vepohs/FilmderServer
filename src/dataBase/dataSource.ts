@@ -1,5 +1,5 @@
 import {DataSource} from "typeorm";
-import { UserEntity } from "../user/entities/userEntity";
+import { UserEntity } from "../user/entities/UserEntity";
 import dotenv from "dotenv";
 import {RefreshTokenEntity} from "../authentification/entities/refreshTokenEntity";
 import {MovieEntity} from "../movie/entites/MovieEntity";

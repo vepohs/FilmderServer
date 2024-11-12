@@ -9,6 +9,6 @@ const genreService = new GenreService();
 export const getMovie = async (req: Request, res: Response) => {
     await providerService.saveBestProviders();
     await genreService.saveGenres();
-    const listTableau = await movieService.addMovie([878], true, [8]);
+    const listTableau = await movieService.saveMovies([878], true, [8]);
     res.status(200).json({message: listTableau});
 }

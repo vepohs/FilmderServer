@@ -1,5 +1,5 @@
 import {UserRepository} from "../repositories/userRepository";
-import {UserEntity} from "../entities/userEntity";
+import {UserEntity} from "../entities/UserEntity";
 import {hash} from "../utils/hashing";
 import {UserType} from "../type/userType";
 import {checkField} from "../utils/chekFields";
