@@ -2,7 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable
 import {RefreshTokenEntity} from "../../authentification/entities/refreshTokenEntity";
 import {HistoryEntity} from "../../movie/entites/HistoryEntity";
 import {GenreEntity} from "../../movie/entites/GenreEntity";
-import {RewatchPreferenceEntity} from "./RewatchPreferenceEntity";
+//import {RewatchPreferenceEntity} from "./RewatchPreferenceEntity";
 
 @Entity({name: 'users'})
 export class UserEntity {
@@ -39,6 +39,6 @@ export class UserEntity {
     // Relation Many-to-Many avec GenreEntity
 
 
-    @OneToMany(() => RewatchPreferenceEntity, (preference) => preference.user)
-    rewatchPreferences!: RewatchPreferenceEntity[];
+    //@OneToMany(() => RewatchPreferenceEntity, (preference) => preference.user)
+//    rewatchPreferences!: RewatchPreferenceEntity[];
 }
