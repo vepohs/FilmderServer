@@ -8,7 +8,7 @@ export const login = async (req: Request, res: Response , next: NextFunction) =>
         const authData: AuthType = getData(req);
         const { refreshToken,accessToken } = await authService.login(authData);
         res.status(200)
-            .cookie("refreshToken", refreshToken, { httpOnly: true, secure: true, sameSite: "strict" })
+            .cookie("refreshToken", refreshToken, { httpOnly: false, secure: false, sameSite: "none" })
             .json({accessToken, refreshToken});
     }
     catch (error){

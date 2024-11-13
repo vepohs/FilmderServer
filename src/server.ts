@@ -3,15 +3,21 @@ import express from 'express';
 import AppDataSource from "./dataBase/dataSource";
 import {errorHandler} from "./middlewares/errorHandler";
 import routes from "./user/routes/routes";
-
-
+// @ts-ignore
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const PORT = process.env.SERVEUR_PORT
 
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({
+    origin: 'http://localhost:5173',  // Remplacez par l'URL de votre client
+    credentials: true  // Autoriser les cookies
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 
 AppDataSource.initialize()
     .then(() => {

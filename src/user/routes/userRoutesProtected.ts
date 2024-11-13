@@ -5,6 +5,6 @@ import {verifyAccessToken} from "./verifyAccessToken";
 const protectedRouter = express.Router();
 
 protectedRouter.post('/preferenceGenre', preferenceGenre);
-protectedRouter.post('/verifyAccessToken',verifyAccessToken);
+protectedRouter.get('/verifyAccessToken',verifyAccessToken);
 
 export default protectedRouter;
