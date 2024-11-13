@@ -9,7 +9,7 @@ import userRoutesProtected from "./userRoutesProtected";
 const router = express.Router();
 
 
-router.use('/api/movie', movieRoutes);
+router.use('/api/movie/protected',authMiddleware, movieRoutes);
 router.use('/api/auth', authRoutes);
 router.use('/api/users', userRoutes);
 

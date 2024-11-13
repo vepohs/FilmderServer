@@ -4,17 +4,23 @@ import axios from "axios";
 import {MovieType} from "../type/movieType";
 import {GenreService} from "../../genre/GenreServices";
 import {ProviderService} from "../../provider/service/providerService";
+import {PayloadType} from "../../authentification/type/UserPayLoad";
+import {UserService} from "../../user/services/userService";
+import {PreferenceService} from "../../user/services/PreferenceService";
 
 export class MovieServices {
     private readonly movieRepository: MovieRepository;
-    private readonly genreService: GenreService ;
+    private readonly genreService: GenreService;
     private readonly providerService: ProviderService;
-
+    private readonly userService: UserService;
+    private readonly genrePreferenceService: PreferenceService;
 
     constructor() {
         this.movieRepository = new MovieRepository();
         this.genreService = new GenreService();
         this.providerService = new ProviderService();
+        this.userService = new UserService();
+        this.genrePreferenceService = new PreferenceService();
     }
 
     async saveMovies(genre: number[], adult: boolean, providers: number[]): Promise<MovieEntity[]> {
@@ -85,5 +91,13 @@ export class MovieServices {
             }
         });
         return res.data.runtime;
+    }
+
+    async getMovies(userPayload: PayloadType) {
+        const user = await this.userService.findByEmail(userPayload.email);
+        if (!user) {
+            const genres = await this.genrePreferenceService.getGenrePreference(user!);
+        }
+
     }
 }

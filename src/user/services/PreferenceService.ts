@@ -2,10 +2,12 @@ import { PreferenceRepository } from "../repositories/PreferenceRepository";
 import { GenrePreferenceEntity } from "../entities/PreferenceGenreEntity";
 import { GenreEntity } from "../../movie/entites/GenreEntity";
 import { UserService } from "./userService";
+import {UserEntity} from "../entities/UserEntity";
 
 export class PreferenceService {
     private preferenceRepository: PreferenceRepository;
     private userService: UserService;
+
 
     constructor() {
         this.preferenceRepository = new PreferenceRepository();
@@ -34,5 +36,8 @@ export class PreferenceService {
     async saveGenrePreference(email: string, genreIds: number[]): Promise<void> {
         const genrePreferenceEntities = await this.buildGenrePreferenceEntities(email, genreIds);
         await this.preferenceRepository.saveGenrePreferences(genrePreferenceEntities);
+    }
+    async getGenrePreference(userEntity:UserEntity): Promise<GenreEntity[]> {
+      return  this.preferenceRepository.getGenrePreferences(userEntity);
     }
 }
