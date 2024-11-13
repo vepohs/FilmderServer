@@ -36,4 +36,8 @@ export class GenreService {
         genre.imagePath = 'default.jpg';
         return genre;
     }
+
+    async getGenreForMovie(movieData: any): Promise<GenreEntity[]> {
+       return  Promise.all(movieData.genre_ids.map((id: number) =>  this.getGenreById(id)));
+    }
 }

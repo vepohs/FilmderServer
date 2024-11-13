@@ -12,7 +12,7 @@ export class MovieEntity {
     @Column({type: 'varchar', length: 255})
     title!: string;
 
-    @Column({type: 'varchar', length: 255,default: 'default.jpg'})
+    @Column({type: 'varchar', length: 255, default: 'default.jpg'})
     imagePath!: string;
 
     @Column({type: 'varchar', length: 2000, nullable: true})
@@ -36,18 +36,33 @@ export class MovieEntity {
     @OneToMany(() => HistoryEntity, history => history.movie)
     histories!: HistoryEntity[];
 
-    @ManyToMany(() => GenreEntity, genre => genre.movies)
+
+    @ManyToMany(() => GenreEntity, (genre) => genre.movies, { cascade: true })
     @JoinTable({
-        name: 'jointuresMovieGenre',
-        joinColumn: {name: 'movieId', referencedColumnName: 'id'},
-        inverseJoinColumn: {name: 'genreId', referencedColumnName: 'id'}
+        name: 'movies_genres', // Nom explicite de la table de jonction
+        joinColumn: {
+            name: 'movie_id',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'genre_id',
+            referencedColumnName: 'id'
+        }
     })
     genres!: GenreEntity[];
-    @ManyToMany(() => ProviderEntity, provider => provider.movies)
+
+    @ManyToMany(() => ProviderEntity, (provider) => provider.movies, { cascade: true })
     @JoinTable({
-        name: 'movie_providers',
-        joinColumn: { name: 'movie_id', referencedColumnName: 'id' },
-        inverseJoinColumn: { name: 'provider_id', referencedColumnName: 'id' }
+        name: 'movies_providers', // Nom explicite de la table de jonction
+        joinColumn: {
+            name: 'movie_id',
+            referencedColumnName: 'id'
+        },
+        inverseJoinColumn: {
+            name: 'provider_id',
+            referencedColumnName: 'id'
+        }
     })
     providers!: ProviderEntity[];
+
 }

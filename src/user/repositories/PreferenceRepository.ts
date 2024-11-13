@@ -10,7 +10,7 @@ export class PreferenceRepository {
         this.repository = dataSource.getRepository(GenrePreferenceEntity);
     }
 
-    async updateGenrePreference(genrePreferenceEntity: GenrePreferenceEntity): Promise<GenrePreferenceEntity> {
-        return await this.repository.save(genrePreferenceEntity);
+    async saveGenrePreferences(preferences: GenrePreferenceEntity[]): Promise<GenrePreferenceEntity[]> {
+        return await this.repository.save(preferences);
     }
 }

@@ -2,6 +2,7 @@ import {ProviderEntity} from "../../movie/entites/ProviderEntity";
 import {ProviderRepository} from "../repository/providerRepository";
 import axios from "axios";
 import {ProviderType} from "../type/providerType";
+import {MovieType} from "../../movie/type/movieType";
 
 
 export class ProviderService {
@@ -41,7 +42,7 @@ export class ProviderService {
         return Promise.all(providerList.map((provider: ProviderEntity) => this.providerRepository.saveProvider(provider)));
     }
 
-    createProvider(providerData: ProviderType) {
+    createProvider(providerData: ProviderType): ProviderEntity {
         const providerEntity = new ProviderEntity();
         providerEntity.id = providerData.provider_id
         providerEntity.logoPath = providerData.logo_path
@@ -60,8 +61,8 @@ export class ProviderService {
         return response.data.results.BE;
     }
 
-    async getAllProviderData(movieId: number): Promise<ProviderEntity[]> {
-        const providers = await this.fetchProvidersFromTMDB(movieId);
+    async getAllProviderData(movie: any): Promise<ProviderType[]> {
+        const providers = await this.fetchProvidersFromTMDB(movie.id);
         const allProvidersInDB = await this.providerRepository.getAllProviderId();
         const allProviders = [
             ...(providers.buy || []),
@@ -78,8 +79,9 @@ export class ProviderService {
         );
     }
 
-    async getProviderForMovieId(movieId: number) {
-        const uniqueProviders = await this.getAllProviderData(movieId)
-        return uniqueProviders.map((provider: any) => this.createProvider(provider));
+    async getProvidersForMovie(movieData: any): Promise<ProviderEntity[]> {
+        const providers = await this.getAllProviderData(movieData)
+        const test =providers.map((provider: ProviderType) => this.createProvider(provider))
+        return test
     }
 }

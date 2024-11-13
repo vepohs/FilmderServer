@@ -1,8 +1,6 @@
-
 import express from 'express';
-import {test} from "../authentification/controllers/protectedTestController";
+import {preferenceGenre} from "../user/controllers/PreferenceController";
 
+const protectedRouter = express.Router();
 const router = express.Router();
-router.post('/test', test);
-export default router
-
+export default protectedRouter;

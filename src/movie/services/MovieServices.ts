@@ -1,15 +1,15 @@
 import {MovieEntity} from "../entites/MovieEntity";
 import {MovieRepository} from "../repositories/MovieRepository";
 import axios from "axios";
+import {MovieType} from "../type/movieType";
 import {GenreService} from "../../genre/GenreServices";
 import {ProviderService} from "../../provider/service/providerService";
-import {MovieType} from "../type/movieType";
-
 
 export class MovieServices {
     private readonly movieRepository: MovieRepository;
-    private readonly genreService: GenreService;
+    private readonly genreService: GenreService ;
     private readonly providerService: ProviderService;
+
 
     constructor() {
         this.movieRepository = new MovieRepository();
@@ -19,11 +19,11 @@ export class MovieServices {
 
     async saveMovies(genre: number[], adult: boolean, providers: number[]): Promise<MovieEntity[]> {
         const movieData = await this.fetchMoviesFromTMDB(genre, adult, providers);
-        const movieList = movieData.map((movie: any) => this.createMovieEntity(movie));
-        return  Promise.all(movieList.map((movie: MovieEntity) => this.movieRepository.saveMovie(movie)));
+        const movieList = movieData.map((movie: MovieType) => this.createMovieEntity(movie));
+        return Promise.all(movieList.map((movie: MovieEntity) => this.movieRepository.saveMovie(movie)));
     }
 
-    private createMovieEntity(movieData: MovieEntity): MovieEntity {
+    private createMovieEntity(movieData: MovieType): MovieEntity {
         const movie = new MovieEntity();
         movie.adult = movieData.adult;
         movie.genres = movieData.genres;
@@ -36,11 +36,11 @@ export class MovieServices {
         movie.duration = movieData.duration;
         movie.imagePath = movieData.imagePath;
         movie.providers = movieData.providers;
+        console.log('providerrrrrrrr:', movie.providers);
         return movie;
     }
 
-//todo géer les erreurs
-    async fetchMoviesFromTMDB(genre: number[], adult: boolean, providers: number[]): Promise<MovieEntity[]> {
+    async fetchMoviesFromTMDB(genre: number[], adult: boolean, providers: number[]): Promise<MovieType[]> {
         const BaseUrl = 'https://api.themoviedb.org/3/discover/movie';
         const response = await axios.get(`${BaseUrl}`, {
             headers: {
@@ -56,23 +56,24 @@ export class MovieServices {
             }
         });
         const movieData = response.data.results;
-        return  this.transformTMDBDataToEntities(movieData);
+
+        return this.transformTMDBDataToEntities(movieData);
 
     }
 
-    private async transformTMDBDataToEntities(movieData: any): Promise<MovieEntity[]> {
-        const movieList = await Promise.all(movieData.map(async (movie: any) => ({
-            adult: movie.adult,
-            genres: await Promise.all(movie.genre_ids.map((genreId: number) => this.genreService.getGenreById(genreId))),
-            id: movie.id,
-            synopsis: movie.overview,
-            imagePath: 'https://image.tmdb.org/t/p/w500' + movie.poster_path,
-            releaseDate: movie.release_date,
-            title: movie.title,
-            averageGrade: movie.vote_average,
-            votes: movie.vote_count,
-            duration: await this.fetchMovieDuration(movie.id),
-            providers: await this.providerService.getProviderForMovieId(movie.id)
+    private async transformTMDBDataToEntities(moviesData: any): Promise<MovieType[]> {
+        const movieList = await Promise.all(moviesData.map(async (movieData: any) => ({
+            adult: movieData.adult,
+            genres: await this.genreService.getGenreForMovie(movieData),
+            id: movieData.id,
+            synopsis: movieData.overview,
+            imagePath: 'https://image.tmdb.org/t/p/w500' + movieData.poster_path,
+            releaseDate: movieData.release_date,
+            title: movieData.title,
+            averageGrade: movieData.vote_average,
+            votes: movieData.vote_count,
+            duration: await this.fetchMovieDuration(movieData.id),
+            providers: await this.providerService.getProvidersForMovie(movieData)
         })));
         return movieList;
     }
