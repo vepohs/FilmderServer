@@ -7,7 +7,7 @@ interface AuthenticatedRequest extends Request {
     user?: PayloadType;
 }
 const preferenceService = new PreferenceService();
-
+//todo
 export const setPreference = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const genrePreferenceIds: number[] = req.body!.genrePreferenceIds;
     await preferenceService.saveGenrePreference(req.user!.email, genrePreferenceIds);
