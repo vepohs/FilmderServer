@@ -7,25 +7,21 @@ import {ProviderService} from "../../provider/service/providerService";
 import {PayloadType} from "../../authentification/type/UserPayLoad";
 import {UserService} from "../../user/services/userService";
 import {PreferenceService} from "../../user/services/PreferenceService";
-import {PreferenceProviderService} from "../../user/services/PreferenceProviderService";
-import {UserEntity} from "../../user/entities/UserEntity";
-import {getMovie} from "../controllers/MovieController";
+
 
 export class MovieServices {
     private readonly movieRepository: MovieRepository;
     private readonly genreService: GenreService;
     private readonly providerService: ProviderService;
     private readonly userService: UserService;
-    private readonly genrePreferenceService: PreferenceService;
-    private readonly preferenceProviderService: PreferenceProviderService;
+    private readonly preferenceService: PreferenceService;
 
     constructor() {
         this.movieRepository = new MovieRepository();
         this.genreService = new GenreService();
         this.providerService = new ProviderService();
         this.userService = new UserService();
-        this.genrePreferenceService = new PreferenceService();
-        this.preferenceProviderService = new PreferenceProviderService();
+        this.preferenceService = new PreferenceService();
     }
 
     async saveNewMoviesFromTMDB(genre: number[], adult: boolean, providers: number[],page=1): Promise<MovieEntity[]> {
@@ -113,8 +109,8 @@ export class MovieServices {
         const user = await this.userService.findByEmail(userPayload.email);
         if (user) {
             console.log('bien log')
-            const genres = await this.genrePreferenceService.getGenrePreference(user);
-            const providers = await this.preferenceProviderService.getProviderPreference(user);
+            const genres = await this.preferenceService.getGenrePreference(user);
+            const providers = await this.preferenceService.getProviderPreference(user);
             const movies = await this.movieRepository.getMovie(genres, providers);
             console.log('listfilm')
             console.log(movies)

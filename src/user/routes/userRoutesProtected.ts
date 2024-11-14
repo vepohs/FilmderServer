@@ -1,12 +1,14 @@
 import express from 'express';
-import { preferenceGenre } from "../controllers/PreferenceController";
+import { setPreference } from "../controllers/setPreferenceController";
 import {verifyAccessToken} from "./verifyAccessToken";
-import {getPreferences} from "../controllers/getPreferences";
+import {getPreferences} from "../controllers/getPreferencesController";
+import {getUserPreference} from "../controllers/getUserPreferenceController";
 
 const protectedRouter = express.Router();
 
-protectedRouter.post('/preferenceGenre', preferenceGenre);
 protectedRouter.get('/verifyAccessToken',verifyAccessToken);
+protectedRouter.post('/setPreferenceGenre', setPreference);
 protectedRouter.get('/getPreferences',getPreferences);
+protectedRouter.get('/getUserPreferences',getUserPreference);
 
 export default protectedRouter;
