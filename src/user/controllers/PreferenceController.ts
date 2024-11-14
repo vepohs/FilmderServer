@@ -11,5 +11,7 @@ const preferenceService = new PreferenceService();
 export const preferenceGenre = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const preference: number[] = req.body!.genrePreference;
     await preferenceService.saveGenrePreference(req.user!.email, preference);
+    const providerPreference =req.body!.providerPreference;
+    await
     res.status(200).json({message: "Preference saved"});
 }

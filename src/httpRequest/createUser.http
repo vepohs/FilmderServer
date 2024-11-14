@@ -61,15 +61,14 @@ Content-Type: application/json
 }
 ### Ya
 
-POST http://localhost:{{port}}/api/movie/getMovie
+POST http://localhost:{{port}}/api/movie/protected/getMovie
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBpZXJyZS5mYWNoZUBob3RtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzMxNTc3MzM4LCJleHAiOjE3MzE1NzgyMzh9.Oi3eYBT-6fMR5Ks_HourWeTdhNYKyMwTD2Ntxw__GA4
 
-{
-}
 ### Envoi d'une requête POST avec un token d'accès dans l'en-tête
 POST http://localhost:{{port}}/api/users/protected/preferenceGenre
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBpZXJyZS5mYWNoZUBob3RtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzMxNTEzMzYzLCJleHAiOjE3MzE1MTQyNjN9.4olpeNwOqrXRhIrrlfjoVUcgDpLKMJjx2gNc5HSsyv4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBpZXJyZS5mYWNoZUBob3RtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzMxNTc1Njg1LCJleHAiOjE3MzE1NzY1ODV9.yxZfAgAi2lcrRd9vKn6Fpp-Cm63nkrazXj2uV9XLrDI
 
 {
   "genrePreference": [12,14,16]

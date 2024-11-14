@@ -40,4 +40,5 @@ export class PreferenceService {
     async getGenrePreference(userEntity:UserEntity): Promise<GenreEntity[]> {
       return  this.preferenceRepository.getGenrePreferences(userEntity);
     }
+
 }

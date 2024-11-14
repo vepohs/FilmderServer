@@ -29,7 +29,7 @@ export class MovieRepository {
                 }
             ],
             relations: ['genres', 'providers'],
-            take: 30
+            take: 20
         });
         return movies;
     }

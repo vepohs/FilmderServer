@@ -43,9 +43,10 @@ export class ProviderService {
     }
 
     createProvider(providerData: ProviderType): ProviderEntity {
+        const BASE_IMAGE_URL = 'https://image.tmdb.org/t/p/original';
         const providerEntity = new ProviderEntity();
         providerEntity.id = providerData.provider_id
-        providerEntity.logoPath = providerData.logo_path
+        providerEntity.logoPath = BASE_IMAGE_URL + providerData.logo_path
         providerEntity.name = providerData.provider_name
         return providerEntity
     }
@@ -65,9 +66,9 @@ export class ProviderService {
         const providers = await this.fetchProvidersFromTMDB(movie.id);
         const allProvidersInDB = await this.providerRepository.getAllProviderId();
         const allProviders = [
-            ...(providers.buy || []),
-            ...(providers.rent || []),
-            ...(providers.flatrate || [])
+            ...(providers?.buy || []),
+            ...(providers?.rent || []),
+            ...(providers?.flatrate || [])
         ];
 
         const filteredProviders = allProviders.filter((provider: any) =>

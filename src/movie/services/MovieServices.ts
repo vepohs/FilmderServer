@@ -34,16 +34,16 @@ export class MovieServices {
         const movieList = movieData.map((movie: MovieType) => this.createMovieEntity(movie));
         const existingIds = await this.movieRepository.checkExistingMovies(movieList);
         const newMovies = movieList.filter(movie => !existingIds.includes(movie.id));
-        if (newMovies.length > 10) {
-            return Promise.all(newMovies.map((movie: MovieEntity) => this.movieRepository.saveMovie(movie)));
-        }
-        else {
-            if(newMovies.length> 0) await Promise.all(newMovies.map((movie: MovieEntity) => this.movieRepository.saveMovie(movie)));
+            if(newMovies.length> 0) return await Promise.all(newMovies.map((movie: MovieEntity) => this.movieRepository.saveMovie(movie)));
             page++;
+            console.log('page',page)
            return  await this.saveNewMoviesFromTMDB(genre, adult, providers, page);
-        }
     }
 
+     private cleanString(input: string): string {
+        // Supprimer les caractères invisibles
+        return input.replace(/[\u200B-\u200D\uFEFF]/g, '');
+    }
 
     private createMovieEntity(movieData: MovieType): MovieEntity {
         const movie = new MovieEntity();
@@ -51,7 +51,7 @@ export class MovieServices {
         movie.genres = movieData.genres;
         movie.id = movieData.id;
         movie.title = movieData.title;
-        movie.synopsis = movieData.synopsis;
+        movie.synopsis = this.cleanString(movieData.synopsis);
         movie.releaseDate = movieData.releaseDate;
         movie.averageGrade = movieData.averageGrade;
         movie.votes = movieData.votes;
@@ -112,11 +112,15 @@ export class MovieServices {
     async getMovies(userPayload: PayloadType) {
         const user = await this.userService.findByEmail(userPayload.email);
         if (user) {
+            console.log('bien log')
             const genres = await this.genrePreferenceService.getGenrePreference(user);
             const providers = await this.preferenceProviderService.getProviderPreference(user);
             const movies = await this.movieRepository.getMovie(genres, providers);
-            if (movies.length > 20) return movies;
+            console.log('listfilm')
+            console.log(movies)
+            if (movies.length >= 10) return movies;
             else {
+                console.log('pas assez de film')
                 await this.saveNewMoviesFromTMDB(genres.map((genre) => genre.id), user.age! > 18, providers.map((provider) => provider.id));
                 await this.getMovies(userPayload);
             }

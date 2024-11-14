@@ -7,6 +7,7 @@ import {ProviderEntity} from "../movie/entites/ProviderEntity";
 import {HistoryEntity} from "../movie/entites/HistoryEntity";
 import {GenreEntity} from "../movie/entites/GenreEntity";
 import {GenrePreferenceEntity} from "../user/entities/PreferenceGenreEntity";
+import {PreferenceProviderEntity} from "../user/entities/PreferenceProviderEntity";
 
 dotenv.config({ path: '.env' });
 
@@ -28,7 +29,8 @@ export const AppDataSource = new DataSource({
     database: process.env.DB_NAME,
     synchronize: false, // Utilise les migrations en production
     logging: true,
-    entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,HistoryEntity,GenreEntity,GenrePreferenceEntity]
+    charset: 'utf8mb4',
+    entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,HistoryEntity,GenreEntity,GenrePreferenceEntity,PreferenceProviderEntity]
 });
 
 export default AppDataSource;
