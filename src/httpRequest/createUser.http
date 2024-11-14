@@ -1,4 +1,4 @@
-@port = 3017
+@port = 3018
 
 ### YO
 POST http://localhost:{{port}}/api/users/createUser
@@ -84,4 +84,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBpZXJyZ
 {
   "genrePreference": [12,14,16]
 }
+
+### Envoi d'une requête POST avec un token d'accès dans l'en-tête
+GET http://localhost:{{port}}/api/users/protected/getUserPreferences
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBpZXJyZS5mYWNoZUBob3RtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzMxNjA4NTEwLCJleHAiOjE3MzE2MDk0MTB9.fwIA0fsB8B3Jd78g4sxR9dv3heCSdA9OrVjwo6Xv_Jw
 

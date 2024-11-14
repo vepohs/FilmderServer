@@ -61,11 +61,11 @@ export class PreferenceService {
     }
 
     async getGenrePreference(userEntity: UserEntity): Promise<GenreEntity[]> {
-        return this.preferenceRepository.getGenrePreferences(userEntity);
+        return  await this.preferenceRepository.getGenrePreferences(userEntity);
     }
 
     async getProviderPreference(user: UserEntity): Promise<ProviderEntity[]> {
-        return await this.preferenceRepository.getProviderPreference(user);
+        return  await this.preferenceRepository.getProviderPreference(user);
     }
 
 }

@@ -13,11 +13,11 @@ export class PreferenceUserService {
 
     async getGenrePreference(userPayload: PayloadType) {
         const user = await this.userService.findByEmail(userPayload.email);
-        if (user) await this.preferenceService.getGenrePreference(user);
+        if (user) return  await this.preferenceService.getGenrePreference(user);
     }
 
     async getProviderPreference(userPayload: PayloadType) {
         const user = await this.userService.findByEmail(userPayload.email);
-        if (user) await this.preferenceService.getProviderPreference(user);
+        if (user) return  await this.preferenceService.getProviderPreference(user);
     }
 }
