@@ -7,7 +7,7 @@ import {getUserPreference} from "../controllers/getUserPreferenceController";
 const protectedRouter = express.Router();
 
 protectedRouter.get('/verifyAccessToken',verifyAccessToken);
-protectedRouter.post('/setPreferenceGenre', setPreference);
+protectedRouter.post('/setPreferences', setPreference);
 protectedRouter.get('/getPreferences',getPreferences);
 protectedRouter.get('/getUserPreferences',getUserPreference);
 

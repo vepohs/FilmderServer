@@ -1,6 +1,8 @@
 import {PayloadType} from "../../authentification/type/UserPayLoad";
 import {PreferenceService} from "../services/PreferenceService";
 import {Request, Response, NextFunction} from "express";
+import {ProviderService} from "../../provider/service/providerService";
+import {GenreService} from "../../genre/GenreServices";
 
 
 interface AuthenticatedRequest extends Request {
@@ -9,6 +11,10 @@ interface AuthenticatedRequest extends Request {
 const preferenceService = new PreferenceService();
 //todo
 export const setPreference = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const providerService = new ProviderService();
+    const genreService = new GenreService();
+    await providerService.saveBestProviders();
+    await genreService.saveGenres();
     const genrePreferenceIds: number[] = req.body!.genrePreferenceIds;
     await preferenceService.saveGenrePreference(req.user!.email, genrePreferenceIds);
     const providerPreferenceIds =req.body!.providerPreferenceIds;

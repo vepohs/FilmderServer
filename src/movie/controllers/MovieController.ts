@@ -10,11 +10,9 @@ interface AuthenticatedRequest extends Request {
 }
 
 const movieService = new MovieServices();
-const providerService = new ProviderService();
-const genreService = new GenreService();
+
 export const getMovie = async (req: AuthenticatedRequest, res: Response) => {
-    //await providerService.saveBestProviders();
-    //await genreService.saveGenres();
+
     const listTableau = movieService.getMovies(req.user!);
 
     res.status(200).json({movie: listTableau});
