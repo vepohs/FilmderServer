@@ -1,8 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable} from 'typeorm';
 import {RefreshTokenEntity} from "../../authentification/entities/refreshTokenEntity";
 import {HistoryEntity} from "../../movie/entites/HistoryEntity";
-import {GenreEntity} from "../../movie/entites/GenreEntity";
-//import {RewatchPreferenceEntity} from "./RewatchPreferenceEntity";
 
 @Entity({name: 'users'})
 export class UserEntity {

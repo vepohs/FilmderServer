@@ -20,4 +20,8 @@ export class ProviderRepository {
         });
         return providers.map(provider => provider.id);
     }
+
+    async getAllProvider() {
+        return this.repository.find();
+    }
 }

@@ -84,4 +84,8 @@ export class ProviderService {
         const test =providers.map((provider: ProviderType) => this.createProvider(provider))
         return test
     }
+
+    async getProvider() {
+        return await this.providerRepository.getAllProvider();
+    }
 }

@@ -15,9 +15,7 @@ const genreService = new GenreService();
 export const getMovie = async (req: AuthenticatedRequest, res: Response) => {
     //await providerService.saveBestProviders();
     //await genreService.saveGenres();
-
-    const listTableau = await movieService.saveMovies([878], true, [8]);
-    //const listTableau = movieService.getMovies(req.user!);
+    const listTableau = movieService.getMovies(req.user!);
 
     res.status(200).json({movie: listTableau});
 }

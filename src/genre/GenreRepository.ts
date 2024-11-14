@@ -10,10 +10,14 @@ export class GenreRepository {
     }
 
     async saveGenre(genre: GenreEntity): Promise<GenreEntity> {
-        return await this.repository.save(genre);
+        return  this.repository.save(genre);
     }
 
     async findById(id: number): Promise<GenreEntity | null> {
-        return await this.repository.findOne({ where: { id } });
+        return  this.repository.findOne({where: {id}});
+    }
+
+    async getAllGenre() {
+        return  this.repository.find();
     }
 }

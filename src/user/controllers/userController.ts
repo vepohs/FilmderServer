@@ -29,8 +29,7 @@ function getData(req: Request) {
         ppPath: req.body.ppPath, // `ppPath` est optionnel
 
     };
-    console.log("userDataaaaaaa")
-    console.log(userData);
+
     return userData;
 }
 
