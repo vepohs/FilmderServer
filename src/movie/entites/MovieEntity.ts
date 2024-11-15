@@ -1,5 +1,5 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany} from 'typeorm';
-import {HistoryEntity} from './HistoryEntity';
+import {SwipeEntity} from './SwipeEntity';
 import {GenreEntity} from "./GenreEntity";
 import {ProviderEntity} from "./ProviderEntity";
 
@@ -33,8 +33,8 @@ export class MovieEntity {
     @Column({type: 'int', default: 0})
     duration!: number;
 
-    @OneToMany(() => HistoryEntity, history => history.movie)
-    histories!: HistoryEntity[];
+    @OneToMany(() => SwipeEntity, swipes => swipes.movie)
+    swipes!: SwipeEntity[];
 
 
     @ManyToMany(() => GenreEntity, (genre) => genre.movies, { cascade: true })

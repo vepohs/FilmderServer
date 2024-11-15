@@ -1,6 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable} from 'typeorm';
 import {RefreshTokenEntity} from "../../authentification/entities/refreshTokenEntity";
-import {HistoryEntity} from "../../movie/entites/HistoryEntity";
+import {SwipeEntity} from "../../movie/entites/SwipeEntity";
 
 @Entity({name: 'users'})
 export class UserEntity {
@@ -31,8 +31,8 @@ export class UserEntity {
     @OneToMany(() => RefreshTokenEntity, token => token.user)
     refreshTokens!: RefreshTokenEntity[];
 
-    @OneToMany(() => HistoryEntity, history => history.user)
-    histories!: HistoryEntity[];
+    @OneToMany(() => SwipeEntity, swipes => swipes.user)
+    swipes!: SwipeEntity[];
 
     // Relation Many-to-Many avec GenreEntity
 

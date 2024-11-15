@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import {RefreshTokenEntity} from "../authentification/entities/refreshTokenEntity";
 import {MovieEntity} from "../movie/entites/MovieEntity";
 import {ProviderEntity} from "../movie/entites/ProviderEntity";
-import {HistoryEntity} from "../movie/entites/HistoryEntity";
+import {HistoryEntity} from "../movie/entites/SwipeEntity";
 import {GenreEntity} from "../movie/entites/GenreEntity";
 import {GenrePreferenceEntity} from "../user/entities/PreferenceGenreEntity";
 import {PreferenceProviderEntity} from "../user/entities/PreferenceProviderEntity";
