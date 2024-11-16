@@ -7,6 +7,7 @@ import {ProviderService} from "../../provider/service/providerService";
 import {PayloadType} from "../../authentification/type/UserPayLoad";
 import {UserService} from "../../user/services/userService";
 import {PreferenceService} from "../../user/services/PreferenceService";
+import {SwipeService} from "../../user/services/SwipeService";
 
 
 export class MovieServices {
@@ -15,6 +16,7 @@ export class MovieServices {
     private readonly providerService: ProviderService;
     private readonly userService: UserService;
     private readonly preferenceService: PreferenceService;
+    private readonly swipeService: SwipeService;
 
     constructor() {
         this.movieRepository = new MovieRepository();
@@ -22,6 +24,7 @@ export class MovieServices {
         this.providerService = new ProviderService();
         this.userService = new UserService();
         this.preferenceService = new PreferenceService();
+        this.swipeService = new SwipeService();
     }
 
     async saveNewMoviesFromTMDB(genre: number[], adult: boolean, providers: number[],page=1): Promise<MovieEntity[]> {
@@ -108,19 +111,19 @@ export class MovieServices {
     async getMovies(userPayload: PayloadType) {
         const user = await this.userService.findByEmail(userPayload.email);
         if (user) {
-            console.log('bien log')
             const genres = await this.preferenceService.getGenrePreference(user);
             const providers = await this.preferenceService.getProviderPreference(user);
-            const movies = await this.movieRepository.getMovie(genres, providers);
-            console.log('listfilm')
-            console.log(movies)
+            const excludeIds = await this.swipeService.getExcludedMoviesId(user);
+            const movies = await this.movieRepository.getMovie(genres, providers,excludeIds);
             if (movies.length >= 10) return movies;
             else {
-                console.log('pas assez de film')
                 await this.saveNewMoviesFromTMDB(genres.map((genre) => genre.id), user.age! > 18, providers.map((provider) => provider.id));
                 await this.getMovies(userPayload);
             }
         }
     }
 
+    async getMovieById(movieId: number): Promise<MovieEntity | null> {
+       return  await this.movieRepository.getMovieById(movieId);
+    }
 }

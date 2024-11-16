@@ -18,8 +18,7 @@ export class MovieRepository {
         return savedMovie;
     }
 
-    async getMovie(genres: GenreEntity[], providers: ProviderEntity[]): Promise<MovieEntity[]> {
-        const excludeIds =[0];
+    async getMovie(genres: GenreEntity[], providers: ProviderEntity[],excludeIds:number[]): Promise<MovieEntity[]> {
         const movies = await this.repository.find({
             where: [
                 {
@@ -42,5 +41,9 @@ export class MovieRepository {
         return existingMovies.map(movie => movie.id);
     }
 
+
+    async getMovieById(movieId: number) {
+        return this.repository.findOne({where: {id: movieId}});
+    }
 
 }
