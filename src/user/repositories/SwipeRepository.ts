@@ -20,6 +20,6 @@ export class SwipeRepository {
             where: {user: {id: user.id}},
             relations: ['movie']
         });
-        return swipeEntities.map(swipe => swipe.movie);
+        return swipeEntities.map(swipe => swipe.movie).map(movie => movie.id);
     }
 }

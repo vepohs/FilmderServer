@@ -31,7 +31,5 @@ export class SwipeService {
         return swipe;
     }
 
-    async getExcludedMoviesId(user: UserEntity) {
-        return (await this.swipeRepository.getExcludedMovies(user)).map((movie) => movie.id);
-    }
+
 }

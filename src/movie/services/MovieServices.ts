@@ -8,6 +8,7 @@ import {PayloadType} from "../../authentification/type/UserPayLoad";
 import {UserService} from "../../user/services/userService";
 import {PreferenceService} from "../../user/services/PreferenceService";
 import {SwipeService} from "../../user/services/SwipeService";
+import {SwipeRepository} from "../../user/repositories/SwipeRepository";
 
 
 export class MovieServices {
@@ -16,7 +17,7 @@ export class MovieServices {
     private readonly providerService: ProviderService;
     private readonly userService: UserService;
     private readonly preferenceService: PreferenceService;
-    private readonly swipeService: SwipeService;
+    private readonly swipeService: SwipeRepository;
 
     constructor() {
         this.movieRepository = new MovieRepository();
@@ -24,7 +25,7 @@ export class MovieServices {
         this.providerService = new ProviderService();
         this.userService = new UserService();
         this.preferenceService = new PreferenceService();
-        this.swipeService = new SwipeService();
+        this.swipeService = new SwipeRepository();
     }
 
     async saveNewMoviesFromTMDB(genre: number[], adult: boolean, providers: number[],page=1): Promise<MovieEntity[]> {
@@ -113,7 +114,7 @@ export class MovieServices {
         if (user) {
             const genres = await this.preferenceService.getGenrePreference(user);
             const providers = await this.preferenceService.getProviderPreference(user);
-            const excludeIds = await this.swipeService.getExcludedMoviesId(user);
+            const excludeIds = await this.swipeService.getExcludedMovies(user);
             const movies = await this.movieRepository.getMovie(genres, providers,excludeIds);
             if (movies.length >= 10) return movies;
             else {

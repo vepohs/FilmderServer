@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import {RefreshTokenEntity} from "../authentification/entities/refreshTokenEntity";
 import {MovieEntity} from "../movie/entites/MovieEntity";
 import {ProviderEntity} from "../movie/entites/ProviderEntity";
-import {HistoryEntity} from "../movie/entites/SwipeEntity";
+import {SwipeEntity} from "../movie/entites/SwipeEntity";
 import {GenreEntity} from "../movie/entites/GenreEntity";
 import {GenrePreferenceEntity} from "../user/entities/PreferenceGenreEntity";
 import {PreferenceProviderEntity} from "../user/entities/PreferenceProviderEntity";
@@ -30,7 +30,7 @@ export const AppDataSource = new DataSource({
     synchronize: false, // Utilise les migrations en production
     logging: true,
     charset: 'utf8mb4',
-    entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,HistoryEntity,GenreEntity,GenrePreferenceEntity,PreferenceProviderEntity]
+    entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,SwipeEntity,GenreEntity,GenrePreferenceEntity,PreferenceProviderEntity]
 });
 
 export default AppDataSource;
