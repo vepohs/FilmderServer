@@ -8,4 +8,5 @@ interface AuthenticatedRequest extends Request {
 const swipeService  = new SwipeService();
 export const swipeMovie = async (req: AuthenticatedRequest, res: Response,next:NextFunction) => {
     await swipeService.saveSwipe(req.user!, req.body.movie, req.body.liked)
+    res.status(200).send();
 }
