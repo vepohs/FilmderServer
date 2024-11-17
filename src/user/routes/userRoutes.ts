@@ -1,6 +1,6 @@
 import express from 'express';
 import { addUser } from "../controllers/userController";
-import { isUniqueEmail } from "../../authentification/controllers/isUniqueEmail";
+import { isUniqueEmail } from "../../controller/authentification/isUniqueEmail";
 
 const router = express.Router();
 

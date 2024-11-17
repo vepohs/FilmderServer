@@ -1,8 +1,8 @@
-// controllers/authController.ts
+// authentification/authController.ts
 
 import { Request, Response, NextFunction } from 'express';
-import {JwtService} from "../services/jwtService";
-import {BadRefreshTokenError, NoRefreshTokenError} from "../error/authError";
+import {JwtService} from "../../authentification/services/jwtService";
+import {BadRefreshTokenError, NoRefreshTokenError} from "../../authentification/error/authError";
 
 
 const jwtService = new JwtService();

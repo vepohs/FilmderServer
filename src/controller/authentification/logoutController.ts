@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
-import {AuthService} from '../services/authService';
-import {RefreshTokenError} from "../error/authError";
+import {AuthService} from '../../authentification/services/authService';
+import {RefreshTokenError} from "../../authentification/error/authError";
 
 const authService = new AuthService();
 

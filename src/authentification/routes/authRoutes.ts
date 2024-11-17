@@ -1,7 +1,7 @@
 import express from 'express';
-import {login} from "../controllers/loginController";
-import {logout} from "../controllers/logoutController";
-import {refreshToken} from "../controllers/refreshTokenController";
+import {login} from "../../controller/authentification/loginController";
+import {logout} from "../../controller/authentification/logoutController";
+import {refreshToken} from "../../controller/authentification/refreshTokenController";
 import {authMiddleware} from "../../middlewares/authMiddleware";
 const router = express.Router();
 router.post('/logout',authMiddleware,logout);

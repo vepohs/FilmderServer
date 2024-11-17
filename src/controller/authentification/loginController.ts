@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from "express";
-import {AuthType} from "../type/authType";
-import {AuthService} from "../services/authService";
+import {AuthType} from "../../authentification/type/authType";
+import {AuthService} from "../../authentification/services/authService";
 
 const authService = new AuthService();
 export const login = async (req: Request, res: Response , next: NextFunction) => {
