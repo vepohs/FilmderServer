@@ -15,8 +15,6 @@ export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: N
     try {
         const authHeader = req.headers['authorization'];
         const accessToken = authHeader && authHeader.split(' ')[1];
-        console.log('accessToeknnnnn');
-        console.log(accessToken);
         if (!accessToken)
             throw new NoAccessTokenError();
 

@@ -109,20 +109,27 @@ export class MovieServices {
         return res.data.runtime;
     }
 
-    async getMovies(userPayload: PayloadType) {
+    async getMovies(userPayload: PayloadType): Promise<MovieEntity[]> {
         const user = await this.userService.findByEmail(userPayload.email);
         if (user) {
             const genres = await this.preferenceService.getGenrePreference(user);
             const providers = await this.preferenceService.getProviderPreference(user);
             const excludeIds = await this.swipeService.getExcludedMovies(user);
-            const movies = await this.movieRepository.getMovie(genres, providers,excludeIds);
-            if (movies.length >= 10) return movies;
-            else {
-                await this.saveNewMoviesFromTMDB(genres.map((genre) => genre.id), user.age! > 18, providers.map((provider) => provider.id));
-                await this.getMovies(userPayload);
+            const movies = await this.movieRepository.getMovie(genres, providers, excludeIds);
+            if (movies.length >= 10) {
+                return movies;
+            } else {
+                await this.saveNewMoviesFromTMDB(
+                    genres.map((genre) => genre.id),
+                    user.age! > 18,
+                    providers.map((provider) => provider.id)
+                );
+                return await this.getMovies(userPayload);
             }
         }
+        return [];
     }
+
 
     async getMovieById(movieId: number): Promise<MovieEntity | null> {
        return  await this.movieRepository.getMovieById(movieId);
