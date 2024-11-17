@@ -5,5 +5,5 @@ import {groupJoin} from "../../group/groupJoinController";
 const router = express.Router();
 
 router.post('/groupAdd',groupAdd);
-router.post('/goupJoin',groupJoin);
+router.post('/groupJoin',groupJoin);
 export default router;
