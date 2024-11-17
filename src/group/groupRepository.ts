@@ -4,18 +4,13 @@ import {UserEntity} from "../user/entities/UserEntity";
 
 export class GroupRepository {
     private readonly groupRepository = dataSource.getRepository(GroupEntity);
-
     async saveGroup(group: GroupEntity): Promise<GroupEntity> {
-        if (!group.users) {
-            group.users = [];
-        }
-        const alreadyMember = group.users.some(user => user.id === group.owner.id);
-        if (!alreadyMember) {
-            group.users.push(group.owner);
-        }
 
-        return await this.groupRepository.save(group);
+        const savedGroup = await this.groupRepository.save(group);
+        savedGroup.users.push(group.owner);
+        return await this.groupRepository.save(savedGroup);
     }
+
 
     async joinGroup(groupId: string, userEntity: UserEntity): Promise<GroupEntity | null> {
         try {
