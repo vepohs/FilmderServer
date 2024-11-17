@@ -1,7 +1,7 @@
 import { Entity, PrimaryColumn, Column, ManyToMany, JoinTable, ManyToOne, BeforeInsert } from 'typeorm';
 import { GenreEntity } from "../../movie/entites/GenreEntity";
 import { UserEntity } from "./UserEntity";
-import { nanoid } from 'nanoid';
+
 @Entity({ name: 'groupe' })
 export class GroupEntity {
     @PrimaryColumn()
@@ -30,6 +30,6 @@ export class GroupEntity {
 
     @BeforeInsert()
     generateGroupId() {
-        this.groupId = nanoid(16); // Génère un identifiant unique de 8 caractères
+      this.groupId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
     }
 }
