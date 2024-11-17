@@ -1,5 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToMany} from 'typeorm';
 import {MovieEntity} from "./MovieEntity";
+import {GroupEntity} from "../../user/entities/GroupEntity";
 
 @Entity({ name: 'genres' })
 export class GenreEntity {
@@ -14,4 +15,6 @@ export class GenreEntity {
 
     @ManyToMany(() => MovieEntity, (movie) => movie.providers)
     movies!: MovieEntity[];
+    @ManyToMany(() => GroupEntity, group => group.genres)
+    groups!: GroupEntity[];
 }

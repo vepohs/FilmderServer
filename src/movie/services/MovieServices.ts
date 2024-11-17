@@ -41,7 +41,6 @@ export class MovieServices {
     }
 
      private cleanString(input: string): string {
-        // Supprimer les caractères invisibles
         return input.replace(/[\u200B-\u200D\uFEFF]/g, '');
     }
 

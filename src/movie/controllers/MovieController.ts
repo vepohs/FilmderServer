@@ -12,8 +12,8 @@ interface AuthenticatedRequest extends Request {
 const movieService = new MovieServices();
 
 export const getMovie = async (req: AuthenticatedRequest, res: Response) => {
-
-    const listTableau = movieService.getMovies(req.user!);
-
+console.log("getMovies")
+    const listTableau =await movieService.getMovies(req.user!);
+console.log("listTableau",listTableau.length)
     res.status(200).json({movie: listTableau});
 }

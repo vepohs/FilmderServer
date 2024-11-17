@@ -1,6 +1,7 @@
 import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable} from 'typeorm';
 import {RefreshTokenEntity} from "../../authentification/entities/refreshTokenEntity";
 import {SwipeEntity} from "../../movie/entites/SwipeEntity";
+import {GroupEntity} from "./GroupEntity";
 
 @Entity({name: 'users'})
 export class UserEntity {
@@ -25,6 +26,9 @@ export class UserEntity {
     @Column({type: 'int'})
     age?: number;
 
+    @OneToMany(() => GroupEntity, group => group.owner)
+    ownedGroups!: GroupEntity[]
+
     @Column({type: 'int', default: 0})
     countryId?: number;
 
@@ -33,8 +37,13 @@ export class UserEntity {
 
     @OneToMany(() => SwipeEntity, swipes => swipes.user)
     swipes!: SwipeEntity[];
-
-    // Relation Many-to-Many avec GenreEntity
+    @ManyToMany(() => GroupEntity, group => group.users)
+    @JoinTable({
+        name: 'JointureUserGroup',
+        joinColumn: { name: 'userId', referencedColumnName: 'id' },
+        inverseJoinColumn: { name: 'groupId', referencedColumnName: 'groupId' }
+    })
+    groups!: GroupEntity[];
 
 
     //@OneToMany(() => RewatchPreferenceEntity, (preference) => preference.user)
