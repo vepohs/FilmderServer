@@ -1,13 +1,19 @@
-import { GroupRepository } from "./groupRepository";
-import { GroupEntity } from "../user/entities/GroupEntity";
-import { UserService } from "../user/services/userService";
-import { PayloadType } from "../authentification/type/UserPayLoad";
-import { UserEntity } from "../user/entities/UserEntity";
+import {GroupRepository} from "./groupRepository";
+import {GroupEntity} from "../user/entities/GroupEntity";
+import {UserService} from "../user/services/userService";
+import {PayloadType} from "../authentification/type/UserPayLoad";
+import {UserEntity} from "../user/entities/UserEntity";
 
 interface AddGroupInput {
     user: PayloadType;
     name: string;
 }
+
+interface JoinGroupInput {
+    user: PayloadType;
+    groupId: string;
+}
+
 
 export class GroupService {
     private readonly groupRepository: GroupRepository;
@@ -42,5 +48,11 @@ export class GroupService {
         groupEntity.name = name;
         groupEntity.owner = userEntity;
         return groupEntity;
+    }
+
+    async joinGroup(input: JoinGroupInput) {
+        const user = await this.getUserFromPayload(input.user);
+        if (user)
+            return await this.groupRepository.joinGroup(input.groupId, user);
     }
 }
