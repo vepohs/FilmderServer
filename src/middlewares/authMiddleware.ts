@@ -1,14 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
-import { JwtService } from "../authentification/services/jwtService";
-import {PayloadType} from "../authentification/type/UserPayLoad";
-import {BadAccessTokenError, NoAccessTokenError} from "../authentification/error/authError";
-
-
-
-interface AuthenticatedRequest extends Request {
-    user?: PayloadType;
-}
-
+import { JwtService } from "../Service/authentification/jwtService";
+import {BadAccessTokenError, NoAccessTokenError} from "../error/authError";
+import {AuthenticatedRequest} from "../interface/interface";
 const jwtservice = new JwtService();
 
 export const authMiddleware = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {

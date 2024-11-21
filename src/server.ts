@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import AppDataSource from "./dataBase/dataSource";
 import {errorHandler} from "./middlewares/errorHandler";
-import routes from "./user/routes/routes";
+import routes from "./route/routes";
 // @ts-ignore
 import cookieParser from 'cookie-parser';
 

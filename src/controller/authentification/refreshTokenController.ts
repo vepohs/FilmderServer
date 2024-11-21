@@ -1,13 +1,13 @@
 // authentification/authController.ts
 
 import { Request, Response, NextFunction } from 'express';
-import {JwtService} from "../../authentification/services/jwtService";
-import {BadRefreshTokenError, NoRefreshTokenError} from "../../authentification/error/authError";
+import {JwtService} from "../../Service/authentification/jwtService";
+import {BadRefreshTokenError, NoRefreshTokenError} from "../../error/authError";
 
 
 const jwtService = new JwtService();
 
-export const refreshToken = async(req: Request, res: Response, next: NextFunction): Promise<void> => {
+export const refreshToken = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const refreshToken = req.cookies.refreshToken;
         if (!refreshToken)

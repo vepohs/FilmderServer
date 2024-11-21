@@ -1,11 +1,8 @@
-import {UserService} from "../../user/services/userService";
-import { Request, Response} from "express";
+import {UserService} from "../../Service/user/userService";
+import {Request, Response, NextFunction} from "express";
 
 const userService = new UserService();
-export const isUniqueEmail = async (req: Request, res: Response) => {
+export const isUniqueEmail = async (req: Request, res: Response, next: NextFunction) => {
     const existingUser = await userService.findByEmail(req.body.email);
-    if (existingUser)
-        res.json({isUnique:false});
-    else
-    res.json({isUnique:true});
+    existingUser ? res.json({isUnique: false}) : res.json({isUnique: true});
 };

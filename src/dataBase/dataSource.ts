@@ -1,14 +1,14 @@
 import {DataSource} from "typeorm";
-import { UserEntity } from "../user/entities/UserEntity";
+import { UserEntity } from "../entity/UserEntity";
 import dotenv from "dotenv";
-import {RefreshTokenEntity} from "../authentification/entities/refreshTokenEntity";
-import {MovieEntity} from "../movie/entites/MovieEntity";
-import {ProviderEntity} from "../movie/entites/ProviderEntity";
-import {SwipeEntity} from "../movie/entites/SwipeEntity";
-import {GenreEntity} from "../movie/entites/GenreEntity";
-import {GenrePreferenceEntity} from "../user/entities/PreferenceGenreEntity";
-import {PreferenceProviderEntity} from "../user/entities/PreferenceProviderEntity";
-import {GroupEntity} from "../user/entities/GroupEntity";
+import {RefreshTokenEntity} from "../entity/refreshTokenEntity";
+import {MovieEntity} from "../entity/MovieEntity";
+import {ProviderEntity} from "../entity/ProviderEntity";
+import {SwipeEntity} from "../entity/SwipeEntity";
+import {GenreEntity} from "../entity/GenreEntity";
+import {GenrePreferenceEntity} from "../entity/PreferenceGenreEntity";
+import {PreferenceProviderEntity} from "../entity/PreferenceProviderEntity";
+import {GroupEntity} from "../entity/GroupEntity";
 
 dotenv.config({ path: '.env' });
 
@@ -28,7 +28,6 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    synchronize: true, // Utilise les migrations en production
     logging: true,
     charset: 'utf8mb4',
     entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,SwipeEntity,GenreEntity,GenrePreferenceEntity,PreferenceProviderEntity,GroupEntity]

@@ -8,7 +8,7 @@ Content-Type: application/json
   "firstName": "dqsdqs",
   "lastName": "sds",
   "email": "pierre.fache",
-  "age" : "10",
+  "age" : "u",
   "password":"password1234",
   "confirmPassword":"password1234",
   "countryId": "dsqdq"
