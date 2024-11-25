@@ -11,7 +11,7 @@ import {PreferenceProviderEntity} from "../entity/PreferenceProviderEntity";
 import {GroupEntity} from "../entity/GroupEntity";
 
 dotenv.config({ path: '.env' });
-
+//todo voir si ca a changer
 
 // Permet de verif si les variables d'environnement sont bien définies mais ducoup ca plant s'il manque un truc
 // a voir c'est quoi le mieux en production, le truc avec les valeurs par défaut c'est que ca me fait peur pour la secu
@@ -29,6 +29,7 @@ export const AppDataSource = new DataSource({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     logging: true,
+    synchronize: false,
     charset: 'utf8mb4',
     entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,SwipeEntity,GenreEntity,GenrePreferenceEntity,PreferenceProviderEntity,GroupEntity]
 });

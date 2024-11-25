@@ -10,11 +10,16 @@ export class UserRepository {
         this.userRepository = AppDataSource.getRepository(UserEntity);
     }
 
-    async findByEmail(email: string): Promise<UserEntity>
-    {
-        const user = await this.userRepository.findOne({ where: { email } });
-        if(user) return user
-        else throw new NoUserError();
+    async findByEmail(email: string): Promise<UserEntity> {
+        try {
+            const user = await this.userRepository.findOne({where: {email}});
+            if (user) return user
+            else throw new NoUserError();
+        }
+        catch (error){
+            //todo finir
+            throw new  NoUserError()
+        }
     }
 
     async saveUser(user: UserEntity): Promise<UserEntity> {

@@ -33,6 +33,7 @@ const checkAge =(age:number) => {
 
 // TODO prenom pas de nombre
  const isEmailAlreadyUsed= async (email:string, userRepository: UserRepository) =>{
+    //todo catch error
     const existingUser = await userRepository.findByEmail(email);
     if (existingUser)
         throw new AlreadyExistsError("email");
