@@ -9,6 +9,7 @@ import {AuthType} from "../type/authType";
 import { Response } from 'express';
 import {PayloadType} from "../type/UserPayLoad";
 import {UserService} from "../../user/services/userService";
+import {DeleteResult} from "typeorm";
 
 
 export class AuthService {
@@ -40,10 +41,10 @@ export class AuthService {
         };
     };
 
-    async logout(refreshToken: string, res:Response): Promise<void> {
+    async logout(refreshToken: string, res:Response): Promise<DeleteResult> {
         // TODO voir si c est grave qu'on vérif pas si c est un bon token genre si il est pas dans la db y a pas d erreur
         this.clearToken(res);
-        await this.jwtService.deleteRefreshToken(refreshToken);
+       return await this.jwtService.deleteRefreshToken(refreshToken);
     }
 
     clearToken(res:Response){
