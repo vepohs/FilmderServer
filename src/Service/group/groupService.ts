@@ -28,6 +28,7 @@ export class GroupService {
     private readonly userService: UserService;
     private readonly providerService: ProviderService;
     private readonly genreService: GenreService;
+
     constructor() {
         this.groupRepository = new GroupRepository();
         this.userService = new UserService();
@@ -65,14 +66,14 @@ export class GroupService {
     }
 
     async setGroupPreference(groupId: string, genreIds: number[], providerIds: number[]) {
-        const groupPreferenceProviderEntities = await this.buildProviderEntities(groupId,providerIds);
+        const groupPreferenceProviderEntities = await this.buildProviderEntities(groupId, providerIds);
         const groupPreferenceEntities = await this.buildGroupPreferenceEntities(groupId, genreIds);
-         await this.groupRepository.setGroupGenrePreference(groupPreferenceEntities,groupId);
-         await this.groupRepository.setGroupProviderPreference(groupPreferenceProviderEntities,groupId);
+        await this.groupRepository.setGroupGenrePreference(groupPreferenceEntities, groupId);
+        await this.groupRepository.setGroupProviderPreference(groupPreferenceProviderEntities, groupId);
     }
 
     async buildGroupPreferenceEntities(groupId: string, genreIds: number[]) {
-        return  genreIds.map((genreId) => {
+        return genreIds.map((genreId) => {
             const groupGenrePreferenceEntity = new GroupGenrePreferenceEntity();
             groupGenrePreferenceEntity.groupId = groupId;
             groupGenrePreferenceEntity.genreId = genreId;
@@ -80,8 +81,8 @@ export class GroupService {
         })
     }
 
-    private async buildProviderEntities(groupId:string,providerIds: number[]) {
-        return  providerIds.map((providerId) => {
+    private async buildProviderEntities(groupId: string, providerIds: number[]) {
+        return providerIds.map((providerId) => {
             const groupProviderPreferenceEntity = new GroupProviderPreferenceEntity();
             groupProviderPreferenceEntity.groupId = groupId;
             groupProviderPreferenceEntity.providerId = providerId;
@@ -89,13 +90,18 @@ export class GroupService {
         })
     }
 
-    async getGroupProviderPreference(groupId:string) {
+    async getGroupProviderPreference(groupId: string) {
         const groupProviderEntity = await this.groupRepository.getGroupProviderPreference(groupId);
-        return groupProviderEntity.map((groupProvider) => this.providerService.getProviderById(groupProvider.providerId));
+        return await Promise.all(groupProviderEntity.map((groupProvider) => this.providerService.getProviderById(groupProvider.providerId)));
     }
 
-    async getGroupGenrePreference(groupId:string) {
-        const groupGenreEntity =  await this.groupRepository.getGroupGenrePreference(groupId);
-        return groupGenreEntity.map((groupGenre) => this.genreService.getGenreById(groupGenre.genreId) );
+    async getGroupGenrePreference(groupId: string) {
+        const groupGenreEntity = await this.groupRepository.getGroupGenrePreference(groupId);
+
+        // Utilisation de Promise.all pour résoudre toutes les promesses générées par map
+        return await Promise.all(
+            groupGenreEntity.map((groupGenre) => this.genreService.getGenreById(groupGenre.genreId))
+        );
     }
+
 }
