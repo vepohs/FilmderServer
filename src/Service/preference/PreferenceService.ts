@@ -50,6 +50,7 @@ export class PreferenceService {
         });
     }
 
+
     async saveGenrePreference(email: string, genreIds: number[]): Promise<void> {
         const user = await this.userService.findByEmail(email);
         const genrePreferenceEntities = await this.buildGenrePreferenceEntities(email, genreIds);

@@ -53,4 +53,7 @@ export class AuthService {
     }
 
 
+    async getFirstName(email:string) {
+        return (await this.userService.findByEmail(email)).firstName;
+    }
 }

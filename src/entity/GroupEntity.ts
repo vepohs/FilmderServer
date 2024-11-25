@@ -1,6 +1,7 @@
-import { Entity, PrimaryColumn, Column, ManyToMany, JoinTable, ManyToOne, BeforeInsert } from 'typeorm';
+import {Entity, PrimaryColumn, Column, ManyToMany, JoinTable, ManyToOne, BeforeInsert, OneToMany} from 'typeorm';
 import { GenreEntity } from "./GenreEntity";
 import { UserEntity } from "./UserEntity";
+
 
 @Entity({ name: 'groupe' })
 export class GroupEntity {
@@ -18,14 +19,6 @@ export class GroupEntity {
 
     @ManyToMany(() => UserEntity, user => user.groups)
     users!: UserEntity[];
-
-    @ManyToMany(() => GenreEntity)
-    @JoinTable({
-        name: 'groupeGenre',
-        joinColumn: { name: 'idGroupe', referencedColumnName: 'groupId' },
-        inverseJoinColumn: { name: 'idGenre', referencedColumnName: 'id' }
-    })
-    genres!: GenreEntity[];
 
 
     @BeforeInsert()

@@ -5,6 +5,10 @@ import {UserEntity} from "../../entity/UserEntity";
 import {UserPayloadType} from "../../type/authType";
 import {NoUserError, UserError} from "../../error/userError";
 import {GroupError} from "../../error/groupError";
+import {GroupGenrePreferenceEntity} from "../../entity/GroupGenrePreferenceEntity";
+import {ProviderEntity} from "../../entity/ProviderEntity";
+import {PreferenceProviderEntity} from "../../entity/PreferenceProviderEntity";
+import {GroupProviderPreferenceEntity} from "../../entity/GroupProviderPreferenceEntity";
 
 interface AddGroupInput {
     user: UserPayloadType;
@@ -47,10 +51,36 @@ export class GroupService {
 
     async joinGroup(input: JoinGroupInput) {
         const user = await this.userService.findByEmail(input.user.email);
-            return await this.groupRepository.joinGroup(input.groupId, user);
+        return await this.groupRepository.joinGroup(input.groupId, user);
     }
+
     async getGroupsByUser(userPayload: UserPayloadType): Promise<GroupEntity[]> {
         const user = await this.userService.findByEmail(userPayload.email);
         return await this.groupRepository.getGroupsByUser(user);
+    }
+
+    async setGroupPreference(groupId: number, genreIds: number[], providerIds: number[]) {
+        const groupPreferenceProviderEntities = await this.buildProviderEntities(groupId,providerIds);
+        const groupPreferenceEntities = await this.buildGroupPreferenceEntities(groupId, genreIds);
+         await this.groupRepository.setGroupGenrePreference(groupPreferenceEntities,groupId);
+         await this.groupRepository.setGroupProviderPreference(groupPreferenceProviderEntities,groupId);
+    }
+
+    async buildGroupPreferenceEntities(groupId: number, genreIds: number[]) {
+        return  genreIds.map((genreId) => {
+            const groupGenrePreferenceEntity = new GroupGenrePreferenceEntity();
+            groupGenrePreferenceEntity.groupId = groupId;
+            groupGenrePreferenceEntity.genreId = genreId;
+            return groupGenrePreferenceEntity;
+        })
+    }
+
+    private async buildProviderEntities(groupId:number,providerIds: number[]) {
+        return  providerIds.map((providerId) => {
+            const groupProviderPreferenceEntity = new GroupProviderPreferenceEntity();
+            groupProviderPreferenceEntity.groupId = groupId;
+            groupProviderPreferenceEntity.providerId = providerId;
+            return groupProviderPreferenceEntity;
+        })
     }
 }

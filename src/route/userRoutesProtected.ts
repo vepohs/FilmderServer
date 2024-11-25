@@ -12,6 +12,6 @@ protectedRouter.post('/setPreferences', setPreference);
 protectedRouter.get('/getPreferences',getPreferences);
 protectedRouter.get('/getUserPreferences',getUserPreference);
 protectedRouter.post('/swipeMovie',swipeMovie);
-protectedRouter.get("/getGroup",getGroup);
+protectedRouter.get('/getGroup',getGroup);
 
 export default protectedRouter;
