@@ -86,11 +86,11 @@ export class GroupService {
 
     async getGroupProviderPreference(groupId:string) {
         const groupProviderEntity = await this.groupRepository.getGroupProviderPreference(groupId);
-        return groupProviderEntity.map((groupProvider) => groupProvider.providerId);
+        return groupProviderEntity.map((groupProvider) => groupProvider.provider);
     }
 
     async getGroupGenrePreference(groupId:string) {
         const groupGenreEntity =  await this.groupRepository.getGroupGenrePreference(groupId);
-        return groupGenreEntity.map((groupGenre) => groupGenre.genreId);
+        return groupGenreEntity.map((groupGenre) => groupGenre.genre);
     }
 }
