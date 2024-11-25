@@ -21,6 +21,10 @@ export class UserRepository {
             throw new  NoUserError()
         }
     }
+    async existsEmail(email: string): Promise<boolean> {
+        const user = await this.userRepository.findOne({where: {email}});
+        return !!user;
+    }
 
     async saveUser(user: UserEntity): Promise<UserEntity> {
         return await this.userRepository.save(user);

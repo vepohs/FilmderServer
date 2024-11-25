@@ -7,6 +7,7 @@ import {UserEntity} from "../../entity/UserEntity";
 import {Response} from 'express';
 import {UserService} from "../user/userService";
 import {UserPayloadType} from "../../type/authType";
+import {DeleteResult} from "typeorm";
 
 
 export class AuthService {
@@ -34,9 +35,9 @@ export class AuthService {
         };
     };
 
-    async logout(refreshToken: string, res: Response): Promise<void> {
+    async logout(refreshToken: string, res: Response): Promise<DeleteResult> {
         this.clearToken(res);
-        await this.jwtService.deleteRefreshToken(refreshToken);
+       return  await this.jwtService.deleteRefreshToken(refreshToken);
     }
 
     clearToken(res: Response) {

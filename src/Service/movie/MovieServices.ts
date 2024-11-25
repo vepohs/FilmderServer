@@ -26,19 +26,19 @@ export class MovieServices {
         this.swipeService = new SwipeRepository();
     }
 
-    async saveNewMoviesFromTMDB(genre: number[], adult: boolean, providers: number[],page=1): Promise<MovieEntity[]> {
+    async saveNewMoviesFromTMDB(genre: number[], adult: boolean, providers: number[], page = 1): Promise<MovieEntity[]> {
 
         const movieData = await this.fetchMoviesFromTMDB(genre, adult, providers, page);
         const movieList = movieData.map((movie: MovieType) => this.createMovieEntity(movie));
         const existingIds = await this.movieRepository.checkExistingMovies(movieList);
         const newMovies = movieList.filter(movie => !existingIds.includes(movie.id));
-            if(newMovies.length> 0) return await Promise.all(newMovies.map((movie: MovieEntity) => this.movieRepository.saveMovie(movie)));
-            page++;
-            console.log('page',page)
-           return  await this.saveNewMoviesFromTMDB(genre, adult, providers, page);
+        if (newMovies.length > 0) return await Promise.all(newMovies.map((movie: MovieEntity) => this.movieRepository.saveMovie(movie)));
+        page++;
+        console.log('page', page)
+        return await this.saveNewMoviesFromTMDB(genre, adult, providers, page);
     }
 
-     private cleanString(input: string): string {
+    private cleanString(input: string): string {
         return input.replace(/[\u200B-\u200D\uFEFF]/g, '');
     }
 
@@ -109,24 +109,26 @@ export class MovieServices {
     async getMovies(userPayload: UserPayloadType): Promise<MovieEntity[]> {
         const user = await this.userService.findByEmail(userPayload.email);
 
-            const genres = await this.preferenceService.getGenrePreference(user);
-            const providers = await this.preferenceService.getProviderPreference(user);
-            const excludeIds = await this.swipeService.getExcludedMovies(user);
-            const movies = await this.movieRepository.getMovie(genres, providers, excludeIds);
-            if (movies.length >= 10) {
-                return movies;
-            } else {
-                await this.saveNewMoviesFromTMDB(
-                    genres.map((genre) => genre.id),
-                    user.age! > 18,
-                    providers.map((provider) => provider.id)
-                );
-                return await this.getMovies(userPayload);
-            }
+        const genres = await this.preferenceService.getGenrePreference(user);
+        const providers = await this.preferenceService.getProviderPreference(user);
+        const excludeIds = await this.swipeService.getExcludedMovies(user);
+        console.log('excludeIds', excludeIds)
+        const movies = await this.movieRepository.getMovie(genres, providers, excludeIds);
+        console.log('movies', movies.length)
+        if (movies.length >= 10) {
+            return movies;
+        } else {
+            await this.saveNewMoviesFromTMDB(
+                genres.map((genre) => genre.id),
+                user.age! > 18,
+                providers.map((provider) => provider.id)
+            );
+            return  await this.getMovies(userPayload);
+        }
     }
 
 
     async getMovieById(movieId: number): Promise<MovieEntity | null> {
-       return  await this.movieRepository.getMovieById(movieId);
+        return await this.movieRepository.getMovieById(movieId);
     }
 }

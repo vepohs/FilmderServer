@@ -22,6 +22,9 @@ export class UserService {
     async findByEmail(email: string): Promise<UserEntity> {
         return await this.userRepository.findByEmail(email);
     }
+    async existsEmail(email: string): Promise<boolean> {
+        return await this.userRepository.existsEmail(email);
+    }
 
 
     private createUser(userData:UserType) {

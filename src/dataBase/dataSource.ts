@@ -28,7 +28,7 @@ export const AppDataSource = new DataSource({
     username: process.env.DB_USER,
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
-    logging: true,
+    logging: false,
     synchronize: false,
     charset: 'utf8mb4',
     entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,SwipeEntity,GenreEntity,GenrePreferenceEntity,PreferenceProviderEntity,GroupEntity]

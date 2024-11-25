@@ -1,5 +1,5 @@
 import {RefreshTokenEntity} from "../../entity/refreshTokenEntity";
-import {Repository} from "typeorm";
+import {DeleteResult, Repository} from "typeorm";
 import AppDataSource from "../../dataBase/dataSource";
 
 export class JwtRepository {
@@ -13,7 +13,7 @@ export class JwtRepository {
         await this.jwtRepository.save(token);
     }
 
-    async deleteRefreshToken(refreshToken: string): Promise<void> {
-        await this.jwtRepository.delete({refreshToken});
+    async deleteRefreshToken(refreshToken: string): Promise<DeleteResult> {
+        return await this.jwtRepository.delete({refreshToken});
     }
 }

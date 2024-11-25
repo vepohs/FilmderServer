@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import {JwtRepository} from "../../repository/authentification/jwtRepository";
 import {RefreshTokenEntity} from "../../entity/refreshTokenEntity";
 import {UserPayloadType} from "../../type/authType";
+import {DeleteResult} from "typeorm";
 
 const ACCES_TOKEN_SECRET = process.env.ACCES_TOKEN_SECRET as string;
 const RFRESH_TOKEN_SECRET = process.env.RFRESH_TOKEN_SECRET as string;
@@ -44,8 +45,8 @@ verifyAccessToken(token: string): UserPayloadType | null {
         return null;
     }}
 
-  async deleteRefreshToken(token: string): Promise<void> {
-      await this.jwtRepository.deleteRefreshToken(token);
+  async deleteRefreshToken(token: string): Promise<DeleteResult> {
+    return  await this.jwtRepository.deleteRefreshToken(token);
   }
    async saveToken(token : RefreshTokenEntity) {
        await this.jwtRepository.saveToken(token);
