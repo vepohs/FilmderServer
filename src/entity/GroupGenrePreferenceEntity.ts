@@ -5,7 +5,7 @@ import { GenreEntity } from './GenreEntity';
 @Entity({ name: 'group_genre_preference' })
 export class GroupGenrePreferenceEntity {
     @PrimaryColumn()
-    groupId!: number;
+    groupId!: string;
 
     @PrimaryColumn()
     genreId!: number;

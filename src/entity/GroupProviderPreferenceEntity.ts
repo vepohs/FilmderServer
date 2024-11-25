@@ -6,7 +6,7 @@ import {ProviderEntity} from "./ProviderEntity";
 @Entity({name: 'group_provider_preference'})
 export class GroupProviderPreferenceEntity {
     @PrimaryColumn()
-    groupId!: number;
+    groupId!: string;
 
     @PrimaryColumn()
     providerId!: number;

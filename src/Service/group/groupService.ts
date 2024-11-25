@@ -59,14 +59,14 @@ export class GroupService {
         return await this.groupRepository.getGroupsByUser(user);
     }
 
-    async setGroupPreference(groupId: number, genreIds: number[], providerIds: number[]) {
+    async setGroupPreference(groupId: string, genreIds: number[], providerIds: number[]) {
         const groupPreferenceProviderEntities = await this.buildProviderEntities(groupId,providerIds);
         const groupPreferenceEntities = await this.buildGroupPreferenceEntities(groupId, genreIds);
          await this.groupRepository.setGroupGenrePreference(groupPreferenceEntities,groupId);
          await this.groupRepository.setGroupProviderPreference(groupPreferenceProviderEntities,groupId);
     }
 
-    async buildGroupPreferenceEntities(groupId: number, genreIds: number[]) {
+    async buildGroupPreferenceEntities(groupId: string, genreIds: number[]) {
         return  genreIds.map((genreId) => {
             const groupGenrePreferenceEntity = new GroupGenrePreferenceEntity();
             groupGenrePreferenceEntity.groupId = groupId;
@@ -75,7 +75,7 @@ export class GroupService {
         })
     }
 
-    private async buildProviderEntities(groupId:number,providerIds: number[]) {
+    private async buildProviderEntities(groupId:string,providerIds: number[]) {
         return  providerIds.map((providerId) => {
             const groupProviderPreferenceEntity = new GroupProviderPreferenceEntity();
             groupProviderPreferenceEntity.groupId = groupId;
@@ -84,11 +84,11 @@ export class GroupService {
         })
     }
 
-    async getGroupProviderPreference(groupId:number) {
+    async getGroupProviderPreference(groupId:string) {
         return await this.groupRepository.getGroupProviderPreference(groupId);
     }
 
-    async getGroupGenrePreference(groupId:number) {
+    async getGroupGenrePreference(groupId:string) {
         return await this.groupRepository.getGroupGenrePreference(groupId);
     }
 }

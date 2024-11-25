@@ -48,7 +48,7 @@ export class GroupRepository {
         return groups;
     }
 
-    async setGroupGenrePreference(groupPreferenceGenreEntities: GroupGenrePreferenceEntity[], groupId: number) {
+    async setGroupGenrePreference(groupPreferenceGenreEntities: GroupGenrePreferenceEntity[], groupId: string) {
         try {
             await this.groupPreferenceGenreRepository.delete({groupId});
             return await this.groupPreferenceGenreRepository.save(groupPreferenceGenreEntities);
@@ -59,7 +59,7 @@ export class GroupRepository {
 
     }
 
-    async setGroupProviderPreference(groupPreferenceProviderEntity: GroupProviderPreferenceEntity[], groupId: number) {
+    async setGroupProviderPreference(groupPreferenceProviderEntity: GroupProviderPreferenceEntity[], groupId: string) {
         try {
             await this.groupPreferenceProviderRepository.delete({groupId});
             return await this.groupPreferenceProviderRepository.save(groupPreferenceProviderEntity);
@@ -68,13 +68,13 @@ export class GroupRepository {
         }
     }
 
-    async getGroupProviderPreference(groupId: number) {
+    async getGroupProviderPreference(groupId: string) {
         return await this.groupPreferenceProviderRepository.find({
             where: {groupId}
         });
     }
 
-    async getGroupGenrePreference(groupId:number) {
+    async getGroupGenrePreference(groupId:string) {
         return await this.groupPreferenceGenreRepository.find({
             where: {groupId}
         });

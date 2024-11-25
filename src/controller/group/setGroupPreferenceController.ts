@@ -9,7 +9,7 @@ export const setGroupPreference = async (req: AuthenticatedRequest, res: Respons
 }
 export const getGroupPreference = async (req: AuthenticatedRequest, res: Response) => {
     console.log("req.query", req.query);
-    const { groupId } = req.query; // Récupère groupId depuis req.query
+    const  groupId  = req.query.groupId as string;
 
     const genrePreference = await groupService.getGroupGenrePreference(groupId);
     const providerPreference = await groupService.getGroupProviderPreference(groupId);
