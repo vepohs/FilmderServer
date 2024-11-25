@@ -87,4 +87,7 @@ export class ProviderService {
     async getProvider() {
         return await this.providerRepository.getAllProvider();
     }
+    async getProviderById(providerId: number) {
+        return await this.providerRepository.getProviderById(providerId);
+    }
 }

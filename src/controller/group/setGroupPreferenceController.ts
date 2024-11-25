@@ -14,9 +14,5 @@ export const getGroupPreference = async (req: AuthenticatedRequest, res: Respons
 
     const genrePreference = await groupService.getGroupGenrePreference(groupId);
     const providerPreference = await groupService.getGroupProviderPreference(groupId);
-    console.log("UUUUUUUUUUUUUUUUUUUUUI")
-    console.log(genrePreference)
-    console.log(providerPreference)
-
     res.status(200).json({genrePreference,providerPreference});
 }

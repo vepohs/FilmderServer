@@ -1,6 +1,7 @@
 import {ProviderEntity} from "../../entity/ProviderEntity";
 import dataSource from "../../dataBase/dataSource";
 import {Repository} from "typeorm";
+import {GenreEntity} from "../../entity/GenreEntity";
 
 export class ProviderRepository {
     private repository: Repository<ProviderEntity>;
@@ -24,4 +25,12 @@ export class ProviderRepository {
     async getAllProvider() {
         return this.repository.find();
     }
+
+    async getProviderById(providerId: number) {
+        const provider = await this.repository.findOne({
+            where: { id: providerId }
+        });
+       return provider;
+    }
+
 }

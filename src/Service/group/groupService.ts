@@ -9,6 +9,8 @@ import {GroupGenrePreferenceEntity} from "../../entity/GroupGenrePreferenceEntit
 import {ProviderEntity} from "../../entity/ProviderEntity";
 import {PreferenceProviderEntity} from "../../entity/PreferenceProviderEntity";
 import {GroupProviderPreferenceEntity} from "../../entity/GroupProviderPreferenceEntity";
+import {ProviderService} from "../provider/providerService";
+import {GenreService} from "../genre/GenreServices";
 
 interface AddGroupInput {
     user: UserPayloadType;
@@ -24,10 +26,13 @@ interface JoinGroupInput {
 export class GroupService {
     private readonly groupRepository: GroupRepository;
     private readonly userService: UserService;
-
+    private readonly providerService: ProviderService;
+    private readonly genreService: GenreService;
     constructor() {
         this.groupRepository = new GroupRepository();
         this.userService = new UserService();
+        this.providerService = new ProviderService();
+        this.genreService = new GenreService();
     }
 
 
@@ -86,11 +91,11 @@ export class GroupService {
 
     async getGroupProviderPreference(groupId:string) {
         const groupProviderEntity = await this.groupRepository.getGroupProviderPreference(groupId);
-        return groupProviderEntity.map((groupProvider) => groupProvider.provider);
+        return groupProviderEntity.map((groupProvider) => this.providerService.getProviderById(groupProvider.providerId));
     }
 
     async getGroupGenrePreference(groupId:string) {
         const groupGenreEntity =  await this.groupRepository.getGroupGenrePreference(groupId);
-        return groupGenreEntity.map((groupGenre) => groupGenre.genre);
+        return groupGenreEntity.map((groupGenre) => this.genreService.getGenreById(groupGenre.genreId) );
     }
 }
