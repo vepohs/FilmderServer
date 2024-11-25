@@ -33,7 +33,7 @@ export class GroupService {
             const groupEntity = await this.createGroupEntity(user, input.name);
             return await this.groupRepository.saveGroup(groupEntity);
         } catch (error) {
-            throw new GroupError(500, `Failed to join group: ${error instanceof Error ? error.message : String(error)}`)
+            throw new GroupError(500, `Failed to create group: ${error instanceof Error ? error.message : String(error)}`)
         }
     }
 
@@ -41,11 +41,16 @@ export class GroupService {
         const groupEntity = new GroupEntity();
         groupEntity.name = name;
         groupEntity.owner = userEntity;
+        groupEntity.users = [userEntity];
         return groupEntity;
     }
 
     async joinGroup(input: JoinGroupInput) {
         const user = await this.userService.findByEmail(input.user.email);
             return await this.groupRepository.joinGroup(input.groupId, user);
+    }
+    async getGroupsByUser(userPayload: UserPayloadType): Promise<GroupEntity[]> {
+        const user = await this.userService.findByEmail(userPayload.email);
+        return await this.groupRepository.getGroupsByUser(user);
     }
 }

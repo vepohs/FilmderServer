@@ -34,4 +34,13 @@ export class GroupRepository {
         }
 
     }
+    async getGroupsByUser(user:UserEntity): Promise<GroupEntity[]> {
+
+        const groups = await this.groupRepository.find({
+            where: { users: { id: user.id } },
+            relations: ['users'],
+        });
+        return groups;
+    }
+
 }
