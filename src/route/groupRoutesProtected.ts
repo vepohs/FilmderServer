@@ -9,6 +9,6 @@ const router = express.Router();
 router.post('/groupAdd',groupAdd);
 router.post('/groupJoin',groupJoin);
 router.get('/groupMovieLiked',groupMovieLiked);
-router.get('/setGroupPreference',setGroupPreference);
+router.post('/setGroupPreference',setGroupPreference);
 router.get('/getGroupPreference',getGroupPreference);
 export default router;
