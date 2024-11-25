@@ -16,6 +16,7 @@ export const logout = async (req: Request, res: Response, next: NextFunction) =>
 
         !(req.cookies.refreshToken) ? res.status(200).json({message: 'Successfully logged out'}) :
             res.status(500).json({message: 'Failed to clear refresh token cookie'});
+        //todo corr
 
     } catch (error) {
         next(error);
