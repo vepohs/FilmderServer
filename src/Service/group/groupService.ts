@@ -83,4 +83,12 @@ export class GroupService {
             return groupProviderPreferenceEntity;
         })
     }
+
+    async getGroupProviderPreference(groupId:number) {
+        return await this.groupRepository.getGroupProviderPreference(groupId);
+    }
+
+    async getGroupGenrePreference(groupId:number) {
+        return await this.groupRepository.getGroupGenrePreference(groupId);
+    }
 }

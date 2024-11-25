@@ -22,4 +22,12 @@ export class SwipeRepository {
         });
         return swipeEntities.map(swipe => swipe.movie).map(movie => movie.id);
     }
+
+    async getMovieLiked(userId: number) {
+        const swipeEntities = await this.swipeRepository.find({
+            where: {user: {id: userId}, liked: true},
+            relations: ['movie']
+        });
+        return swipeEntities.map(swipe => swipe.movie);
+    }
 }

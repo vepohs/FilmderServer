@@ -18,5 +18,5 @@ export class SwipeEntity {
     view!: boolean;
 
     @Column({ type: 'boolean', default: false })
-    like!: boolean;
+    liked!: boolean;
 }

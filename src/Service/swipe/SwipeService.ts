@@ -26,9 +26,18 @@ export class SwipeService {
         const swipe = new SwipeEntity();
         swipe.user = user;
         swipe.movie = movie;
-        swipe.like = liked;
+        swipe.liked = liked;
         return swipe;
     }
 
+
+    async getMovieLiked(listUserIds: number[]) {
+        return await Promise.all(
+            listUserIds.map(async (userId) => {
+                const movies = await this.swipeRepository.getMovieLiked(userId);
+                return { userId, movies };
+            })
+        );
+    }
 
 }

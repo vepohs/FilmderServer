@@ -67,5 +67,17 @@ export class GroupRepository {
             throw new Error(`Failed to set group preferences: ${error instanceof Error ? error.message : String(error)}`);
         }
     }
+
+    async getGroupProviderPreference(groupId: number) {
+        return await this.groupPreferenceProviderRepository.find({
+            where: {groupId}
+        });
+    }
+
+    async getGroupGenrePreference(groupId:number) {
+        return await this.groupPreferenceGenreRepository.find({
+            where: {groupId}
+        });
+    }
 }
 
