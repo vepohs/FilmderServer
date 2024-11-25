@@ -8,7 +8,9 @@ export const setGroupPreference = async (req: AuthenticatedRequest, res: Respons
     res.status(200).json({message: 'Preferences updated'});
 }
 export const getGroupPreference = async (req: AuthenticatedRequest, res: Response) => {
-    const groupId = req.body.groupId;
+    console.log("req.query", req.query);
+    const { groupId } = req.query; // Récupère groupId depuis req.query
+
     const genrePreference = await groupService.getGroupGenrePreference(groupId);
     const providerPreference = await groupService.getGroupProviderPreference(groupId);
     res.status(200).json({genrePreference,providerPreference});
