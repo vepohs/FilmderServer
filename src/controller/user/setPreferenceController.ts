@@ -4,6 +4,8 @@ import {AuthenticatedRequest} from "../../interface/interface";
 const preferenceService = new PreferenceService();
 
 export const setPreference = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    console.log("COUCOUBOB")
+    console.log(req.body)
     const genrePreferenceIds: number[] = req.body!.genrePreferenceIds;
     await preferenceService.saveGenrePreference(req.user!.email, genrePreferenceIds);
     const providerPreferenceIds =req.body!.providerPreferenceIds;
