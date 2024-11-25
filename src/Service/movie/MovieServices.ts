@@ -106,15 +106,13 @@ export class MovieServices {
         return res.data.runtime;
     }
 
-    async getMovies(userPayload: UserPayloadType): Promise<MovieEntity[]> {
+    async getMovies(userPayload: UserPayloadType, additionalExcluded: number[] = []): Promise<MovieEntity[]> {
         const user = await this.userService.findByEmail(userPayload.email);
-
         const genres = await this.preferenceService.getGenrePreference(user);
         const providers = await this.preferenceService.getProviderPreference(user);
-        const excludeIds = await this.swipeService.getExcludedMovies(user);
-        console.log('excludeIds', excludeIds)
+        let excludeIds = await this.swipeService.getExcludedMovies(user);
+        excludeIds = excludeIds.concat(additionalExcluded);
         const movies = await this.movieRepository.getMovie(genres, providers, excludeIds);
-        console.log('movies', movies.length)
         if (movies.length >= 10) {
             return movies;
         } else {
@@ -123,7 +121,7 @@ export class MovieServices {
                 user.age! > 18,
                 providers.map((provider) => provider.id)
             );
-            return  await this.getMovies(userPayload);
+            return await this.getMovies(userPayload, additionalExcluded);
         }
     }
 
