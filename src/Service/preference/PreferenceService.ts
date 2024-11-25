@@ -51,13 +51,15 @@ export class PreferenceService {
     }
 
     async saveGenrePreference(email: string, genreIds: number[]): Promise<void> {
+        const user = await this.userService.findByEmail(email);
         const genrePreferenceEntities = await this.buildGenrePreferenceEntities(email, genreIds);
-        await this.preferenceRepository.saveGenrePreferences(genrePreferenceEntities);
+        await this.preferenceRepository.saveGenrePreferences(genrePreferenceEntities,user);
     }
 
     async saveProviderPreference(email: string, providerIds: number[]): Promise<void> {
+        const user = await this.userService.findByEmail(email);
         const providerPreferenceEntities = await this.buildProviderPreferenceEntities(email, providerIds);
-        await this.preferenceRepository.saveProviderPreference(providerPreferenceEntities);
+        await this.preferenceRepository.saveProviderPreference(providerPreferenceEntities,user);
     }
 
     async getGenrePreference(userEntity: UserEntity): Promise<GenreEntity[]> {

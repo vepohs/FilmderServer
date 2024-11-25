@@ -21,16 +21,18 @@ export class PreferenceRepository {
         this.preferenceProviderRepository = dataSource.getRepository(PreferenceProviderEntity);
     }
 
-    async saveGenrePreferences(genrePreference: GenrePreferenceEntity[]): Promise<GenrePreferenceEntity[]> {
+    async saveGenrePreferences(genrePreference: GenrePreferenceEntity[],userEntity:UserEntity): Promise<GenrePreferenceEntity[]> {
         try {
+            await this.preferenceGenreRepository.delete({ user: { id: userEntity.id } });
             return await this.preferenceGenreRepository.save(genrePreference);
         } catch (error) {
             throw new CannotSaveGenrePreferenceError(`Failed to save the genrePreference ${error instanceof Error ? error.message : String(error)}`)
         }
     }
 
-    async saveProviderPreference(providerPreference: PreferenceProviderEntity[]): Promise<PreferenceProviderEntity[]> {
+    async saveProviderPreference(providerPreference: PreferenceProviderEntity[],userEntity:UserEntity): Promise<PreferenceProviderEntity[]> {
         try {
+            await this.preferenceProviderRepository.delete({ user: { id: userEntity.id } });
             return await this.preferenceProviderRepository.save(providerPreference);
         } catch (error) {
             throw new CannotSaveProviderPreferenceError(`Failed to save the providerPreference ${error instanceof Error ? error.message : String(error)}`)
