@@ -8,6 +8,10 @@ import {PreferenceService} from "../preference/PreferenceService";
 import {SwipeRepository} from "../../repository/swipe/SwipeRepository";
 import {MovieType, UserPayloadType} from "../../type/authType";
 import {NoUserError} from "../../error/userError";
+import {UserEntity} from "../../entity/UserEntity";
+import {GenreEntity} from "../../entity/GenreEntity";
+import {getMovie} from "../../controller/movie/MovieController";
+import {GroupService} from "../group/groupService";
 
 export class MovieServices {
     private readonly movieRepository: MovieRepository;
@@ -16,6 +20,7 @@ export class MovieServices {
     private readonly userService: UserService;
     private readonly preferenceService: PreferenceService;
     private readonly swipeService: SwipeRepository;
+    private readonly groupService: GroupService;
 
     constructor() {
         this.movieRepository = new MovieRepository();
@@ -24,6 +29,7 @@ export class MovieServices {
         this.userService = new UserService();
         this.preferenceService = new PreferenceService();
         this.swipeService = new SwipeRepository();
+        this.groupService = new GroupService();
     }
 
     async saveNewMoviesFromTMDB(genre: number[], adult: boolean, providers: number[], page = 1): Promise<MovieEntity[]> {
@@ -34,7 +40,6 @@ export class MovieServices {
         const newMovies = movieList.filter(movie => !existingIds.includes(movie.id));
         if (newMovies.length > 0) return await Promise.all(newMovies.map((movie: MovieEntity) => this.movieRepository.saveMovie(movie)));
         page++;
-        console.log('page', page)
         return await this.saveNewMoviesFromTMDB(genre, adult, providers, page);
     }
 
@@ -112,7 +117,7 @@ export class MovieServices {
         const providers = await this.preferenceService.getProviderPreference(user);
         let excludeIds = await this.swipeService.getExcludedMovies(user);
         excludeIds = excludeIds.concat(additionalExcluded);
-        const movies = await this.movieRepository.getMovie(genres, providers, excludeIds);
+        const movies = await this.movieRepository.getMovie(genres, providers, excludeIds, 20);
         if (movies.length >= 10) {
             return movies;
         } else {
@@ -129,4 +134,75 @@ export class MovieServices {
     async getMovieById(movieId: number): Promise<MovieEntity | null> {
         return await this.movieRepository.getMovieById(movieId);
     }
+
+    async getMovieForGroup(users: number[], userPayload: UserPayloadType, groupId: string, exluedIds: number[]): Promise<MovieEntity[]> {
+        const user = await this.userService.findByEmail(userPayload.email);
+        const userPreference = await this.preferenceService.getGenrePreference(user);
+        const excludeIds = await this.swipeService.getExcludedMovies(user);
+        const excludeIdsForGroup = excludeIds.concat(exluedIds);
+        const swipedUserMovie = await this.swipeService.getSwipeMovie(user);
+        const groupGenrePreference = await this.groupService.getGroupGenrePreference(groupId);
+        const groupProviderPreference = await this.groupService.getGroupProviderPreference(groupId);
+
+        // Récupérer les films aimés par les utilisateurs
+        const moviesLiked: MovieEntity[] = (await Promise.all(
+            users.map((user) => this.swipeService.getMovieLiked(user))
+        )).flat();
+
+        // Supprimer les doublons basés sur l'id
+        const uniqueMoviesLiked = moviesLiked.filter(
+            (movie, index, self) => index === self.findIndex((m) => m.id === movie.id)
+        );
+
+        // Exclure les films déjà "swipés" par l'utilisateur
+        const movieFilteredNotHistory = uniqueMoviesLiked.filter(
+            (movie) => !swipedUserMovie.some((swipedMovie) => swipedMovie.id === movie.id)
+        );
+
+        // Filtrer les films selon les préférences de l'utilisateur
+        let movieFiltered = movieFilteredNotHistory.filter((movie) =>
+            movie.genres.some((genre) =>
+                userPreference.some((preference) => preference.id === genre.id)
+            )
+        );
+
+        // Compléter les films si moins de 20
+        if (movieFiltered.length < 20) {
+            const additionalMovies = await this.movieRepository.getMovie(
+                groupGenrePreference,
+                groupProviderPreference,
+                exluedIds,
+                20 - movieFiltered.length
+            );
+
+            // Ajouter les films supplémentaires et supprimer les doublons
+            movieFiltered = [...movieFiltered, ...additionalMovies].filter(
+                (movie, index, self) => index === self.findIndex((m) => m.id === movie.id)
+            );
+        }
+
+        // Compléter avec des films depuis TMDB si toujours insuffisant
+        if (movieFiltered.length < 20) {
+            await this.saveNewMoviesFromTMDB(
+                groupGenrePreference.map((genre) => genre.id),
+                user.age! > 18,
+                groupProviderPreference.map((provider) => provider.id)
+            );
+
+            const newlyAddedMovies = await this.movieRepository.getMovie(
+                groupGenrePreference,
+                groupProviderPreference,
+                excludeIdsForGroup,
+                20 - movieFiltered.length
+            );
+
+            // Ajouter les nouveaux films et supprimer les doublons
+            movieFiltered = [...movieFiltered, ...newlyAddedMovies].filter(
+                (movie, index, self) => index === self.findIndex((m) => m.id === movie.id)
+            );
+        }
+        // Retourner au maximum 20 films
+        return movieFiltered
+    }
+
 }

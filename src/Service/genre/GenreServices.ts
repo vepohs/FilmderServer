@@ -9,7 +9,7 @@ export class GenreService {
         this.genreRepository = new GenreRepository();
     }
 
-    async getGenreById(id: number): Promise<GenreEntity | null> {
+    async getGenreById(id: number): Promise<GenreEntity > {
         return await this.genreRepository.findGenreByID(id);
     }
 

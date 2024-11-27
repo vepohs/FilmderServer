@@ -79,5 +79,16 @@ export class GroupRepository {
             where: {groupId}
         });
     }
+
+    async getAllUsersByGroup(groupId: string) {
+        const group = await this.groupRepository.findOne({
+            where: {groupId},
+            relations: ['users']
+        });
+        if (!group) {
+            throw new NoGroupError();
+        }
+        return group.users;
+    }
 }
 

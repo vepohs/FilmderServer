@@ -18,12 +18,12 @@ export class MovieRepository {
         try {
             return await this.repository.save(movie);
         } catch (error) {
-            throw new CannotSaveMovieError(`Failed to save the movie ${error instanceof Error ? error.message : String(error)}`)
+            throw new CannotSaveMovieError(`Failed to save the movie ${movie} ${error instanceof Error ? error.message : String(error)}`)
         }
 
     }
 
-    async getMovie(genres: GenreEntity[], providers: ProviderEntity[], excludeIds: number[]): Promise<MovieEntity[]> {
+    async getMovie(genres: GenreEntity[], providers: ProviderEntity[], excludeIds: number[],filmTotake:number): Promise<MovieEntity[]> {
         try {
             return await this.repository.find({
                 where: [
@@ -34,7 +34,7 @@ export class MovieRepository {
                     }
                 ],
                 relations: ['genres', 'providers'],
-                take: 20
+                take: filmTotake
             });
         } catch (error) {
             throw new CannotGetMovieError(`Failed to get movie ${error instanceof Error ? error.message : String(error)}`)

@@ -92,16 +92,28 @@ export class GroupService {
 
     async getGroupProviderPreference(groupId: string) {
         const groupProviderEntity = await this.groupRepository.getGroupProviderPreference(groupId);
-        return await Promise.all(groupProviderEntity.map((groupProvider) => this.providerService.getProviderById(groupProvider.providerId)));
+        const groupProviderEntities = await Promise.all(
+            groupProviderEntity.map((groupProvider) => this.providerService.getProviderById(groupProvider.providerId)));
+        if (groupProviderEntities)
+            return groupProviderEntities
+        else
+            throw new GroupError(404, `No provider preference found for group ${groupId}`)
     }
 
     async getGroupGenrePreference(groupId: string) {
+        //todo meilleur gestion d'erreur
         const groupGenreEntity = await this.groupRepository.getGroupGenrePreference(groupId);
-
-        // Utilisation de Promise.all pour résoudre toutes les promesses générées par map
-        return await Promise.all(
+        const groupGenreEntities = await Promise.all(
             groupGenreEntity.map((groupGenre) => this.genreService.getGenreById(groupGenre.genreId))
         );
+        if (groupGenreEntities)
+            return groupGenreEntities
+        else
+            throw new GroupError(404, `No genre preference found for group ${groupId}`)
+    }
+
+    async getAllUsersIdsByGroup(groupId: string) {
+        return (await this.groupRepository.getAllUsersByGroup(groupId)).map((user) => user.id);
     }
 
 }

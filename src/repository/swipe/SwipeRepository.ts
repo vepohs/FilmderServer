@@ -15,7 +15,7 @@ export class SwipeRepository {
         return await this.swipeRepository.save(SwipeEntity);
     }
 
-   async getExcludedMovies(user: UserEntity) {
+    async getExcludedMovies(user: UserEntity) {
         const swipeEntities = await this.swipeRepository.find({
             where: {user: {id: user.id}},
             relations: ['movie']
@@ -26,6 +26,21 @@ export class SwipeRepository {
     async getMovieLiked(userId: number) {
         const swipeEntities = await this.swipeRepository.find({
             where: {user: {id: userId}, liked: true},
+            relations: ['movie']
+        });
+        return swipeEntities.map(swipe => swipe.movie);
+    }
+
+    async getMovieDisliked(user: UserEntity) {
+        const swipeEntities = await this.swipeRepository.find({
+            where: {user: {id: user.id}, liked: false},
+            relations: ['movie']
+        });
+        return swipeEntities.map(swipe => swipe.movie);
+    }
+    async getSwipeMovie(user: UserEntity) {
+        const swipeEntities = await this.swipeRepository.find({
+            where: {user: {id: user.id}},
             relations: ['movie']
         });
         return swipeEntities.map(swipe => swipe.movie);

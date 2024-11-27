@@ -27,10 +27,14 @@ export class ProviderRepository {
     }
 
     async getProviderById(providerId: number) {
+        //todo gestion erreur
         const provider = await this.repository.findOne({
             where: { id: providerId }
         });
-       return provider;
+       if(provider)
+         return provider;
+         else
+             throw new Error("Provider not found");
     }
 
 }
