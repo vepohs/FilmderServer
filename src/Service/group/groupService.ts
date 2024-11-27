@@ -11,6 +11,8 @@ import {PreferenceProviderEntity} from "../../entity/PreferenceProviderEntity";
 import {GroupProviderPreferenceEntity} from "../../entity/GroupProviderPreferenceEntity";
 import {ProviderService} from "../provider/providerService";
 import {GenreService} from "../genre/GenreServices";
+import {setGroupPreference} from "../../controller/group/setGroupPreferenceController";
+import {PreferenceService} from "../preference/PreferenceService";
 
 interface AddGroupInput {
     user: UserPayloadType;
@@ -28,20 +30,28 @@ export class GroupService {
     private readonly userService: UserService;
     private readonly providerService: ProviderService;
     private readonly genreService: GenreService;
+    private readonly preferenceService:PreferenceService;
 
     constructor() {
         this.groupRepository = new GroupRepository();
         this.userService = new UserService();
         this.providerService = new ProviderService();
         this.genreService = new GenreService();
+        this.preferenceService = new PreferenceService();
     }
 
 
     async addGroup(input: AddGroupInput): Promise<GroupEntity> {
         const user = await this.userService.findByEmail(input.user.email);
+        const genrePreference = await this.preferenceService.getGenrePreference(user)
+        const providerPreference = await this.preferenceService.getProviderPreference(user)
+
         try {
             const groupEntity = await this.createGroupEntity(user, input.name);
-            return await this.groupRepository.saveGroup(groupEntity);
+            const savedGroup = await this.groupRepository.saveGroup(groupEntity);
+            if(savedGroup)
+                await this.setGroupPreference(savedGroup.groupId, genrePreference.map(genreEntity =>genreEntity.id), providerPreference.map(providerEntity => providerEntity.id))
+            return savedGroup
         } catch (error) {
             throw new GroupError(500, `Failed to create group: ${error instanceof Error ? error.message : String(error)}`)
         }
