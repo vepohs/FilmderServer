@@ -40,8 +40,6 @@ export class SwipeService {
         );
 
     }
-    async getMovieDisliked(UserId: number) {
-        return await this.swipeRepository.getMovieDisliked(UserId);
-    }
+
 
 }
