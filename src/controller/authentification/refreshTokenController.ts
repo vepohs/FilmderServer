@@ -10,6 +10,7 @@ const jwtService = new JwtService();
 export const refreshToken = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const refreshToken = req.cookies.refreshToken;
+        console.log('refreshToken',refreshToken);
         if (!refreshToken)
             throw new NoRefreshTokenError();
 

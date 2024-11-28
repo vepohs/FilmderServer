@@ -1,4 +1,3 @@
-
 import {BadCredentialsError} from "../../error/authError";
 import {compare} from "bcrypt";
 import {JwtService} from "./jwtService";
@@ -21,6 +20,7 @@ export class AuthService {
 
     async login(email: string, password: string): Promise<{ refreshToken: string, accessToken: string }> {
         const user = await this.userService.findByEmail(email);
+        await this.jwtService.deleteAllRefreshToken(user);
         if (!await compare(password, user.password))
             throw new BadCredentialsError();
 //todo voir si il faut un try catch ici qui throw une erreur
@@ -28,7 +28,9 @@ export class AuthService {
         const refreshToken = this.jwtService.generateRefreshToken(payload);
         const accessToken = this.jwtService.generateAccessToken(payload);
         await this.saveTokenInDb(refreshToken, user);
-
+        console.log('tsssssesttttttt')
+console.log(refreshToken)
+console.log(accessToken)
         return {
             refreshToken,
             accessToken
@@ -37,7 +39,7 @@ export class AuthService {
 
     async logout(refreshToken: string, res: Response): Promise<DeleteResult> {
         this.clearToken(res);
-       return  await this.jwtService.deleteRefreshToken(refreshToken);
+        return await this.jwtService.deleteRefreshToken(refreshToken);
     }
 
     clearToken(res: Response) {
@@ -53,7 +55,7 @@ export class AuthService {
     }
 
 
-    async getFirstName(email:string) {
+    async getFirstName(email: string) {
         return (await this.userService.findByEmail(email)).firstName;
     }
 }
