@@ -156,11 +156,14 @@ export class MovieServices {
         );
 
         // Filtrer les films selon les préférences de l'utilisateur
-        let movieFiltered = movieFilteredNotHistory.filter((movie) =>
-            movie.genres.some((genre) =>
-                userPreference.some((preference) => preference.id === genre.id)
-            )
-        );
+
+        let movieFiltered = movieFilteredNotHistory.filter((movie) => {
+            return movie.genres.some((genre) => {
+                console.log('Genre ID:',genre, genre.id); // Ajoute un log pour chaque genre
+                return userPreference.some((preference) => preference.id === genre.id);
+            });
+        });
+
 
         // Compléter les films si moins de 20
         if (movieFiltered.length < 20) {

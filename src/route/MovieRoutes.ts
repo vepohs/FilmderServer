@@ -5,5 +5,5 @@ import {getGroupMovie} from "../controller/movie/getGroupMovieController";
 const router = express.Router();
 router.post("/getMovie", getMovie);
 router.get("/getMovieLiked", getMovieLiked);
-router.get("/getGroupMovie", getGroupMovie);
+router.post("/getGroupMovie", getGroupMovie);
 export default router;
