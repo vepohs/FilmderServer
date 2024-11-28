@@ -11,6 +11,8 @@ export const getGroupMovie = async (req: AuthenticatedRequest, res: Response,nex
 
         const id = req.body.groupId;
         const excluedIds = req.body.listExcluedIds;
+        console.log('excluedIds');
+        console.log(excluedIds);
         const users = await groupService.getAllUsersIdsByGroup(id);
         const movies = await movieService.getMovieForGroup(users, req.user!, id, excluedIds);
         res.status(200).json({movies});

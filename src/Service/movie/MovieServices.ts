@@ -38,10 +38,16 @@ export class MovieServices {
         page++;
         return await this.saveNewMoviesFromTMDB(genre, adult, providers, page);
     }
-
-    private cleanString(input: string): string {
-        return input.replace(/[\u200B-\u200D\uFEFF]/g, '');
+     isStringValid(input: string): boolean {
+        const validCharactersRegex = /^[a-zA-Z0-9\s.,!?'"()\-:;]+$/;
+        return validCharactersRegex.test(input);
     }
+    private cleanString(input: string): string {
+        const text =  input.replace(/[\u200B-\u200D\uFEFF]/g, '');
+        if(this.isStringValid(text)) return text;
+        else return 'No synopsis available';
+    }
+
 
     private createMovieEntity(movieData: MovieType): MovieEntity {
         const movie = new MovieEntity();
@@ -131,11 +137,12 @@ export class MovieServices {
         return await this.movieRepository.getMovieById(movieId);
     }
 
-    async getMovieForGroup(users: number[], userPayload: UserPayloadType, groupId: string, exluedIds: number[]): Promise<MovieEntity[]> {
+    async getMovieForGroup(users: number[], userPayload: UserPayloadType, groupId: string, excludesIds: number[]): Promise<MovieEntity[]> {
         const user = await this.userService.findByEmail(userPayload.email);
         const userPreference = await this.preferenceService.getGenrePreference(user);
         const excludeIds = await this.swipeService.getExcludedMovies(user);
-        const excludeIdsForGroup = excludeIds.concat(exluedIds);
+        const excludeIdsForGroup = excludeIds.concat(excludesIds);
+        console.log('Exclude Ids:', excludeIdsForGroup);
         const swipedUserMovie = await this.swipeService.getSwipeMovie(user);
         const groupGenrePreference = await this.groupService.getGroupGenrePreference(groupId);
         const groupProviderPreference = await this.groupService.getGroupProviderPreference(groupId);
@@ -149,12 +156,12 @@ export class MovieServices {
         const uniqueMoviesLiked = moviesLiked.filter(
             (movie, index, self) => index === self.findIndex((m) => m.id === movie.id)
         );
-
+        console.log('Unique Movies Liked:', uniqueMoviesLiked);
         // Exclure les films déjà "swipés" par l'utilisateur
         const movieFilteredNotHistory = uniqueMoviesLiked.filter(
             (movie) => !swipedUserMovie.some((swipedMovie) => swipedMovie.id === movie.id)
         );
-
+console.log('Movies filtered:', movieFilteredNotHistory);
         // Filtrer les films selon les préférences de l'utilisateur
 
         let movieFiltered = movieFilteredNotHistory.filter((movie) => {
@@ -170,7 +177,7 @@ export class MovieServices {
             const additionalMovies = await this.movieRepository.getMovie(
                 groupGenrePreference,
                 groupProviderPreference,
-                exluedIds,
+                excludeIdsForGroup,
                 20 - movieFiltered.length
             );
 
