@@ -2,7 +2,7 @@
 import {GenreEntity} from "../entity/GenreEntity";
 import {ProviderEntity} from "../entity/ProviderEntity";
 
-export type AuthType = {
+export type Type = {
     password: string
     email: string
 };

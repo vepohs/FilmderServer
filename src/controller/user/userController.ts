@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import {UserService} from "../../Service/user/userService";
-import {UserType} from "../../type/authType";
+import {UserType} from "../../type/Type";
 
 const userService = new UserService();
 

@@ -6,11 +6,7 @@ import {ProviderService} from "../provider/providerService";
 import {UserService} from "../user/userService";
 import {PreferenceService} from "../preference/PreferenceService";
 import {SwipeRepository} from "../../repository/swipe/SwipeRepository";
-import {MovieType, UserPayloadType} from "../../type/authType";
-import {NoUserError} from "../../error/userError";
-import {UserEntity} from "../../entity/UserEntity";
-import {GenreEntity} from "../../entity/GenreEntity";
-import {getMovie} from "../../controller/movie/MovieController";
+import {MovieType, UserPayloadType} from "../../type/Type";
 import {GroupService} from "../group/groupService";
 
 export class MovieServices {
@@ -196,13 +192,30 @@ export class MovieServices {
                 20 - movieFiltered.length
             );
 
-            // Ajouter les nouveaux films et supprimer les doublons
             movieFiltered = [...movieFiltered, ...newlyAddedMovies].filter(
                 (movie, index, self) => index === self.findIndex((m) => m.id === movie.id)
             );
         }
-        // Retourner au maximum 20 films
+
         return movieFiltered
     }
+    async getSelectionMovieGroup(users: number[]) {
+        const moviesLiked: MovieEntity[] = (await Promise.all(
+            users.map((user) => this.swipeService.getMovieLiked(user))
+        )).flat();
 
+        const movieCountMap = new Map<number, { movie: MovieEntity; count: number }>();
+        moviesLiked.forEach((movie) => {
+            if (movieCountMap.has(movie.id)) {
+                movieCountMap.get(movie.id)!.count++;
+            } else {
+                movieCountMap.set(movie.id, { movie, count: 1 });
+            }
+        });
+
+        const filteredMovies = Array.from(movieCountMap.values()).filter(
+            (entry) => entry.count >= 2
+        );
+        return filteredMovies;
+    }
 }

@@ -4,7 +4,7 @@ import {MovieServices} from "../movie/MovieServices";
 import {UserService} from "../user/userService";
 import {MovieEntity} from "../../entity/MovieEntity";
 import {UserEntity} from "../../entity/UserEntity";
-import {UserPayloadType} from "../../type/authType";
+import {UserPayloadType} from "../../type/Type";
 
 export class SwipeService {
     private readonly swipeRepository: SwipeRepository;

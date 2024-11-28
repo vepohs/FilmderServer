@@ -2,7 +2,7 @@ import {GroupRepository} from "../../repository/group/groupRepository";
 import {GroupEntity} from "../../entity/GroupEntity";
 import {UserService} from "../user/userService";
 import {UserEntity} from "../../entity/UserEntity";
-import {UserPayloadType} from "../../type/authType";
+import {UserPayloadType} from "../../type/Type";
 import {NoUserError, UserError} from "../../error/userError";
 import {GroupError} from "../../error/groupError";
 import {GroupGenrePreferenceEntity} from "../../entity/GroupGenrePreferenceEntity";

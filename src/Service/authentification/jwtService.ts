@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import {JwtRepository} from "../../repository/authentification/jwtRepository";
 import {RefreshTokenEntity} from "../../entity/refreshTokenEntity";
-import {UserPayloadType} from "../../type/authType";
+import {UserPayloadType} from "../../type/Type";
 import {DeleteResult} from "typeorm";
 
 const ACCES_TOKEN_SECRET = process.env.ACCES_TOKEN_SECRET as string;

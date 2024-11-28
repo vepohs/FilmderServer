@@ -6,7 +6,7 @@ import {
     SyntaxError,
     WeakPasswordError
 } from "../error/userError";
-import {UserType} from "../type/authType";
+import {UserType} from "../type/Type";
 
 // todo peut etre qu'on peut faire mieux en utilisant une bibliothèque de validation comme Joi ou validator.js et on a pas clean l'entree de l'utilisateur
 export const checkField = async (userData: UserType, userRepository: UserRepository) => {

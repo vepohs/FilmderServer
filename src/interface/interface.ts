@@ -1,4 +1,4 @@
-import {UserPayloadType} from "../type/authType";
+import {UserPayloadType} from "../type/Type";
 import {Request} from "express";
 
 export interface AddGroupInput {

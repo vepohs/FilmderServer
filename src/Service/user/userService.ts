@@ -2,7 +2,7 @@ import {UserRepository} from "../../repository/user/userRepository";
 import {UserEntity} from "../../entity/UserEntity";
 import {hash} from "../../utils/hashing";
 import {checkField} from "../../utils/chekFields";
-import {UserType} from "../../type/authType";
+import {UserType} from "../../type/Type";
 
 
 export class UserService {

@@ -1,7 +1,7 @@
 import {ProviderEntity} from "../../entity/ProviderEntity";
 import {ProviderRepository} from "../../repository/provider/providerRepository";
 import axios from "axios";
-import {ProviderType} from "../../type/authType";
+import {ProviderType} from "../../type/Type";
 import {GenreEntity} from "../../entity/GenreEntity";
 
 export class ProviderService {

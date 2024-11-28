@@ -9,6 +9,8 @@ const swipeService = new SwipeService();
 export const getMovie = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
         const listTableau = await movieService.getMovies(req.user!, req.body.listExcluedIds);
+        console.log('listTableau')
+        console.log(listTableau)
         res.status(200).json({movies: listTableau});
     } catch (error: any) {
         next(error)

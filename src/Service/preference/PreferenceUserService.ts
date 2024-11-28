@@ -1,6 +1,6 @@
 import {PreferenceService} from "./PreferenceService";
 import {UserService} from "../user/userService";
-import {UserPayloadType} from "../../type/authType";
+import {UserPayloadType} from "../../type/Type";
 
 export class PreferenceUserService {
     private readonly preferenceService: PreferenceService;

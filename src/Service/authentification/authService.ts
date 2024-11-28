@@ -6,7 +6,7 @@ import {RefreshTokenEntity} from "../../entity/refreshTokenEntity";
 import {UserEntity} from "../../entity/UserEntity";
 import {Response} from 'express';
 import {UserService} from "../user/userService";
-import {UserPayloadType} from "../../type/authType";
+import {UserPayloadType} from "../../type/Type";
 import {DeleteResult} from "typeorm";
 
 
