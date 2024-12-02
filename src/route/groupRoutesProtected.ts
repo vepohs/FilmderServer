@@ -12,5 +12,5 @@ router.post('/groupJoin',groupJoin);
 router.get('/groupMovieLiked',groupMovieLiked);
 router.post('/setGroupPreference',setGroupPreference);
 router.get('/getGroupPreference',getGroupPreference);
-router.get('/getGroupMoviesCommon',getGroupMoviesCommon);
+router.post('/getGroupMoviesCommon',getGroupMoviesCommon);
 export default router;
