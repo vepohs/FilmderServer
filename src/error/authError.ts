@@ -40,6 +40,6 @@ export class NoRefreshTokenError extends AuthError {
 
 export class NoAccessTokenError extends AuthError {
     constructor() {
-        super(401, `NoRefreshToken`);
+        super(401, `NoAccessToken`);
     }
 }

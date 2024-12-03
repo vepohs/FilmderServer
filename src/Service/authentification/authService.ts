@@ -37,15 +37,10 @@ console.log(accessToken)
         };
     };
 
-    async logout(refreshToken: string, res: Response): Promise<DeleteResult> {
-        this.clearToken(res);
+    async logout(refreshToken: string): Promise<DeleteResult> {
         return await this.jwtService.deleteRefreshToken(refreshToken);
     }
 
-    clearToken(res: Response) {
-        res.clearCookie('refreshToken');
-        //todo cleaer acces token
-    }
 
     private async saveTokenInDb(refreshToken: string, user: UserEntity) {
         const refreshTokenEntity = new RefreshTokenEntity();

@@ -1,4 +1,4 @@
-@port = 3018
+@port = 3020
 
 ### YO
 POST http://localhost:{{port}}/api/users/createUser
@@ -38,7 +38,7 @@ Content-Type: application/json
 
 {
     "email": "pierre.fache@hotmail.com",
-    "password": "password1234"
+    "password": "Y5kwhftark"
 }
 
 ### Ya
@@ -90,3 +90,11 @@ GET http://localhost:{{port}}/api/users/protected/getUserPreferences
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBpZXJyZS5mYWNoZUBob3RtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzMxNjA4NTEwLCJleHAiOjE3MzE2MDk0MTB9.fwIA0fsB8B3Jd78g4sxR9dv3heCSdA9OrVjwo6Xv_Jw
 
+### groupt
+POST http://localhost:{{port}}/api/group/protected/getGroupMoviesCommon
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBpZXJyZS5mYWNoZUBob3RtYWlsLmNvbSIsInVzZXJJZCI6MSwiaWF0IjoxNzMzMTQwOTA0LCJleHAiOjE3MzMxNDE4MDR9.1tyKiIeIPk7_G3XBk19VAEMN271PTSHrzLI5do4GCuA
+
+{
+    "groupId": "zp4tox15cw6138aicb8cq"
+}
