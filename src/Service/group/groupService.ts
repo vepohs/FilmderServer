@@ -122,8 +122,11 @@ export class GroupService {
             throw new GroupError(404, `No genre preference found for group ${groupId}`)
     }
 
-    async getAllUsersIdsByGroup(groupId: string) {
-        return (await this.groupRepository.getAllUsersByGroup(groupId)).map((user) => user.id);
+    async getAllUsersIdsByGroup(group: GroupEntity) {
+        return (await this.groupRepository.getAllUsersByGroup(group.groupId)).map((user) => user.id);
+    }
+    async getGroupById(groupId: string) {
+        return await this.groupRepository.getGroupById(groupId);
     }
 
 }

@@ -1,3 +1,14 @@
-import { Request, Response } from 'express';
-export const groupMovieLiked = async (req: Request, res: Response) => {
+import {NextFunction, Request, Response} from 'express';
+import {GroupRequest} from "../../interface/interface";
+import {GroupService} from "../../Service/group/groupService";
+const groupService = new GroupService();
+export const getGroupUsers = async (req: GroupRequest, res: Response,next:NextFunction) => {
+    try {
+        const group =  req.group!;
+        const users = await groupService.getAllUsersIdsByGroup(group);
+        res.status(200).json(users);
+    }
+    catch (error: any) {
+        next(error)
+    }
 }

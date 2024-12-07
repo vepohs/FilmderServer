@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import { JwtService } from "../Service/authentification/jwtService";
 import {BadAccessTokenError, NoAccessTokenError} from "../error/authError";
 import {AuthenticatedRequest} from "../interface/interface";

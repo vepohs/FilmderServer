@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+  import { Request, Response, NextFunction } from 'express';
 import {UserService} from "../../Service/user/userService";
 import {UserType} from "../../type/Type";
 

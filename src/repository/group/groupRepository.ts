@@ -90,5 +90,12 @@ export class GroupRepository {
         }
         return group.users;
     }
+
+    async getGroupById(groupId: string) {
+        return await this.groupRepository.findOne({
+            where: {groupId},
+            relations: ['users']
+        });
+    }
 }
 
