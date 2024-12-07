@@ -30,7 +30,7 @@ export class GroupService {
     private readonly userService: UserService;
     private readonly providerService: ProviderService;
     private readonly genreService: GenreService;
-    private readonly preferenceService:PreferenceService;
+    private readonly preferenceService: PreferenceService;
 
     constructor() {
         this.groupRepository = new GroupRepository();
@@ -49,8 +49,8 @@ export class GroupService {
         try {
             const groupEntity = await this.createGroupEntity(user, input.name);
             const savedGroup = await this.groupRepository.saveGroup(groupEntity);
-            if(savedGroup)
-                await this.setGroupPreference(savedGroup.groupId, genrePreference.map(genreEntity =>genreEntity.id), providerPreference.map(providerEntity => providerEntity.id))
+            if (savedGroup)
+                await this.setGroupPreference(savedGroup.groupId, genrePreference.map(genreEntity => genreEntity.id), providerPreference.map(providerEntity => providerEntity.id))
             return savedGroup
         } catch (error) {
             throw new GroupError(500, `Failed to create group: ${error instanceof Error ? error.message : String(error)}`)
@@ -125,6 +125,15 @@ export class GroupService {
     async getAllUsersIdsByGroup(group: GroupEntity) {
         return (await this.groupRepository.getAllUsersByGroup(group.groupId)).map((user) => user.id);
     }
+
+    async getAllUsersByGroup(group: GroupEntity) {
+        return (await this.groupRepository.getAllUsersByGroup(group.groupId)).map((user) => ({
+            id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName
+        }));
+    }
+
     async getGroupById(groupId: string) {
         return await this.groupRepository.getGroupById(groupId);
     }
