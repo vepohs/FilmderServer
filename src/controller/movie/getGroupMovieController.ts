@@ -9,10 +9,10 @@ export const getGroupMovie = async (req: GroupRequest, res: Response,next:NextFu
     try {
 
 
-        const group = req.group;
+        const group = req.group!;
         const excluedIds = req.body.listExcluedIds;
         const users = await groupService.getAllUsersIdsByGroup(group);
-        const movies = await movieService.getMovieForGroup(users, req.user!, id, excluedIds);
+        const movies = await movieService.getMovieForGroup(users, req.user!, group.groupId, excluedIds);
         res.status(200).json({movies});
     }
     catch (error) {
