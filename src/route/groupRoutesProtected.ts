@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post('/groupAdd',groupAdd);
 router.post('/groupJoin',verifyGroup,groupJoin);
-router.post('/getGroupUsers',verifyGroup,getGroupUsers);
+router.get('/getGroupUsers',verifyGroup,getGroupUsers);
 router.post('/setGroupPreference',verifyGroup,setGroupPreference);
 router.get('/getGroupPreference',verifyGroup,getGroupPreference);
 router.post('/getGroupMoviesCommon',verifyGroup,getGroupMoviesCommon);
