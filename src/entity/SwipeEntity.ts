@@ -1,9 +1,9 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from 'typeorm';
 import { MovieEntity } from './MovieEntity';
-import {UserEntity} from "./UserEntity";
+import { UserEntity } from './UserEntity';
 
 @Entity({ name: 'swipe' })
+@Unique(['user', 'movie']) // Contrainte unique composite
 export class SwipeEntity {
     @PrimaryGeneratedColumn()
     id!: number;
