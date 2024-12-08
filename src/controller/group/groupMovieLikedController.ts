@@ -6,6 +6,8 @@ export const getGroupUsers = async (req: GroupRequest, res: Response,next:NextFu
     try {
         const group =  req.group!;
         const users = await groupService.getAllUsersByGroup(group);
+        console.log("usersDDDDDDDDDDDDDDDDDDDD")
+        console.log(users)
         res.status(200).json(users);
     }
     catch (error: any) {

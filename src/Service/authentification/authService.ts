@@ -20,10 +20,9 @@ export class AuthService {
 
     async login(email: string, password: string): Promise<{ refreshToken: string, accessToken: string }> {
         const user = await this.userService.findByEmail(email);
-        await this.jwtService.deleteAllRefreshToken(user);
         if (!await compare(password, user.password))
             throw new BadCredentialsError();
-//todo voir si il faut un try catch ici qui throw une erreur
+        //todo voir si il faut un try catch ici qui throw une erreur
         const payload: UserPayloadType = {email: user.email, userId: user.id};
         const refreshToken = this.jwtService.generateRefreshToken(payload);
         const accessToken = this.jwtService.generateAccessToken(payload);
