@@ -27,9 +27,6 @@ export class AuthService {
         const refreshToken = this.jwtService.generateRefreshToken(payload);
         const accessToken = this.jwtService.generateAccessToken(payload);
         await this.saveTokenInDb(refreshToken, user);
-        console.log('tsssssesttttttt')
-console.log(refreshToken)
-console.log(accessToken)
         return {
             refreshToken,
             accessToken

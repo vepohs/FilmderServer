@@ -135,7 +135,11 @@ export class GroupService {
     }
 
     async getGroupById(groupId: string) {
-        return await this.groupRepository.getGroupById(groupId);
+        const group = await this.groupRepository.getGroupById(groupId);
+        if(group)
+            return group
+        else
+            throw new GroupError(404, `No group found with id ${groupId}`)
     }
 
 }

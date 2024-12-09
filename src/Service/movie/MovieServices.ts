@@ -8,6 +8,8 @@ import {PreferenceService} from "../preference/PreferenceService";
 import {SwipeRepository} from "../../repository/swipe/SwipeRepository";
 import {MovieType, UserPayloadType} from "../../type/Type";
 import {GroupService} from "../group/groupService";
+import {SwipeMovieGroupService} from "../group/swipeMovieGroupService";
+import {GroupEntity} from "../../entity/GroupEntity";
 
 export class MovieServices {
     private readonly movieRepository: MovieRepository;
@@ -17,6 +19,7 @@ export class MovieServices {
     private readonly preferenceService: PreferenceService;
     private readonly swipeService: SwipeRepository;
     private readonly groupService: GroupService;
+    private readonly swipeMovieGroupService: SwipeMovieGroupService;
 
     constructor() {
         this.movieRepository = new MovieRepository();
@@ -26,6 +29,7 @@ export class MovieServices {
         this.preferenceService = new PreferenceService();
         this.swipeService = new SwipeRepository();
         this.groupService = new GroupService();
+        this.swipeMovieGroupService = new SwipeMovieGroupService();
     }
 
     async saveNewMoviesFromTMDB(genre: number[], adult: boolean, providers: number[], page = 1): Promise<MovieEntity[]> {
@@ -38,13 +42,15 @@ export class MovieServices {
         page++;
         return await this.saveNewMoviesFromTMDB(genre, adult, providers, page);
     }
-     isStringValid(input: string): boolean {
+
+    isStringValid(input: string): boolean {
         const validCharactersRegex = /^[a-zA-Z0-9\s.,!?'"()\-:;]+$/;
         return validCharactersRegex.test(input);
     }
+
     private cleanString(input: string): string {
-        const text =  input.replace(/[\u200B-\u200D\uFEFF]/g, '');
-        if(this.isStringValid(text)) return text;
+        const text = input.replace(/[\u200B-\u200D\uFEFF]/g, '');
+        if (this.isStringValid(text)) return text;
         else return 'No synopsis available';
     }
 
@@ -133,8 +139,12 @@ export class MovieServices {
     }
 
 
-    async getMovieById(movieId: number): Promise<MovieEntity | null> {
-        return await this.movieRepository.getMovieById(movieId);
+    async getMovieById(movieId: number): Promise<MovieEntity> {
+        const movie = await this.movieRepository.getMovieById(movieId);
+        if (movie)
+            return movie;
+        else
+            throw new Error('Movie not found');
     }
 
     async getMovieForGroup(users: number[], userPayload: UserPayloadType, groupId: string, excludesIds: number[]): Promise<MovieEntity[]> {
@@ -142,7 +152,6 @@ export class MovieServices {
         const userPreference = await this.preferenceService.getGenrePreference(user);
         const excludeIds = await this.swipeService.getExcludedMovies(user);
         const excludeIdsForGroup = excludeIds.concat(excludesIds);
-        console.log('Exclude Ids:', excludeIdsForGroup);
         const swipedUserMovie = await this.swipeService.getSwipeMovie(user);
         const groupGenrePreference = await this.groupService.getGroupGenrePreference(groupId);
         const groupProviderPreference = await this.groupService.getGroupProviderPreference(groupId);
@@ -156,17 +165,12 @@ export class MovieServices {
         const uniqueMoviesLiked = moviesLiked.filter(
             (movie, index, self) => index === self.findIndex((m) => m.id === movie.id)
         );
-        console.log('Unique Movies Liked:', uniqueMoviesLiked);
-        // Exclure les films déjà "swipés" par l'utilisateur
+
         const movieFilteredNotHistory = uniqueMoviesLiked.filter(
             (movie) => !swipedUserMovie.some((swipedMovie) => swipedMovie.id === movie.id)
         );
-console.log('Movies filtered:', movieFilteredNotHistory);
-        // Filtrer les films selon les préférences de l'utilisateur
-
         let movieFiltered = movieFilteredNotHistory.filter((movie) => {
             return movie.genres.some((genre) => {
-                console.log('Genre ID:',genre, genre.id); // Ajoute un log pour chaque genre
                 return userPreference.some((preference) => preference.id === genre.id);
             });
         });
@@ -209,17 +213,20 @@ console.log('Movies filtered:', movieFilteredNotHistory);
 
         return movieFiltered
     }
-    async getSelectionMovieGroup(users: number[]) {
+
+    async getSelectionMovieGroup(users: number[], group: GroupEntity) {
         const moviesLiked: MovieEntity[] = (await Promise.all(
             users.map((user) => this.swipeService.getMovieLiked(user))
         )).flat();
+        const movieGroup = await this.swipeMovieGroupService.getMovieGroup(group);
+        const moviesNotInGroup = moviesLiked.filter((movie) => !movieGroup.some((movieGroup) => movieGroup.movie.id === movie.id));
 
         const movieCountMap = new Map<number, { movie: MovieEntity; count: number }>();
-        moviesLiked.forEach((movie) => {
+        moviesNotInGroup.forEach((movie) => {
             if (movieCountMap.has(movie.id)) {
                 movieCountMap.get(movie.id)!.count++;
             } else {
-                movieCountMap.set(movie.id, { movie, count: 1 });
+                movieCountMap.set(movie.id, {movie, count: 1});
             }
         });
 

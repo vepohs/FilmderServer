@@ -5,6 +5,7 @@ import {getGroupUsers} from "../controller/group/groupMovieLikedController";
 import {getGroupPreference, setGroupPreference} from "../controller/group/setGroupPreferenceController";
 import {getGroupMoviesCommon} from "../controller/group/getGroupMoviesCommonController";
 import {verifyGroup} from "../middlewares/VerifyGroup";
+import {swipeMovieGroup} from "../controller/group/swipeMovieGroup";
 
 const router = express.Router();
 
@@ -14,4 +15,5 @@ router.post('/getGroupUsers',verifyGroup,getGroupUsers);
 router.post('/setGroupPreference',verifyGroup,setGroupPreference);
 router.get('/getGroupPreference',verifyGroup,getGroupPreference);
 router.post('/getGroupMoviesCommon',verifyGroup,getGroupMoviesCommon);
+router.post('/swipeMovieGroup',verifyGroup,swipeMovieGroup);
 export default router;

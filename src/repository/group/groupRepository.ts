@@ -93,7 +93,6 @@ export class GroupRepository {
     async getGroupById(groupId: string) {
         return await this.groupRepository.findOne({
             where: {groupId},
-            relations: ['users']
         });
     }
 }

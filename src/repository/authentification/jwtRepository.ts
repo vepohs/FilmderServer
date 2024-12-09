@@ -18,7 +18,6 @@ export class JwtRepository {
         return await this.jwtRepository.delete({refreshToken});
     }
     async deleteAllRefreshToken(user: UserEntity): Promise<DeleteResult> {
-        console.log('deleteAllRefreshToken', user.id)
         return await this.jwtRepository.delete({ user: { id: user.id } });
     }
 

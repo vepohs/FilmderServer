@@ -9,11 +9,8 @@ const jwtService = new JwtService();
 
 export const refreshToken = async(req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log('coucou');
-        console.log(req.headers);
         const refreshToken = req.headers['refreshtoken'];
 
-        console.log(refreshToken);
         if (!refreshToken) {
             throw new NoRefreshTokenError();
         }
