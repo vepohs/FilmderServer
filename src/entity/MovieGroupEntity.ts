@@ -1,20 +1,17 @@
-import { Entity, Column, ManyToOne, PrimaryColumn, Unique } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from 'typeorm';
 import { MovieEntity } from './MovieEntity';
-import { GroupEntity } from './GroupEntity';
+import {GroupEntity} from "./GroupEntity";
 
 @Entity({ name: 'movieGroup' })
 @Unique(['group', 'movie']) // Contrainte unique composite
 export class MovieGroupEntity {
-    @PrimaryColumn() // Utiliser `PrimaryColumn` pour définir une clé primaire
-    groupId!: number;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-    @PrimaryColumn() // Utiliser `PrimaryColumn` pour définir une clé primaire
-    movieId!: number;
-
-    @ManyToOne(() => GroupEntity, group => group.groupId, { onDelete: 'CASCADE' })
+    @ManyToOne(() => GroupEntity, group => group.groupId)
     group!: GroupEntity;
 
-    @ManyToOne(() => MovieEntity, movie => movie.id, { onDelete: 'CASCADE' })
+    @ManyToOne(() => MovieEntity, movie => movie.id)
     movie!: MovieEntity;
 
     @Column({ type: 'boolean', default: false })
