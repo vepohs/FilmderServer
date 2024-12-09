@@ -1,6 +1,7 @@
 import {Entity, PrimaryColumn, Column, ManyToMany, JoinTable, ManyToOne, BeforeInsert, OneToMany} from 'typeorm';
 import { GenreEntity } from "./GenreEntity";
 import { UserEntity } from "./UserEntity";
+import {MovieGroupEntity} from "./MovieGroupEntity";
 
 
 @Entity({ name: 'groupe' })
@@ -19,6 +20,8 @@ export class GroupEntity {
 
     @ManyToMany(() => UserEntity, user => user.groups)
     users!: UserEntity[];
+    @OneToMany (() => MovieGroupEntity, groupMovie => groupMovie.group)
+    groupMovies!: MovieGroupEntity[];
 
 
     @BeforeInsert()

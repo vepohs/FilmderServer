@@ -43,7 +43,6 @@ export class GroupRepository {
 
         const groups = await this.groupRepository.find({
             where: {users: {id: user.id}},
-            relations: ['users'],
         });
         return groups;
     }

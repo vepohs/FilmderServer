@@ -54,7 +54,7 @@ export class MovieServices {
         movie.adult = movieData.adult;
         movie.genres = movieData.genres;
         movie.id = movieData.id;
-        movie.title = movieData.title;
+        movie.title = this.cleanString(movieData.title);
         movie.synopsis = this.cleanString(movieData.synopsis);
         movie.releaseDate = movieData.releaseDate;
         movie.averageGrade = movieData.averageGrade;

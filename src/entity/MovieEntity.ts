@@ -2,6 +2,7 @@ import {Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, OneToMany
 import {SwipeEntity} from './SwipeEntity';
 import {GenreEntity} from "./GenreEntity";
 import {ProviderEntity} from "./ProviderEntity";
+import {MovieGroupEntity} from "./MovieGroupEntity";
 
 
 @Entity({name: 'movies'})
@@ -35,6 +36,8 @@ export class MovieEntity {
 
     @OneToMany(() => SwipeEntity, swipes => swipes.movie)
     swipes!: SwipeEntity[];
+    @OneToMany(() => MovieGroupEntity, groupMovie => groupMovie.movie)
+    groupMovies!: MovieGroupEntity[];
 
 
     @ManyToMany(() => GenreEntity, (genre) => genre.movies, { cascade: true })
