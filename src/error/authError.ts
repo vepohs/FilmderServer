@@ -43,3 +43,14 @@ export class NoAccessTokenError extends AuthError {
         super(401, `NoAccessToken`);
     }
 }
+
+export class FailedToSaveRefreshTokenError extends AuthError {
+    constructor() {
+        super(500, `Failed to save refresh token`);
+    }
+}
+export class FailedToDeleteRefreshTokenError extends AuthError {
+    constructor() {
+        super(500, `Failed to delete refresh token`);
+    }
+}

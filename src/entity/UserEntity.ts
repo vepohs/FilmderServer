@@ -24,7 +24,7 @@ export class UserEntity {
     ppPath?: string;
 
     @Column({type: 'int'})
-    age?: number;
+    age!: number;
 
     @OneToMany(() => GroupEntity, group => group.owner)
     ownedGroups!: GroupEntity[]
@@ -45,7 +45,4 @@ export class UserEntity {
     })
     groups!: GroupEntity[];
 
-
-    //@OneToMany(() => RewatchPreferenceEntity, (preference) => preference.user)
-//    rewatchPreferences!: RewatchPreferenceEntity[];
 }

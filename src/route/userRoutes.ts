@@ -5,7 +5,7 @@ import { isUniqueEmail } from "../controller/authentification/isUniqueEmail";
 const router = express.Router();
 
 router.post("/createUser", addUser);
-router.post("/isUniqueEmail", isUniqueEmail);
+router.get("/isUniqueEmail", isUniqueEmail);
 
 
 export default router;

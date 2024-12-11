@@ -1,45 +1,34 @@
 import {SwipeRepository} from "../../repository/swipe/SwipeRepository";
 import {SwipeEntity} from "../../entity/SwipeEntity";
-import {MovieServices} from "../movie/MovieServices";
-import {UserService} from "../user/userService";
-import {MovieEntity} from "../../entity/MovieEntity";
+import {createEntityFactory, createMovieService} from "../../factories/ClassFactory";
 import {UserEntity} from "../../entity/UserEntity";
-import {UserPayloadType} from "../../type/Type";
+import {MovieEntity} from "../../entity/MovieEntity";
+
 
 export class SwipeService {
-    private readonly swipeRepository: SwipeRepository;
-    private readonly movieService = new MovieServices();
-    private readonly userService = new UserService();
+    private readonly entityFactory = createEntityFactory();
 
-    constructor() {
-        this.swipeRepository = new SwipeRepository();
+    constructor(private readonly swipeRepository: SwipeRepository) {
     }
 
-    async saveSwipe(userPayload: UserPayloadType, movieId: number, liked: boolean): Promise<SwipeEntity> {
-        const user = await this.userService.findByEmail(userPayload.email);
-        const movie = await this.movieService.getMovieById(movieId);
-        const swipeEntity = this.createSwipe(user!, movie!, liked);
+    async saveSwipe(user: UserEntity, movie: MovieEntity, liked: boolean): Promise<SwipeEntity> {
+        const swipeEntity = this.entityFactory.createSwipeEntity(user, movie, liked);
         return await this.swipeRepository.saveSwipe(swipeEntity);
     }
 
-    createSwipe(user: UserEntity, movie: MovieEntity, liked: boolean): SwipeEntity {
-        const swipe = new SwipeEntity();
-        swipe.user = user;
-        swipe.movie = movie;
-        swipe.liked = liked;
-        return swipe;
+    async getUserMovieLiked(userId: number) {
+        return await this.swipeRepository.getMovieLiked(userId);
     }
 
-
-    async getMovieLiked(listUserIds: number[]) {
-        return await Promise.all(
-            listUserIds.map(async (userId) => {
-                const movies = await this.swipeRepository.getMovieLiked(userId);
-                return { userId, movies };
-            })
-        );
-
+    async getUsersMovieLiked(userIds: number[]) {
+        return (await Promise.all(userIds.map(userId => this.getUserMovieLiked(userId)))).flat();
     }
 
+    async getExcludedMovies(user: UserEntity): Promise<MovieEntity[]> {
+        return await this.swipeRepository.getExcludedMovies(user);
+    }
 
+    async getSwipeMovie(user: UserEntity) {
+        return await this.swipeRepository.getSwipeMovie(user);
+    }
 }

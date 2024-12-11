@@ -5,37 +5,34 @@ import {GenrePreferenceEntity} from "../../entity/PreferenceGenreEntity";
 import {GenreEntity} from "../../entity/GenreEntity";
 import {PreferenceProviderEntity} from "../../entity/PreferenceProviderEntity";
 import {ProviderEntity} from "../../entity/ProviderEntity";
-import {CannotSaveGenreError} from "../../error/genreError";
+import {FailedToSaveGenreError} from "../../error/genreError";
 import {
-    CannotGetGenrePreferenceError, CannotGetProviderPreferenceError,
-    CannotSaveGenrePreferenceError,
-    CannotSaveProviderPreferenceError
+    FailedToGetGenrePreferenceError, FailedToGetProviderPreferenceError,
+    FailedToSaveGenrePreferenceError,
+    FailedToSaveProviderPreferenceError
 } from "../../error/preferenceError";
 
 export class PreferenceRepository {
-    private preferenceGenreRepository: Repository<GenrePreferenceEntity>;
-    private preferenceProviderRepository: Repository<PreferenceProviderEntity>;
 
-    constructor() {
-        this.preferenceGenreRepository = dataSource.getRepository(GenrePreferenceEntity);
-        this.preferenceProviderRepository = dataSource.getRepository(PreferenceProviderEntity);
+    constructor(private readonly preferenceGenreRepository: Repository<GenrePreferenceEntity>,
+                private readonly preferenceProviderRepository: Repository<PreferenceProviderEntity>) {
     }
 
-    async saveGenrePreferences(genrePreference: GenrePreferenceEntity[],userEntity:UserEntity): Promise<GenrePreferenceEntity[]> {
+    async saveGenrePreferences(genrePreference: GenrePreferenceEntity[], userEntity: UserEntity): Promise<GenrePreferenceEntity[]> {
         try {
-            await this.preferenceGenreRepository.delete({ user: { id: userEntity.id } });
+            await this.preferenceGenreRepository.delete({user: {id: userEntity.id}});
             return await this.preferenceGenreRepository.save(genrePreference);
         } catch (error) {
-            throw new CannotSaveGenrePreferenceError(`Failed to save the genrePreference ${error instanceof Error ? error.message : String(error)}`)
+            throw new FailedToSaveGenrePreferenceError()
         }
     }
 
-    async saveProviderPreference(providerPreference: PreferenceProviderEntity[],userEntity:UserEntity): Promise<PreferenceProviderEntity[]> {
+    async saveProviderPreference(providerPreference: PreferenceProviderEntity[], userEntity: UserEntity): Promise<PreferenceProviderEntity[]> {
         try {
-            await this.preferenceProviderRepository.delete({ user: { id: userEntity.id } });
+            await this.preferenceProviderRepository.delete({user: {id: userEntity.id}});
             return await this.preferenceProviderRepository.save(providerPreference);
         } catch (error) {
-            throw new CannotSaveProviderPreferenceError(`Failed to save the providerPreference ${error instanceof Error ? error.message : String(error)}`)
+            throw new FailedToSaveProviderPreferenceError()
         }
     }
 
@@ -47,7 +44,7 @@ export class PreferenceRepository {
             });
             return preferences.map(preference => preference.genre);
         } catch (error) {
-            throw new CannotGetGenrePreferenceError(`Failed to get the providerPreference ${error instanceof Error ? error.message : String(error)}`)
+            throw new FailedToGetGenrePreferenceError()
         }
     }
 
@@ -59,7 +56,7 @@ export class PreferenceRepository {
             });
             return preferenceProviderEntity.map(preference => preference.provider);
         } catch (error) {
-            throw new CannotGetProviderPreferenceError(`Failed to get the providerPreference ${error instanceof Error ? error.message : String(error)}`)
+            throw new FailedToGetProviderPreferenceError()
         }
     }
 }

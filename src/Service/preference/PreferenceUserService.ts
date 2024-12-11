@@ -1,23 +1,18 @@
 import {PreferenceService} from "./PreferenceService";
 import {UserService} from "../user/userService";
 import {UserPayloadType} from "../../type/Type";
+import {createPreferenceService, createUserService} from "../../factories/ClassFactory";
+import {UserEntity} from "../../entity/UserEntity";
 
 export class PreferenceUserService {
-    private readonly preferenceService: PreferenceService;
-    private readonly userService: UserService;
+    private readonly preferenceService = createPreferenceService();
+    private readonly userService = createUserService();
 
-    constructor() {
-        this.preferenceService = new PreferenceService();
-        this.userService = new UserService();
+    async getGenrePreference(user: UserEntity) {
+        if (user) return await this.preferenceService.getGenrePreference(user);
     }
 
-    async getGenrePreference(userPayload: UserPayloadType) {
-        const user = await this.userService.findByEmail(userPayload.email);
-        if (user) return  await this.preferenceService.getGenrePreference(user);
-    }
-
-    async getProviderPreference(userPayload: UserPayloadType) {
-        const user = await this.userService.findByEmail(userPayload.email);
-        if (user) return  await this.preferenceService.getProviderPreference(user);
+    async getProviderPreference(user: UserEntity) {
+        if (user) return await this.preferenceService.getProviderPreference(user);
     }
 }

@@ -1,8 +1,8 @@
-import {Request, Response} from "express";
-import {GroupService} from "../../Service/group/groupService";
-import {AuthenticatedRequest, GroupRequest} from "../../interface/interface";
+import { Response} from "express";
+import {GroupRequest} from "../../interface/interface";
+import {createGroupService} from "../../factories/ClassFactory";
 
-const groupService = new GroupService();
+const groupService = createGroupService()
 export const setGroupPreference = async (req: GroupRequest, res: Response) => {
 
     await groupService.setGroupPreference(req.group!.groupId, req.body.genrePreferenceIds, req.body.providerPreferenceIds);
@@ -10,8 +10,8 @@ export const setGroupPreference = async (req: GroupRequest, res: Response) => {
 }
 export const getGroupPreference = async (req: GroupRequest, res: Response) => {
 
-    const  groupId  = req.group!.groupId as string;
-    const genrePreference = await groupService.getGroupGenrePreference(groupId);
-    const providerPreference = await groupService.getGroupProviderPreference(groupId);
+    const group = req.group!;
+    const genrePreference = await groupService.getGroupGenrePreference(group);
+    const providerPreference = await groupService.getGroupProviderPreference(group);
     res.status(200).json({genrePreference,providerPreference});
 }

@@ -1,18 +1,17 @@
-import {MovieServices} from "../../Service/movie/MovieServices";
-import {GroupService} from "../../Service/group/groupService";
-import {AuthenticatedRequest, GroupRequest} from "../../interface/interface";
-import {NextFunction, Response} from "express";
 
-const movieService = new MovieServices();
-const groupService = new GroupService();
+import {GroupService} from "../../Service/group/groupService";
+import { GroupRequest} from "../../interface/interface";
+import {NextFunction, Response} from "express";
+import { createMovieService} from "../../factories/ClassFactory";
+
+const movieService = createMovieService()
 export const getGroupMovie = async (req: GroupRequest, res: Response,next:NextFunction) => {
     try {
-
-
         const group = req.group!;
-        const excluedIds = req.body.listExcluedIds;
-        const users = await groupService.getAllUsersIdsByGroup(group);
-        const movies = await movieService.getMovieForGroup(users, req.user!, group.groupId, excluedIds);
+        const excludedIds = req.body.listExcluedIds;
+        const users =group.users;
+        const user = req.user!;
+        const movies = await movieService.getMovieForGroup(users, user,group, excludedIds);
         res.status(200).json({movies});
     }
     catch (error) {

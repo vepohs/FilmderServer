@@ -1,21 +1,22 @@
-import {MovieServices} from "../../Service/movie/MovieServices";
-import {Request, Response, NextFunction} from 'express';
+import {Response, NextFunction} from 'express';
 import {AuthenticatedRequest} from "../../interface/interface";
-import {SwipeService} from "../../Service/swipe/SwipeService";
+import {createMovieService, createSwipeService} from "../../factories/ClassFactory";
 
 
-const movieService = new MovieServices();
-const swipeService = new SwipeService();
+const movieService = createMovieService()
+const swipeService = createSwipeService()
 export const getMovie = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        const listTableau = await movieService.getMovies(req.user!, req.body.listExcluedIds);
+        const user = req.user!;
+        const listExcludedIds = req.body.listExcluedIds;
+        const listTableau = await movieService.getMovies(user, listExcludedIds);
         res.status(200).json({movies: listTableau});
-    } catch (error: any) {
+    } catch (error) {
         next(error)
     }
 }
 export const getMovieLiked = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const listUserIds = req.body.listUserIds;
-    const listUsersMoviesLiked = await swipeService.getMovieLiked(listUserIds)
+    const listUsersMoviesLiked = await swipeService.getUsersMovieLiked(listUserIds)
     res.status(200).json({listUsersMoviesLiked});
 }

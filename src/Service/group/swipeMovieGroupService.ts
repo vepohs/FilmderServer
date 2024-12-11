@@ -26,7 +26,7 @@ export class SwipeMovieGroupService {
         return swipeMovieGroupEntity
     }
 
-    async getMovieGroup(group: GroupEntity) {
+    async getMovieGroup(group: GroupEntity): Promise<MovieGroupEntity[]> {
       return await  this.swipeMovieGroupRepository.getMoviesByGroup(group)
     }
 }

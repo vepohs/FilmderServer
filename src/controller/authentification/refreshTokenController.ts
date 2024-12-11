@@ -1,13 +1,13 @@
 // authentification/authController.ts
 
-import { Request, Response, NextFunction } from 'express';
-import {JwtService} from "../../Service/authentification/jwtService";
+import {Request, Response, NextFunction} from 'express';
 import {BadRefreshTokenError, NoRefreshTokenError} from "../../error/authError";
+import {createAuthenticationService} from "../../factories/ClassFactory";
 
 
-const jwtService = new JwtService();
+const authenticationService = createAuthenticationService();
 
-export const refreshToken = async(req: Request, res: Response, next: NextFunction) => {
+export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const refreshToken = req.headers['refreshtoken'];
 
@@ -15,15 +15,15 @@ export const refreshToken = async(req: Request, res: Response, next: NextFunctio
             throw new NoRefreshTokenError();
         }
 
-        const payload = jwtService.verifyRefreshToken(refreshToken as string); // Assurez-vous que `refreshToken` est une chaîne
+        const payload = authenticationService.verifyRefreshToken(refreshToken as string);
         if (!payload) {
-            await jwtService.deleteRefreshToken(refreshToken as string);
+            await authenticationService.deleteRefreshToken(refreshToken as string);
             throw new BadRefreshTokenError();
         }
 
-        const newAccessToken = jwtService.generateAccessToken(payload);
-        res.status(200).json({ accessToken: newAccessToken });
+        const newAccessToken = authenticationService.generateAccessToken(payload);
+        res.status(200).json({accessToken: newAccessToken});
     } catch (error) {
-next(error);
+        next(error);
     }
 };

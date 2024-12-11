@@ -1,17 +1,16 @@
-import {GroupService} from "../../Service/group/groupService";
-import {Request, Response, NextFunction} from 'express';
-import {AddGroupInput, AuthenticatedRequest} from "../../interface/interface";
+import {Response, NextFunction} from 'express';
+import {AuthenticatedRequest} from "../../interface/interface";
+import {createGroupService} from "../../factories/ClassFactory";
 
-const groupService = new GroupService();
+const groupService = createGroupService()
 export const groupAdd = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        const input: AddGroupInput = {
-            user: req.user!,
-            name: req.body.name
-        }
-        const group = await groupService.addGroup(input);
-        res.status(200).json({group});
-    } catch (error: any) {
+        const user = req.user!;
+        const {name} = req.body;
+        console.log(name)
+        const group = await groupService.saveGroup(user, name);
+        res.status(200).json({message :  `group : ${group.name} added`});
+    } catch (error) {
         next(error)
     }
 }

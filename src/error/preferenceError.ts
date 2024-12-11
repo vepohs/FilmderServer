@@ -1,7 +1,6 @@
 export class PreferenceError extends Error {
     public readonly statusCode: number;
 
-//todo vérifier les codes d'error
     constructor(statusCode: number = 400, message: string = `Preference Error occured`) {
         super(message);
         this.statusCode = statusCode;
@@ -9,26 +8,26 @@ export class PreferenceError extends Error {
     }
 }
 
-export class CannotSaveGenrePreferenceError extends PreferenceError {
-    constructor(error: string) {
-        super(500, error);
+export class FailedToSaveGenrePreferenceError extends PreferenceError {
+    constructor() {
+        super(500, 'Failed to save genre preference');
     }
 }
 
-export class CannotSaveProviderPreferenceError extends PreferenceError {
-    constructor(error: string) {
-        super(500, error);
+export class FailedToSaveProviderPreferenceError extends PreferenceError {
+    constructor() {
+        super(500, 'Failed to save provider preference');
     }
 }
 
-export class CannotGetGenrePreferenceError extends PreferenceError {
-    constructor(error: string) {
-        super(500, error);
+export class FailedToGetGenrePreferenceError extends PreferenceError {
+    constructor() {
+        super(404, 'Failed to  get genre preference');
     }
 }
 
-export class CannotGetProviderPreferenceError extends PreferenceError {
-    constructor(error: string) {
-        super(500, error);
+export class FailedToGetProviderPreferenceError extends PreferenceError {
+    constructor() {
+        super(404, 'Failed to  get provider preference');
     }
 }

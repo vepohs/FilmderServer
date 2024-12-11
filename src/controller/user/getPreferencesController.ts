@@ -1,15 +1,17 @@
-import {Request, Response, NextFunction} from "express";
-import {GenreService} from "../../Service/genre/GenreServices";
-import {ProviderService} from "../../Service/provider/providerService";
+import {Response, NextFunction} from "express";
+import {createGenreService, createProviderService} from "../../factories/ClassFactory";
+import {AuthenticatedRequest} from "../../interface/interface";
 
-export const getPreferences = async (req: Request, res: Response, next: NextFunction) => {
-
-
-    const genreService = new GenreService()
-    const providerService = new ProviderService();
-    await providerService.saveBestProviders();
-    await genreService.saveGenres();
-    const genrePreference = await genreService.getGenre();
-    const providerPreference = await providerService.getProvider();
-        res.status(200).json({genrePreference: genrePreference , providerPreference: providerPreference});
+export const getPreferences = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    try {
+        const genreService = createGenreService()
+        const providerService = createProviderService()
+        await providerService.saveBestProviders();
+        await genreService.saveGenres();
+        const genrePreference = await genreService.getGenre();
+        const providerPreference = await providerService.getAllProvider();
+        res.status(200).json({genrePreference: genrePreference, providerPreference: providerPreference});
+    } catch (error) {
+        next(error);
+    }
 };

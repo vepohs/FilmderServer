@@ -2,9 +2,10 @@ import {Response, NextFunction} from "express";
 import {GroupRequest} from "../../interface/interface";
 import {SwipeMovieGroupService} from "../../Service/group/swipeMovieGroupService";
 import {MovieServices} from "../../Service/movie/MovieServices";
+import {createMovieService} from "../../factories/ClassFactory";
 
 const swipeMovieGroupService = new SwipeMovieGroupService();
-const movieService = new MovieServices();
+const movieService = createMovieService()
 export const swipeMovieGroup = async (req: GroupRequest, res: Response, next: NextFunction) => {
     try {
         const movieId = req.body.movieId

@@ -46,11 +46,13 @@ export class NotValidNumberError extends UserError {
     }
 }
 
-export class NoUserError extends Error {
-    public readonly statusCode: number;
-    constructor(statusCode: number = 400, message: string = `NO USER`) {
-        super(message);
-        this.statusCode = statusCode;
-        Error.captureStackTrace(this, this.constructor);
+export class NoUserError extends UserError {
+    constructor() {
+        super("User", 404, `No user found`);
+    }
+}
+export class FailedToSaveUserError extends UserError {
+    constructor() {
+        super("User", 500, `Failed to save user`);
     }
 }

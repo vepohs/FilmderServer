@@ -1,20 +1,11 @@
-import {UserPayloadType} from "../type/Type";
 import {Request} from "express";
 import {GroupEntity} from "../entity/GroupEntity";
-
-export interface AddGroupInput {
-    user: UserPayloadType;
-    name: string;
-}
+import {UserEntity} from "../entity/UserEntity";
 
 export interface AuthenticatedRequest extends Request {
-    user?: UserPayloadType;
-}
-export interface GroupRequest extends AuthenticatedRequest {
-    group?: GroupEntity;
+    user?: UserEntity;
 }
 
-export interface JoinGroupInput {
-    user: UserPayloadType;
-    groupId: string;
+export interface GroupRequest extends AuthenticatedRequest {
+    group?: GroupEntity;
 }

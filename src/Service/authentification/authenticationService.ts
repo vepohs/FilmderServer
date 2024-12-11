@@ -1,25 +1,20 @@
 import jwt from 'jsonwebtoken';
-import {JwtRepository} from "../../repository/authentification/jwtRepository";
+import {AuthenticationRepository} from "../../repository/authentification/authenticationRepository";
 import {RefreshTokenEntity} from "../../entity/refreshTokenEntity";
 import {UserPayloadType} from "../../type/Type";
 import {DeleteResult} from "typeorm";
-import {UserEntity} from "../../entity/UserEntity";
+import {FailedToDeleteRefreshTokenError, FailedToSaveRefreshTokenError} from "../../error/authError";
 
 const ACCES_TOKEN_SECRET = process.env.ACCES_TOKEN_SECRET as string;
 const RFRESH_TOKEN_SECRET = process.env.RFRESH_TOKEN_SECRET as string;
-// TODO a voir comment gerer si y a pas de valeur dans .env
-// Si on retire complement ACCES_TOKEN_SECRET de .env le code fonctionne quand meme
+
 
 const JWT_ACCESS_EXPIRATION = process.env.JWT_ACCESS_EXPIRATION as string;
 const JWT_REFRESH_EXPIRATION = process.env.JWT_REFRESH_EXPIRATION as string;
 
 
-export class JwtService {
-    private jwtRepository: JwtRepository;
-
-    constructor() {
-        this.jwtRepository = new JwtRepository();
-    }
+export class AuthenticationService {
+    constructor(private readonly AuthenticationRepository: AuthenticationRepository) {}
 
     generateAccessToken(payload: UserPayloadType): string {
         return jwt.sign(payload, ACCES_TOKEN_SECRET, {expiresIn: JWT_ACCESS_EXPIRATION});
@@ -33,7 +28,7 @@ export class JwtService {
         try {
             const accessToken = jwt.verify(token, ACCES_TOKEN_SECRET) as UserPayloadType;
             return {email: accessToken.email, userId: accessToken.userId};
-        } catch (error) {
+        } catch {
             return null;
         }
     }
@@ -42,20 +37,25 @@ export class JwtService {
         try {
             const refreshToken = jwt.verify(token, RFRESH_TOKEN_SECRET) as UserPayloadType;
             return {email: refreshToken.email, userId: refreshToken.userId};
-        } catch (error) {
+        } catch {
             return null;
         }
     }
 
     async deleteRefreshToken(token: string): Promise<DeleteResult> {
-        return await this.jwtRepository.deleteRefreshToken(token);
+        try {
+            return await this.AuthenticationRepository.deleteRefreshToken(token);
+        } catch {
+            throw new FailedToDeleteRefreshTokenError();
+        }
     }
 
-    async saveToken(token: RefreshTokenEntity) {
-        await this.jwtRepository.saveToken(token);
-    }
-    async deleteAllRefreshToken(user:UserEntity){
-        await this.jwtRepository.deleteAllRefreshToken(user);
+    async saveRefreshToken(token: RefreshTokenEntity) {
+        try {
+            return await this.AuthenticationRepository.saveToken(token);
+        } catch {
+            throw new FailedToSaveRefreshTokenError();
+        }
     }
 
 }

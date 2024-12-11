@@ -1,6 +1,6 @@
 export class GroupError extends Error {
     public readonly statusCode: number;
-//todo vérifier les codes d'error
+
     constructor(statusCode: number = 400, message: string = `Group Error occured`) {
         super(message);
         this.statusCode = statusCode;
@@ -9,16 +9,41 @@ export class GroupError extends Error {
 }
 export class NoGroupError extends GroupError {
     constructor() {
-        super(400,'NoGroupExisting');
+        super(404,'NoGroupExisting');
     }
 }
 export class AlreadyInGroupError extends GroupError {
     constructor() {
-        super(400,'Already in a group');
+        super(409,'Already in a group');
     }
 }
-export class CannotSaveGroupError extends GroupError{
-    constructor(error:string) {
-        super(500,error);
+export class FailedToSaveGroupError extends GroupError{
+    constructor() {
+        super(500,'Failed to save group');
+    }
+}
+export class FailedToJoinGroupError extends GroupError{
+    constructor() {
+        super(500,'Failed to join group');
+    }
+}
+export class FailedToSaveGroupPreferenceError extends GroupError{
+    constructor() {
+        super(500,'Failed to save group preference');
+    }
+}
+export class FailedToGetGroupError extends GroupError{
+    constructor() {
+        super(404,'Failed to get group');
+    }
+}
+export class FailedToGetGroupGenrePreferenceError extends GroupError{
+    constructor() {
+        super(404,'Failed to get group genre preference');
+    }
+}
+export class FailedToGetGroupProviderPreferenceError extends GroupError{
+    constructor() {
+        super(404,'Failed to get group provider preference');
     }
 }
