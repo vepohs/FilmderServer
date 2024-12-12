@@ -1,5 +1,4 @@
 
-import {GroupService} from "../../Service/group/groupService";
 import { GroupRequest} from "../../interface/interface";
 import {NextFunction, Response} from "express";
 import { createMovieService} from "../../factories/ClassFactory";

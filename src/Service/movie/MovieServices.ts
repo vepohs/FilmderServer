@@ -5,7 +5,7 @@ import {MovieType} from "../../type/Type";
 import {GroupEntity} from "../../entity/GroupEntity";
 import {
     createGenreService, createGroupService, createPreferenceService,
-    createProviderService,
+    createProviderService, createSwipeMovieGroupService,
     createSwipeService,
 } from "../../factories/ClassFactory";
 import {EntityFactory} from "../../factories/EntityFactory";
@@ -17,8 +17,7 @@ import {
     FailedToSaveMovieError,
     FailedToTransformMovieData
 } from "../../error/movieError";
-import {MovieGroupEntity} from "../../entity/MovieGroupEntity";
-import {SwipeMovieGroupService} from "../group/swipeMovieGroupService";
+
 
 
 export class MovieServices {
@@ -27,7 +26,7 @@ export class MovieServices {
     private readonly preferenceService = createPreferenceService()
     private readonly swipeService = createSwipeService()
     private readonly groupService = createGroupService();
-    private readonly swipeMovieGroupService = new SwipeMovieGroupService();
+    private readonly swipeMovieGroupService = createSwipeMovieGroupService()
     private readonly entityFactory = new EntityFactory();
 
     constructor(private readonly movieRepository: MovieRepository) {
@@ -209,7 +208,7 @@ export class MovieServices {
         try {
             const moviesLiked: MovieEntity[] = await this.swipeService.getUsersMovieLiked(userIds);
             const movieSwipedGroup = await this.swipeMovieGroupService.getMovieGroup(group);
-            const moviesNotInGroup = moviesLiked.filter((movie: MovieEntity) => !movieSwipedGroup.some((movieGroup: MovieGroupEntity) => movieGroup.movie.id === movie.id));
+            const moviesNotInGroup = moviesLiked.filter((movieLiked: MovieEntity) => !movieSwipedGroup.some((movieSwipe: MovieEntity) => movieSwipe.id === movieLiked.id));
             const movieCountMap = new Map<number, { movie: MovieEntity; count: number }>();
             moviesNotInGroup.forEach((movie) => {
                 if (movieCountMap.has(movie.id)) movieCountMap.get(movie.id)!.count++;

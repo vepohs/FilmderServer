@@ -11,7 +11,7 @@ import {
     FailedToSaveGroupPreferenceError,
 } from "../../error/groupError";
 import {EntityFactory} from "../../factories/EntityFactory";
-import {createPreferenceService} from "../../factories/ClassFactory";
+import {createEntityFactory, createPreferenceService} from "../../factories/ClassFactory";
 import {GenreEntity} from "../../entity/GenreEntity";
 import {ProviderEntity} from "../../entity/ProviderEntity";
 
@@ -19,7 +19,7 @@ import {ProviderEntity} from "../../entity/ProviderEntity";
 export class GroupService {
 
     private readonly preferenceService = createPreferenceService()
-    private readonly factory = new EntityFactory();
+    private readonly factory = createEntityFactory()
 
     constructor(private readonly groupRepository: GroupRepository) {
     }

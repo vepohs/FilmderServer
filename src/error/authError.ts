@@ -54,3 +54,13 @@ export class FailedToDeleteRefreshTokenError extends AuthError {
         super(500, `Failed to delete refresh token`);
     }
 }
+export class FailedToGenerateAccessTokenError extends AuthError {
+    constructor() {
+        super(500, `Failed to save access token`);
+    }
+}
+export class FailedToGenerateRefreshTokenError extends AuthError {
+    constructor() {
+        super(500, `Failed to delete access token`);
+    }
+}

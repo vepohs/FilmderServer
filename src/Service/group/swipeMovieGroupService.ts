@@ -1,32 +1,30 @@
 import {SwipeMovieGroupRepository} from "../../repository/group/swipeMovieGroupRepository";
-import {swipeMovieGroup} from "../../controller/group/swipeMovieGroup";
-import {MovieGroupEntity} from "../../entity/MovieGroupEntity";
-import {GroupService} from "./groupService";
-import {MovieServices} from "../movie/MovieServices";
 import {GroupEntity} from "../../entity/GroupEntity";
 import {MovieEntity} from "../../entity/MovieEntity";
+import {createEntityFactory} from "../../factories/ClassFactory";
+import {FailedToGetMovieGroupError, FailedToSaveSwipeMovieGroupError} from "../../error/movieGroupError";
 
 export class SwipeMovieGroupService {
-    private readonly swipeMovieGroupRepository: SwipeMovieGroupRepository;
+    private readonly factory = createEntityFactory();
 
-    constructor() {
-        this.swipeMovieGroupRepository = new SwipeMovieGroupRepository();
-    }
+    constructor(private readonly swipeMovieGroupRepository: SwipeMovieGroupRepository) {}
 
     async saveSwipeMovieGroup(group: GroupEntity, movie: MovieEntity, liked: boolean) {
 
-        const swipeMovieGroupEntity = this.createSwipeMovieGroup(group, movie, liked);
-        return this.swipeMovieGroupRepository.saveSwipeMovieGroup(swipeMovieGroupEntity);
-    }
-    createSwipeMovieGroup(group: GroupEntity, movie: MovieEntity, liked: boolean) {
-        const swipeMovieGroupEntity = new MovieGroupEntity();
-        swipeMovieGroupEntity.liked = liked;
-        swipeMovieGroupEntity.group = group;
-        swipeMovieGroupEntity.movie = movie;
-        return swipeMovieGroupEntity
+        const swipeMovieGroupEntity = this.factory.createSwipeMovieGroupEntity(group, movie, liked);
+        try {
+            return this.swipeMovieGroupRepository.saveSwipeMovieGroup(swipeMovieGroupEntity);
+        } catch {
+            throw new FailedToSaveSwipeMovieGroupError()
+        }
     }
 
-    async getMovieGroup(group: GroupEntity): Promise<MovieGroupEntity[]> {
-      return await  this.swipeMovieGroupRepository.getMoviesByGroup(group)
+
+    async getMovieGroup(group: GroupEntity): Promise<MovieEntity[]> {
+        try {
+            return await this.swipeMovieGroupRepository.getMoviesByGroup(group)
+        } catch {
+            throw new FailedToGetMovieGroupError()
+        }
     }
 }

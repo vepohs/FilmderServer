@@ -1,6 +1,6 @@
 
 import express from 'express';
-import {getMovie, getMovieLiked} from "../controller/movie/MovieController";
+import {getMovie, getMovieLiked} from "../controller/movie/movieController";
 import {getGroupMovie} from "../controller/movie/getGroupMovieController";
 import {verifyGroup} from "../middlewares/VerifyGroup";
 const router = express.Router();

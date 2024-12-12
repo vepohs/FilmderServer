@@ -11,7 +11,7 @@ import {PreferenceProviderEntity} from "../entity/PreferenceProviderEntity";
 import {GroupEntity} from "../entity/GroupEntity";
 import {GroupGenrePreferenceEntity} from "../entity/GroupGenrePreferenceEntity";
 import {GroupProviderPreferenceEntity} from "../entity/GroupProviderPreferenceEntity";
-import {MovieGroupEntity} from "../entity/MovieGroupEntity";
+import {SwipeMovieGroupEntity} from "../entity/SwipeMovieGroupEntity";
 
 dotenv.config({ path: '.env' });
 //todo voir si ca a changer
@@ -34,7 +34,7 @@ export const AppDataSource = new DataSource({
     logging: false,
     synchronize: false,
     charset: 'utf8mb4',
-    entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,SwipeEntity,GenreEntity,GenrePreferenceEntity,PreferenceProviderEntity,GroupEntity,GroupGenrePreferenceEntity,GroupProviderPreferenceEntity,MovieGroupEntity]
+    entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,SwipeEntity,GenreEntity,GenrePreferenceEntity,PreferenceProviderEntity,GroupEntity,GroupGenrePreferenceEntity,GroupProviderPreferenceEntity,SwipeMovieGroupEntity]
 });
 
 export default AppDataSource;

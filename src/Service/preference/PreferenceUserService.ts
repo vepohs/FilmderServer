@@ -6,7 +6,7 @@ import {UserEntity} from "../../entity/UserEntity";
 
 export class PreferenceUserService {
     private readonly preferenceService = createPreferenceService();
-    private readonly userService = createUserService();
+
 
     async getGenrePreference(user: UserEntity) {
         if (user) return await this.preferenceService.getGenrePreference(user);

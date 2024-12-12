@@ -2,7 +2,7 @@ import express from "express";
 import {groupAdd} from "../controller/group/groupAddController";
 import {groupJoin} from "../controller/group/groupJoinController";
 import {getGroupUsers} from "../controller/group/groupMovieLikedController";
-import {getGroupPreference, setGroupPreference} from "../controller/group/setGroupPreferenceController";
+import {getGroupPreference, setGroupPreference} from "../controller/group/groupPreferenceController";
 import {getGroupMoviesCommon} from "../controller/group/getGroupMoviesCommonController";
 import {verifyGroup} from "../middlewares/VerifyGroup";
 import {swipeMovieGroup} from "../controller/group/swipeMovieGroup";

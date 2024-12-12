@@ -1,51 +1,23 @@
 import {PreferenceRepository} from "../../repository/preference/PreferenceRepository";
-import {GenrePreferenceEntity} from "../../entity/PreferenceGenreEntity";
 import {GenreEntity} from "../../entity/GenreEntity";
-import {UserService} from "../user/userService";
 import {UserEntity} from "../../entity/UserEntity";
 import {ProviderEntity} from "../../entity/ProviderEntity";
-import {PreferenceProviderEntity} from "../../entity/PreferenceProviderEntity";
-import {createUserService} from "../../factories/ClassFactory";
+import {createEntityFactory} from "../../factories/ClassFactory";
+
 
 export class PreferenceService {
 
-
-    constructor(private readonly preferenceRepository:PreferenceRepository) {}
-
-    private async buildGenrePreferenceEntities(user: UserEntity, genreIds: number[]): Promise<GenrePreferenceEntity[]> {
-        return genreIds.map((genreId) => {
-            const genreEntity = new GenreEntity();
-            genreEntity.id = genreId;
-
-            const genrePreferenceEntity = new GenrePreferenceEntity();
-            genrePreferenceEntity.user = user;
-            genrePreferenceEntity.genre = genreEntity;
-
-            return genrePreferenceEntity;
-        });
+    constructor(private readonly preferenceRepository: PreferenceRepository) {
     }
-
-    async buildProviderPreferenceEntities(user: UserEntity, providerIds: number[]): Promise<PreferenceProviderEntity[]> {
-        return providerIds.map((providerId) => {
-            const providerEntity = new ProviderEntity();
-            providerEntity.id = providerId;
-
-            const providerPreferenceEntity = new PreferenceProviderEntity();
-            providerPreferenceEntity.user = user;
-            providerPreferenceEntity.provider = providerEntity;
-            return providerPreferenceEntity;
-        });
-    }
-
+    private readonly factory = createEntityFactory();
 
     async saveGenrePreference(user: UserEntity, genreIds: number[]): Promise<void> {
-
-        const genrePreferenceEntities = await this.buildGenrePreferenceEntities(user, genreIds);
+        const genrePreferenceEntities = genreIds.map((genreId) => this.factory.createGenrePreferenceEntity(genreId, user));
         await this.preferenceRepository.saveGenrePreferences(genrePreferenceEntities, user);
     }
 
     async saveProviderPreference(user: UserEntity, providerIds: number[]): Promise<void> {
-        const providerPreferenceEntities = await this.buildProviderPreferenceEntities(user, providerIds);
+        const providerPreferenceEntities = providerIds.map((providerId) => this.factory.createProviderPreferenceEntity(providerId, user));
         await this.preferenceRepository.saveProviderPreference(providerPreferenceEntities, user);
     }
 

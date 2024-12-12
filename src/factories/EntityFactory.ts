@@ -7,6 +7,9 @@ import {GenreEntity} from "../entity/GenreEntity";
 import {ProviderEntity} from "../entity/ProviderEntity";
 import {GroupGenrePreferenceEntity} from "../entity/GroupGenrePreferenceEntity";
 import {GroupProviderPreferenceEntity} from "../entity/GroupProviderPreferenceEntity";
+import {SwipeMovieGroupEntity} from "../entity/SwipeMovieGroupEntity";
+import {GenrePreferenceEntity} from "../entity/PreferenceGenreEntity";
+import {PreferenceProviderEntity} from "../entity/PreferenceProviderEntity";
 
 export class EntityFactory {
 
@@ -84,4 +87,30 @@ export class EntityFactory {
         return groupProviderPreferenceEntity;
     }
 
+
+    createSwipeMovieGroupEntity(group: GroupEntity, movie: MovieEntity, liked: boolean) {
+        const swipeMovieGroupEntity = new SwipeMovieGroupEntity();
+        swipeMovieGroupEntity.liked = liked;
+        swipeMovieGroupEntity.group = group;
+        swipeMovieGroupEntity.movie = movie;
+        return swipeMovieGroupEntity
+    }
+
+    createGenrePreferenceEntity(genreId: number, user: UserEntity): GenrePreferenceEntity {
+        const genreEntity = new GenreEntity();
+        genreEntity.id = genreId;
+        const genrePreferenceEntity = new GenrePreferenceEntity();
+        genrePreferenceEntity.user = user;
+        genrePreferenceEntity.genre = genreEntity;
+        return genrePreferenceEntity;
+    }
+
+    createProviderPreferenceEntity(providerId: number, user: UserEntity): PreferenceProviderEntity {
+        const providerEntity = new ProviderEntity();
+        providerEntity.id = providerId;
+        const providerPreferenceEntity = new PreferenceProviderEntity();
+        providerPreferenceEntity.user = user;
+        providerPreferenceEntity.provider = providerEntity;
+        return providerPreferenceEntity;
+    }
 }

@@ -1,9 +1,13 @@
 import jwt from 'jsonwebtoken';
-import {AuthenticationRepository} from "../../repository/authentification/authenticationRepository";
+import {TokenRepository} from "../../repository/authentification/tokenRepository";
 import {RefreshTokenEntity} from "../../entity/refreshTokenEntity";
 import {UserPayloadType} from "../../type/Type";
 import {DeleteResult} from "typeorm";
-import {FailedToDeleteRefreshTokenError, FailedToSaveRefreshTokenError} from "../../error/authError";
+import {
+    FailedToDeleteRefreshTokenError,
+    FailedToGenerateAccessTokenError, FailedToGenerateRefreshTokenError,
+    FailedToSaveRefreshTokenError
+} from "../../error/authError";
 
 const ACCES_TOKEN_SECRET = process.env.ACCES_TOKEN_SECRET as string;
 const RFRESH_TOKEN_SECRET = process.env.RFRESH_TOKEN_SECRET as string;
@@ -13,15 +17,24 @@ const JWT_ACCESS_EXPIRATION = process.env.JWT_ACCESS_EXPIRATION as string;
 const JWT_REFRESH_EXPIRATION = process.env.JWT_REFRESH_EXPIRATION as string;
 
 
-export class AuthenticationService {
-    constructor(private readonly AuthenticationRepository: AuthenticationRepository) {}
+export class TokenService {
+    constructor(private readonly AuthenticationRepository: TokenRepository) {
+    }
 
     generateAccessToken(payload: UserPayloadType): string {
-        return jwt.sign(payload, ACCES_TOKEN_SECRET, {expiresIn: JWT_ACCESS_EXPIRATION});
+        try {
+            return jwt.sign(payload, ACCES_TOKEN_SECRET, {expiresIn: JWT_ACCESS_EXPIRATION});
+        } catch (error) {
+            throw FailedToGenerateAccessTokenError;
+        }
     }
 
     generateRefreshToken(payload: UserPayloadType): string {
-        return jwt.sign(payload, RFRESH_TOKEN_SECRET, {expiresIn: JWT_REFRESH_EXPIRATION});
+        try {
+            return jwt.sign(payload, RFRESH_TOKEN_SECRET, {expiresIn: JWT_REFRESH_EXPIRATION});
+        } catch {
+            throw FailedToGenerateRefreshTokenError;
+        }
     }
 
     verifyAccessToken(token: string): UserPayloadType | null {

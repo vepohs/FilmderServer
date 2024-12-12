@@ -1,23 +1,21 @@
 import dataSource from "../../dataBase/dataSource";
-import {MovieGroupEntity} from "../../entity/MovieGroupEntity";
+import {SwipeMovieGroupEntity} from "../../entity/SwipeMovieGroupEntity";
 import {Repository} from "typeorm";
-import {MovieEntity} from "../../entity/MovieEntity";
 import {GroupEntity} from "../../entity/GroupEntity";
+import {MovieEntity} from "../../entity/MovieEntity";
 
 export class SwipeMovieGroupRepository {
-    swipeMovieGroupRepository: Repository<MovieGroupEntity>
+    constructor(private readonly swipeMovieGroupRepository: Repository<SwipeMovieGroupEntity>) {}
 
-    constructor() {
-        this.swipeMovieGroupRepository = dataSource.getRepository(MovieGroupEntity)
-    }
-    async saveSwipeMovieGroup(movieGroup: MovieGroupEntity): Promise<MovieGroupEntity> {
+    async saveSwipeMovieGroup(movieGroup: SwipeMovieGroupEntity): Promise<SwipeMovieGroupEntity> {
         return await this.swipeMovieGroupRepository.save(movieGroup);
     }
 
-    async getMoviesByGroup(group: GroupEntity): Promise<MovieGroupEntity[]> {
-        return await this.swipeMovieGroupRepository.find({
-            where: { group: { groupId: group.groupId } }, // Filtrer par l'ID du groupe
-            relations: ['group', 'movie'], // Charger les relations nécessaires
+    async getMoviesByGroup(group: GroupEntity): Promise<MovieEntity[]> {
+        const movieGroup = await this.swipeMovieGroupRepository.find({
+            where: {group: {groupId: group.groupId}},
+            relations: ['group', 'movie']
         });
+        return movieGroup.map((movieGroup) => movieGroup.movie);
     }
 }

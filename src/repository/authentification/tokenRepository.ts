@@ -1,7 +1,7 @@
 import {RefreshTokenEntity} from "../../entity/refreshTokenEntity";
 import {DeleteResult, Repository} from "typeorm";
 
-export class AuthenticationRepository {
+export class TokenRepository {
     constructor(private readonly jwtRepository:Repository<RefreshTokenEntity>) {}
 
     async saveToken(token: RefreshTokenEntity): Promise<RefreshTokenEntity> {

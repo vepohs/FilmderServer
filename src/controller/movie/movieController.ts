@@ -16,7 +16,11 @@ export const getMovie = async (req: AuthenticatedRequest, res: Response, next: N
     }
 }
 export const getMovieLiked = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const listUserIds = req.body.listUserIds;
-    const listUsersMoviesLiked = await swipeService.getUsersMovieLiked(listUserIds)
-    res.status(200).json({listUsersMoviesLiked});
+    try {
+        const listUserIds = req.body.listUserIds;
+        const listUsersMoviesLiked = await swipeService.getUsersMovieLiked(listUserIds)
+        res.status(200).json({listUsersMoviesLiked});
+    } catch (error) {
+        next(error)
+    }
 }

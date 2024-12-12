@@ -6,6 +6,7 @@ import {UserEntity} from "../../entity/UserEntity";
 export class SwipeRepository {
 
     constructor(private readonly swipeRepository: Repository<SwipeEntity>) {}
+    getMovie = (swipe: SwipeEntity) => swipe.movie;
 
     async saveSwipe(SwipeEntity: SwipeEntity): Promise<SwipeEntity> {
         return await this.swipeRepository.save(SwipeEntity);
@@ -16,7 +17,7 @@ export class SwipeRepository {
             where: {user: {id: user.id}},
             relations: ['movie']
         });
-        return swipeEntities.map(swipe => swipe.movie);
+        return swipeEntities.map(this.getMovie);
     }
 
     async getMovieLiked(userId: number) {
@@ -33,6 +34,6 @@ export class SwipeRepository {
             where: {user: {id: user.id}},
             relations: ['movie']
         });
-        return swipeEntities.map(swipe => swipe.movie);
+        return swipeEntities.map(this.getMovie);
     }
 }

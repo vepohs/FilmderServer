@@ -1,9 +1,9 @@
 import {Response, NextFunction} from 'express';
 import {BadAccessTokenError, NoAccessTokenError} from "../error/authError";
 import {AuthenticatedRequest} from "../interface/interface";
-import {createAuthenticationService, createUserService} from "../factories/ClassFactory";
+import {createTokenService, createUserService} from "../factories/ClassFactory";
 
-const authenticationService = createAuthenticationService()
+const tokenService = createTokenService()
 const userService = createUserService()
 export const authMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
@@ -12,7 +12,7 @@ export const authMiddleware = async (req: AuthenticatedRequest, res: Response, n
 
         if (!accessToken) throw new NoAccessTokenError();
 
-        const payload = authenticationService.verifyAccessToken(accessToken);
+        const payload = tokenService.verifyAccessToken(accessToken);
 
         if (!payload) throw new BadAccessTokenError();
 

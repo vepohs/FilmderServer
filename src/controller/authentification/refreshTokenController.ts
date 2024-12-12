@@ -1,11 +1,10 @@
-// authentification/authController.ts
 
 import {Request, Response, NextFunction} from 'express';
 import {BadRefreshTokenError, NoRefreshTokenError} from "../../error/authError";
-import {createAuthenticationService} from "../../factories/ClassFactory";
+import {createTokenService} from "../../factories/ClassFactory";
 
 
-const authenticationService = createAuthenticationService();
+const tokenService = createTokenService();
 
 export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -15,13 +14,13 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
             throw new NoRefreshTokenError();
         }
 
-        const payload = authenticationService.verifyRefreshToken(refreshToken as string);
+        const payload = tokenService.verifyRefreshToken(refreshToken as string);
         if (!payload) {
-            await authenticationService.deleteRefreshToken(refreshToken as string);
+            await tokenService.deleteRefreshToken(refreshToken as string);
             throw new BadRefreshTokenError();
         }
 
-        const newAccessToken = authenticationService.generateAccessToken(payload);
+        const newAccessToken = tokenService.generateAccessToken(payload);
         res.status(200).json({accessToken: newAccessToken});
     } catch (error) {
         next(error);

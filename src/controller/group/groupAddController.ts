@@ -7,7 +7,6 @@ export const groupAdd = async (req: AuthenticatedRequest, res: Response, next: N
     try {
         const user = req.user!;
         const {name} = req.body;
-        console.log(name)
         const group = await groupService.saveGroup(user, name);
         res.status(200).json({message :  `group : ${group.name} added`});
     } catch (error) {

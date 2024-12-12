@@ -2,9 +2,9 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, Unique } from 'typeo
 import { MovieEntity } from './MovieEntity';
 import {GroupEntity} from "./GroupEntity";
 
-@Entity({ name: 'movieGroup' })
+@Entity({ name: 'swipeMovieGroup' })
 @Unique(['group', 'movie']) // Contrainte unique composite
-export class MovieGroupEntity {
+export class SwipeMovieGroupEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 

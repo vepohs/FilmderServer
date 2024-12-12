@@ -3,7 +3,7 @@ import { setPreference } from "../controller/user/setPreferenceController";
 import {verifyAccessToken} from "./verifyAccessToken";
 import {getPreferences} from "../controller/user/getPreferencesController";
 import {getUserPreference} from "../controller/user/getUserPreferenceController";
-import {swipeMovie} from "../controller/movie/SwipeMovie";
+import {swipeMovie} from "../controller/movie/swipeMovie";
 import {getGroup} from "../controller/user/getGroup";
 const protectedRouter = express.Router();
 

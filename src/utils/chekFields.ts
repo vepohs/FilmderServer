@@ -8,7 +8,6 @@ import {
 } from "../error/userError";
 import {UserType} from "../type/Type";
 
-// todo peut etre qu'on peut faire mieux en utilisant une bibliothèque de validation comme Joi ou validator.js et on a pas clean l'entree de l'utilisateur
 export const checkField = async (userData: UserType, userRepository: UserRepository) => {
     checkName(userData.firstName);
     checkName(userData.lastName);
@@ -31,9 +30,8 @@ const checkAge =(age:number) => {
     }
 }
 
-// TODO prenom pas de nombre
+
  const isEmailAlreadyUsed= async (email:string, userRepository: UserRepository) =>{
-    //todo catch error
     const existingUser = await userRepository.existsEmail(email);
     if (existingUser)
         throw new AlreadyExistsError("email");
@@ -64,8 +62,3 @@ const comparePasswords =(password:string, confirmPassword:string) => {
 }
 
 
-const checkCountryId =(countryId:number) => {
-    if (typeof countryId.valueOf() !== 'number' || isNaN(countryId) || countryId <= 0){
-        throw new NotValidNumberError("countryId");
-    }
-}

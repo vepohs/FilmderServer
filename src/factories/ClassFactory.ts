@@ -2,9 +2,9 @@ import {UserRepository} from "../repository/user/userRepository";
 import {UserService} from "../Service/user/userService";
 import AppDataSource from "../dataBase/dataSource";
 import {UserEntity} from "../entity/UserEntity";
-import {AuthenticationRepository} from "../repository/authentification/authenticationRepository";
+import {TokenRepository} from "../repository/authentification/tokenRepository";
 import {RefreshTokenEntity} from "../entity/refreshTokenEntity";
-import {AuthenticationService} from "../Service/authentification/authenticationService";
+import {TokenService} from "../Service/authentification/TokenService";
 import {SwipeEntity} from "../entity/SwipeEntity";
 import {SwipeRepository} from "../repository/swipe/SwipeRepository";
 import {SwipeService} from "../Service/swipe/SwipeService";
@@ -27,6 +27,9 @@ import {PreferenceService} from "../Service/preference/PreferenceService";
 import {PreferenceRepository} from "../repository/preference/PreferenceRepository";
 import {GenrePreferenceEntity} from "../entity/PreferenceGenreEntity";
 import {PreferenceProviderEntity} from "../entity/PreferenceProviderEntity";
+import {SwipeMovieGroupRepository} from "../repository/group/swipeMovieGroupRepository";
+import {SwipeMovieGroupEntity} from "../entity/SwipeMovieGroupEntity";
+import {SwipeMovieGroupService} from "../Service/group/swipeMovieGroupService";
 
 export function createEntityFactory() {
     return new EntityFactory();
@@ -40,12 +43,12 @@ export function createUserRepository(): UserRepository {
     return new UserRepository(AppDataSource.getRepository(UserEntity));
 }
 
-export function createAuthenticationService(): AuthenticationService {
-    return new AuthenticationService(createAuthenticationRepository())
+export function createTokenService(): TokenService {
+    return new TokenService(createTokenRepository())
 }
 
-export function createAuthenticationRepository(): AuthenticationRepository {
-    return new AuthenticationRepository(AppDataSource.getRepository(RefreshTokenEntity));
+export function createTokenRepository(): TokenRepository {
+    return new TokenRepository(AppDataSource.getRepository(RefreshTokenEntity));
 }
 
 export function createSwipeService(): SwipeService {
@@ -94,4 +97,10 @@ export function createPreferenceRepository(): PreferenceRepository {
 
 export function createPreferenceService(): PreferenceService {
     return new PreferenceService(createPreferenceRepository())
+}
+export function createSwipeMovieGroupService():SwipeMovieGroupService {
+    return new SwipeMovieGroupService(createSwipeMovieGroupRepository());
+}
+export function createSwipeMovieGroupRepository():SwipeMovieGroupRepository {
+    return new SwipeMovieGroupRepository(AppDataSource.getRepository(SwipeMovieGroupEntity));
 }
