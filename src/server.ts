@@ -11,7 +11,7 @@ const PORT = process.env.SERVEUR_PORT
 
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://185.172.57.167:5173',  // Remplacez par l'URL de votre client
+    origin: 'http://185.172.57.167:3020',  // Remplacez par l'URL de votre client
     credentials: true  // Autoriser les cookies
 }));
 
