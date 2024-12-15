@@ -32,7 +32,7 @@ export const AppDataSource = new DataSource({
     password: process.env.DB_PASS,
     database: process.env.DB_NAME,
     logging: false,
-    synchronize: true,
+    synchronize: false,
     charset: 'utf8mb4',
     entities: [UserEntity,RefreshTokenEntity,MovieEntity,ProviderEntity,SwipeEntity,GenreEntity,GenrePreferenceEntity,PreferenceProviderEntity,GroupEntity,GroupGenrePreferenceEntity,GroupProviderPreferenceEntity,SwipeMovieGroupEntity]
 });
