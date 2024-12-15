@@ -29,7 +29,7 @@ jobs:
           password: ${{ secrets.VPS_PASS }}
           port: 55666
           script: |
-            cd /var/www/server
+            cd /var/www/server/TestProjetServ002 
             git pull origin main
             npm install
             pm2 restart all
