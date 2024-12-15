@@ -11,7 +11,7 @@ const PORT = process.env.SERVEUR_PORT
 
 app.use(cookieParser());
 app.use(cors({
-    origin: 'http://localhost:5173',  // Remplacez par l'URL de votre client
+    origin: 'http://185.172.57.167:5173',  // Remplacez par l'URL de votre client
     credentials: true  // Autoriser les cookies
 }));
 
@@ -25,7 +25,7 @@ AppDataSource.initialize()
         app.use(routes);
         app.use(errorHandler);
         app.listen(PORT, () => {
-            console.log(`Server is running on http://localhost:${PORT}`);
+            console.log(`Server is running on http://185.172.57.167:${PORT}`);
         });
     })
     .catch((error) => {
