@@ -12,7 +12,7 @@ import {EntityFactory} from "../../factories/EntityFactory";
 import {UserEntity} from "../../entity/UserEntity";
 import {
     FailedToFetchMovieDurationError,
-    FailedToFetchMovieError, FailedToGetGroupMovieError,
+    FailedToFetchMovieError, FailedToFetchMovieVideoError, FailedToGetGroupMovieError,
     FailedToGetMovieError,
     FailedToSaveMovieError,
     FailedToTransformMovieData
@@ -39,7 +39,7 @@ export class MovieServices {
         return Array.from(new Map(movies.map(movie => [movie.id, movie])).values());
     };
 
-//todo boucle inifini ou erreur tmdb
+
     async saveNewMoviesFromTMDB(
         genre: number[],
         adult: boolean,
@@ -60,7 +60,8 @@ export class MovieServices {
             }
             await Promise.all(movies.map(this.saveMovie));
             return movies;
-        } catch {
+        } catch (error) {
+            console.log(error);
             throw new FailedToSaveMovieError();
         }
     }
@@ -105,7 +106,8 @@ export class MovieServices {
                 averageGrade: movieData.vote_average,
                 votes: movieData.vote_count,
                 duration: await this.fetchMovieDuration(movieData.id),
-                providers: await this.providerService.getProvidersForMovie(movieData)
+                providers: await this.providerService.getProvidersForMovie(movieData),
+                videoPath: (await this.fetchVideoPath(movieData.id)) || undefined
             })));
             return movieList;
         } catch {
@@ -115,7 +117,7 @@ export class MovieServices {
 
     async fetchMovieDuration(id: number): Promise<number> {
         try {
-            const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?language=en-US`, {
+            const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}?language=fr-FR`, {
                 headers: {
                     Authorization: `Bearer ${process.env.TMDB_API_KEY}`
                 }
@@ -124,6 +126,21 @@ export class MovieServices {
             return duration;
         } catch {
             throw new FailedToFetchMovieDurationError();
+        }
+    }
+    private async fetchVideoPath(id:number): Promise<string|null> {
+        try {
+            const res = await axios.get(`https://api.themoviedb.org/3/movie/${id}/videos?language=fr-FR`, {
+                headers: {
+                    Authorization: `Bearer ${process.env.TMDB_API_KEY}`
+                }
+            });
+            const youtube = res.data.results.filter((video: any) => video.site === 'YouTube');
+            if (youtube.length === 0) return null;
+            const videoPath = `${youtube[0].key}`;
+            return videoPath;
+        } catch {
+            throw new FailedToFetchMovieVideoError();
         }
     }
 
@@ -140,7 +157,8 @@ export class MovieServices {
             const providerIds = providers.map(this.getId);
             await this.saveNewMoviesFromTMDB(genresIds, isAdult, providerIds);
             return await this.getMovies(user, additionalExcluded);
-        } catch {
+        } catch (error) {
+            console.log(error);
             throw new FailedToGetMovieError();
         }
     }
@@ -224,4 +242,6 @@ export class MovieServices {
             throw new FailedToGetGroupMovieError();
         }
     }
+
+
 }

@@ -32,6 +32,11 @@ export class FailedToFetchMovieDurationError extends MovieError{
         super(404,'Failed to fetch movie duration');
     }
 }
+export class FailedToFetchMovieVideoError extends MovieError{
+    constructor() {
+        super(404,'Failed to fetch movie video');
+    }
+}
 export class FailedToTransformMovieData extends MovieError{
     constructor() {
         super(500,'Failed to transform movie data');

@@ -16,6 +16,9 @@ export class MovieEntity {
     @Column({type: 'varchar', length: 255, default: 'default.jpg'})
     imagePath!: string;
 
+    @Column({ type: 'varchar', length: 255, nullable: true, default: null })
+    videoPath?: string;
+
     @Column({type: 'varchar', length: 2000, nullable: true})
     synopsis?: string;
 
@@ -40,7 +43,7 @@ export class MovieEntity {
     groupMovies!: SwipeMovieGroupEntity[];
 
 
-    @ManyToMany(() => GenreEntity, (genre) => genre.movies, { cascade: true })
+    @ManyToMany(() => GenreEntity, (genre) => genre.movies, {cascade: true})
     @JoinTable({
         name: 'movies_genres', // Nom explicite de la table de jonction
         joinColumn: {
@@ -54,7 +57,7 @@ export class MovieEntity {
     })
     genres!: GenreEntity[];
 
-    @ManyToMany(() => ProviderEntity, (provider) => provider.movies, { cascade: true })
+    @ManyToMany(() => ProviderEntity, (provider) => provider.movies, {cascade: true})
     @JoinTable({
         name: 'movies_providers', // Nom explicite de la table de jonction
         joinColumn: {

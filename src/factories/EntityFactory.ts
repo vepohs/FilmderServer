@@ -36,6 +36,7 @@ export class EntityFactory {
         movie.votes = movieData.votes;
         movie.duration = movieData.duration;
         movie.imagePath = movieData.imagePath;
+        movie.videoPath = movieData.videoPath;
         movie.providers = movieData.providers;
         return movie;
     }

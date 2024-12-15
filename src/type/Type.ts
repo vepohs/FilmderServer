@@ -18,6 +18,7 @@ export type MovieType = {
     votes: number;
     duration: number;
     imagePath: string;
+    videoPath?: string;
     providers: ProviderEntity[];
 }
 export type ProviderType = {
