@@ -32,4 +32,6 @@ jobs:
             cd /var/www/server/TestProjetServ002 
             git pull origin master
             npm install
-            pm2 restart all
+            pm2 start ts-node --name server -- src/server.ts || pm2 restart server
+            pm2 save
+    
