@@ -14,6 +14,12 @@ app.use(cors({
     origin: 'https://filmder.fr',  // Remplacez par l'URL de votre client
     credentials: true  // Autoriser les cookies
 }));
+app.use((req, res, next) => {
+    console.log(`Received ${req.method} request for ${req.url}`);
+    console.log('Headers:', req.headers);
+    console.log('Body:', req.body);
+    next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -25,7 +31,7 @@ AppDataSource.initialize()
         app.use(routes);
         app.use(errorHandler);
         app.listen(PORT, () => {
-            console.log(`Server is running on http://185.172.57.167:${PORT}`);
+            console.log(`Server is running`);
         });
     })
     .catch((error) => {
