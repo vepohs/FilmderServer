@@ -21,7 +21,7 @@ export class GenreService {
 
     async getGenresByTMDB() {
         try {
-            const BaseUrl = 'https://api.themoviedb.org/3/genre/movie/list?language=FR';
+            const BaseUrl = 'https://api.themoviedb.org/3/genre/movie/list?language=fr-FR';
             const response = await axios.get(`${BaseUrl}`, {
                 headers: {
                     Authorization: `Bearer ${process.env.TMDB_API_KEY}`

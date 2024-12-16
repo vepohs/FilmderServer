@@ -11,12 +11,12 @@ const PORT = process.env.SERVEUR_PORT
 
 app.use(cookieParser());
 app.use(cors({
-    origin: 'https://filmder.fr',  // Remplacez par l'URL de votre client
+    origin: process.env.NODE_ENV === 'production' ? 'https://filmder.fr' : 'http://localhost:5173',  // Remplacez par l'URL de votre client
     credentials: true  // Autoriser les cookies
 }));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
 app.use((req, res, next) => {
     console.log(`URL: ${req.url}`);

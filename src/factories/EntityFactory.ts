@@ -13,24 +13,13 @@ import {PreferenceProviderEntity} from "../entity/PreferenceProviderEntity";
 
 export class EntityFactory {
 
-    isStringValid(input: string): boolean {
-        const validCharactersRegex = /^[a-zA-Z0-9\s.,!?'"()\-:;]+$/;
-        return validCharactersRegex.test(input);
-    }
-
-    cleanString(input: string): string {
-        const text = input.replace(/[\u200B-\u200D\uFEFF]/g, '');
-        if (this.isStringValid(text)) return text;
-        else return 'No synopsis available';
-    }
-
     createMovieEntity(movieData: MovieType): MovieEntity {
         const movie = new MovieEntity();
         movie.adult = movieData.adult;
         movie.genres = movieData.genres;
         movie.id = movieData.id;
-        movie.title = this.cleanString(movieData.title);
-        movie.synopsis = this.cleanString(movieData.synopsis);
+        movie.title = movieData.title;
+        movie.synopsis = movieData.synopsis;
         movie.releaseDate = movieData.releaseDate;
         movie.averageGrade = movieData.averageGrade;
         movie.votes = movieData.votes;

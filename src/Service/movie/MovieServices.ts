@@ -75,6 +75,7 @@ export class MovieServices {
                     Authorization: `Bearer ${process.env.TMDB_API_KEY}`
                 },
                 params: {
+                    language: 'fr-FR',
                     with_genres: genre.join('|'),
                     include_adult: adult,
                     include_video: false,
