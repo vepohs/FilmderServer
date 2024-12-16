@@ -19,9 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-    console.log(`Received ${req.method} request for ${req.url}`);
-    console.log('Headers:', req.headers);
-    console.log('Body:', req.body);
+    console.log(`URL: ${req.url}`);
     next();
 });
 
