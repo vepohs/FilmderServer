@@ -56,10 +56,10 @@ export class MovieServices {
                 const newMovies = fetchedMovies.filter(movie => !existingMovieIds.includes(movie.id));
                 movies = [...movies, ...newMovies];
                 page++;
+                console.log(page)
                 if (movies.length >= 20) break;
             }
             await Promise.all(movies.map(this.saveMovie));
-            console.log(page)
             return movies;
         } catch (error) {
             console.log(error);
