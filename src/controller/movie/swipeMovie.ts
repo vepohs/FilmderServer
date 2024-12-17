@@ -11,7 +11,6 @@ export const swipeMovie = async (req: AuthenticatedRequest, res: Response, next:
         const movie = await movieService.getMovieById(movieId)
         const user = req.user!
         const liked = req.body.liked
-        console.log(movieId, liked)
         await swipeService.saveSwipe(user, movie, liked)
         res.status(200).send('swipe saved');
     } catch (error) {
