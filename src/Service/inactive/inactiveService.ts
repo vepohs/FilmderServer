@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 
 const userService = createUserService();
 
-const minutes = 10;
+const minutes = 1000;
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
@@ -46,7 +46,7 @@ async function sendInactivityEmail(email: string, firstName: string) {
     }
 }
 
-cron.schedule('*/10 * * * *', async () => {
+cron.schedule('*/5 * * * *', async () => {
     console.log('Vérification des utilisateurs inactifs...');
     await checkInactiveUsers();
 });
