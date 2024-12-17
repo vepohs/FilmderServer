@@ -3,16 +3,13 @@ import express from 'express';
 import AppDataSource from "./dataBase/dataSource";
 import {errorHandler} from "./middlewares/errorHandler";
 import routes from "./route/routes";
-// @ts-ignore
-import cookieParser from 'cookie-parser';
+import './Service/inactive/inactiveService';
 
 const app = express();
 const PORT = process.env.SERVEUR_PORT
 
-app.use(cookieParser());
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' ? 'https://filmder.fr' : 'http://localhost:5173',  // Remplacez par l'URL de votre client
-    credentials: true  // Autoriser les cookies
 }));
 
 app.use(express.json());

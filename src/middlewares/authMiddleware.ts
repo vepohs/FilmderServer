@@ -17,7 +17,8 @@ export const authMiddleware = async (req: AuthenticatedRequest, res: Response, n
         if (!payload) throw new BadAccessTokenError();
 
         const user = await userService.findByEmail(payload.email);
-
+        const lastActivity = await userService.setLastActivity(user);
+        console.log(lastActivity);
         req.user = user;
 
         next();

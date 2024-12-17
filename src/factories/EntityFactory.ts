@@ -1,4 +1,4 @@
-import {MovieType, ProviderType} from "../type/Type";
+import {MovieType, ProviderType, UserType} from "../type/Type";
 import {MovieEntity} from "../entity/MovieEntity";
 import {UserEntity} from "../entity/UserEntity";
 import {SwipeEntity} from "../entity/SwipeEntity";
@@ -102,5 +102,16 @@ export class EntityFactory {
         providerPreferenceEntity.user = user;
         providerPreferenceEntity.provider = providerEntity;
         return providerPreferenceEntity;
+    }
+
+    createUserEntity(userData: UserType): UserEntity {
+        const user = new UserEntity();
+        user.lastActivity = new Date();
+        user.firstName = userData.firstName;
+        user.lastName = userData.lastName;
+        user.email = userData.email;
+        user.password = userData.password;
+        user.age = userData.age;
+        return user;
     }
 }

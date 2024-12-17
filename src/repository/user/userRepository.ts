@@ -1,4 +1,4 @@
-import {Repository} from "typeorm";
+import {Repository, UpdateResult} from "typeorm";
 import {UserEntity} from "../../entity/UserEntity";
 
 export class UserRepository {
@@ -16,5 +16,13 @@ export class UserRepository {
 
     async saveUser(user: UserEntity): Promise<UserEntity> {
         return await this.userRepository.save(user);
+    }
+
+    async setLastActivity(user: UserEntity): Promise<UpdateResult> {
+      return await this.userRepository.update(user.id, { lastActivity: new Date() });
+    }
+
+    async getAllUsers() {
+        return await this.userRepository.find();
     }
 }

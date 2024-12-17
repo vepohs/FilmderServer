@@ -32,6 +32,11 @@ export class UserEntity {
     @Column({type: 'int', default: 0})
     countryId?: number;
 
+    @Column({ type: 'datetime', nullable: true })
+    lastActivity?: Date;
+
+
+
     @OneToMany(() => RefreshTokenEntity, token => token.user)
     refreshTokens!: RefreshTokenEntity[];
 
