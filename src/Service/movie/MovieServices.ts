@@ -59,6 +59,7 @@ export class MovieServices {
                 if (movies.length >= 20) break;
             }
             await Promise.all(movies.map(this.saveMovie));
+            console.log(page)
             return movies;
         } catch (error) {
             console.log(error);
