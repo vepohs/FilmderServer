@@ -13,18 +13,22 @@ export class AuthService {
 
 
     async login(email: string, password: string): Promise<{ refreshToken: string, accessToken: string }> {
-        const user = await this.userService.findByEmail(email);
-        if (!await compare(password, user.password))
+        try {
+            const user = await this.userService.findByEmail(email);
+            if (!await compare(password, user.password))
+                throw new BadCredentialsError();
+            //todo voir si il faut un try catch ici qui throw une erreur
+            const payload: UserPayloadType = {email: user.email, userId: user.id};
+            const refreshToken = this.tokenService.generateRefreshToken(payload);
+            const accessToken = this.tokenService.generateAccessToken(payload);
+            await this.saveTokenInDb(refreshToken, user);
+            return {
+                refreshToken,
+                accessToken
+            };
+        } catch (e) {
             throw new BadCredentialsError();
-        //todo voir si il faut un try catch ici qui throw une erreur
-        const payload: UserPayloadType = {email: user.email, userId: user.id};
-        const refreshToken = this.tokenService.generateRefreshToken(payload);
-        const accessToken = this.tokenService.generateAccessToken(payload);
-        await this.saveTokenInDb(refreshToken, user);
-        return {
-            refreshToken,
-            accessToken
-        };
+        }
     };
 
     async logout(refreshToken: string): Promise<DeleteResult> {
@@ -38,7 +42,7 @@ export class AuthService {
             refreshTokenEntity.refreshToken = refreshToken;
             refreshTokenEntity.user = user;
             await this.tokenService.saveRefreshToken(refreshTokenEntity);
-        } catch  {
+        } catch {
             throw new FailedToSaveRefreshTokenError()
         }
     }
