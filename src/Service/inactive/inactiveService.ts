@@ -25,6 +25,7 @@ async function checkInactiveUsers() {
     for (const user of inactiveUsers) {
         if (user.email) {
             await sendInactivityEmail(user.email, user.firstName);
+            await userService.setLastActivity(user);
         }
     }
 }
@@ -40,6 +41,7 @@ async function sendInactivityEmail(email: string, firstName: string) {
 
     try {
         await transporter.sendMail(mailOptions);
+
         console.log(`Email envoyé avec succès à : ${email}`);
     } catch (error) {
         console.error(`Erreur lors de l'envoi de l'email à ${email} :`, error);
