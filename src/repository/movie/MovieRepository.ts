@@ -11,14 +11,14 @@ export class MovieRepository {
             return await this.repository.save(movie);
     }
 
-    async getMovie(genres: GenreEntity[], providers: ProviderEntity[], excludeIds: number[], filmTotake: number): Promise<MovieEntity[]> {
+    async getMovie(genres: GenreEntity[], providers: ProviderEntity[], excludedMovieIds: number[], filmTotake: number): Promise<MovieEntity[]> {
 
         return await this.repository.find({
             where: [
                 {
                     genres: {id: In(genres.map(genre => genre.id))},
                     providers: {id: In(providers.map(provider => provider.id))},
-                    id: Not(In(excludeIds))
+                    id: Not(In(excludedMovieIds))
                 }
             ],
             relations: ['genres', 'providers'],

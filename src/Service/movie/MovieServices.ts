@@ -150,9 +150,9 @@ export class MovieServices {
         try {
             const genres = await this.preferenceService.getGenrePreference(user);
             const providers = await this.preferenceService.getProviderPreference(user);
-            let excludeIds = (await this.swipeService.getExcludedMovies(user)).map(this.getId);
-            excludeIds = excludeIds.concat(additionalExcluded);
-            const movies = await this.movieRepository.getMovie(genres, providers, excludeIds, 20);
+            let excludedMovieIds = (await this.swipeService.getExcludedMovies(user)).map(this.getId);
+            excludedMovieIds = excludedMovieIds.concat(additionalExcluded);
+            const movies = await this.movieRepository.getMovie(genres, providers, excludedMovieIds, 20);
             if (movies.length >= 10) return movies;
             const genresIds = genres.map(this.getId);
             const isAdult = user.age > 18;
@@ -178,7 +178,7 @@ export class MovieServices {
             const userIds = users.map(this.getId);
             const userPreference = await this.preferenceService.getGenrePreference(user);
             const excludedSwipedMovieIds = (await this.swipeService.getExcludedMovies(user)).map(this.getId);
-            const excludeIdsForGroup = excludedSwipedMovieIds.concat(excludesIds);
+            const excludedMovieIdsGroup = excludedSwipedMovieIds.concat(excludesIds);
             const swipedUserMovie = await this.swipeService.getSwipeMovie(user);
             const groupGenrePreference = await this.groupService.getGroupGenrePreference(group);
             const groupProviderPreference = await this.groupService.getGroupProviderPreference(group);
@@ -197,7 +197,7 @@ export class MovieServices {
                 const additionalMovies = await this.movieRepository.getMovie(
                     groupGenrePreference,
                     groupProviderPreference,
-                    excludeIdsForGroup,
+                    excludedMovieIdsGroup,
                     20 - movieFiltered.length
                 );
                 movieFiltered = this.uniqueMovie([...movieFiltered, ...additionalMovies]);
@@ -212,7 +212,7 @@ export class MovieServices {
                 const newlyAddedMovies = await this.movieRepository.getMovie(
                     groupGenrePreference,
                     groupProviderPreference,
-                    excludeIdsForGroup,
+                    excludedMovieIdsGroup,
                     20 - movieFiltered.length
                 );
                 movieFiltered = this.uniqueMovie([...movieFiltered, ...newlyAddedMovies]);
