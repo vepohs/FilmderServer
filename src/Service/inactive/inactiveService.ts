@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 
 const userService = createUserService();
 
-const minutes = 1000;
+const minutes = 10080;
 const transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
