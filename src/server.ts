@@ -4,10 +4,13 @@ import AppDataSource from "./dataBase/dataSource";
 import {errorHandler} from "./middlewares/errorHandler";
 import routes from "./route/routes";
 import './Service/inactive/inactiveService';
+import helmet from "helmet";
+import {sanitizeInput} from "./middlewares/sanitizeInput";
 
 const app = express();
 const PORT = process.env.SERVEUR_PORT
-
+app.use(helmet());
+app.use(sanitizeInput);
 app.use(cors({
     origin: process.env.NODE_ENV === 'production' ? 'https://filmder.fr' : 'http://localhost:5173',  // Remplacez par l'URL de votre client
 }));
