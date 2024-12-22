@@ -1,7 +1,7 @@
 
 import { Response, NextFunction} from "express";
 import {AuthenticatedRequest} from "../../interface/interface";
-import {createMovieService, createSwipeService} from "../../factories/ClassFactory";
+import {createMovieService, createSwipeService} from "../../factories/classFactory";
 
 const swipeService = createSwipeService()
 const movieService = createMovieService()

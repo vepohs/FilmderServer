@@ -1,6 +1,6 @@
 import { GroupRequest } from "../interface/interface";
 import { NextFunction, Response } from "express";
-import {createGroupService} from "../factories/ClassFactory";
+import {createGroupService} from "../factories/classFactory";
 
 const groupService = createGroupService()
 

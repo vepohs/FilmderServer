@@ -1,5 +1,5 @@
 import {Response, NextFunction} from "express";
-import {createGenreService, createProviderService} from "../../factories/ClassFactory";
+import {createGenreService, createProviderService} from "../../factories/classFactory";
 import {AuthenticatedRequest} from "../../interface/interface";
 
 export const getPreferences = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {

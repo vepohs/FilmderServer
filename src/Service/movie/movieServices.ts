@@ -1,5 +1,5 @@
 import {MovieEntity} from "../../entity/MovieEntity";
-import {MovieRepository} from "../../repository/movie/MovieRepository";
+import {MovieRepository} from "../../repository/movie/movieRepository";
 import axios from "axios";
 import {MovieType} from "../../type/Type";
 import {GroupEntity} from "../../entity/GroupEntity";
@@ -7,8 +7,8 @@ import {
     createGenreService, createGroupService, createPreferenceService,
     createProviderService, createSwipeMovieGroupService,
     createSwipeService,
-} from "../../factories/ClassFactory";
-import {EntityFactory} from "../../factories/EntityFactory";
+} from "../../factories/classFactory";
+import {EntityFactory} from "../../factories/entityFactory";
 import {UserEntity} from "../../entity/UserEntity";
 import {
     FailedToFetchMovieDurationError,

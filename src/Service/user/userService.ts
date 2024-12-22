@@ -5,7 +5,7 @@ import {checkField} from "../../utils/chekFields";
 import {UserType} from "../../type/Type";
 import {FailedToSaveUserError, NoUserError} from "../../error/userError";
 import {ensureExists} from "../../utils/errorutils";
-import {createEntityFactory} from "../../factories/ClassFactory";
+import {createEntityFactory} from "../../factories/classFactory";
 import {UpdateResult} from "typeorm";
 
 export class UserService {

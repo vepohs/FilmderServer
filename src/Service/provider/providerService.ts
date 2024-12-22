@@ -7,7 +7,7 @@ import {
     FailedToGetProviderError,
     FailedToSaveProviderError, NoProviderFoundError
 } from "../../error/providerError";
-import {createEntityFactory} from "../../factories/ClassFactory";
+import {createEntityFactory} from "../../factories/classFactory";
 
 export class ProviderService {
 

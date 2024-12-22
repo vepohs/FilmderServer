@@ -4,7 +4,7 @@ import {RefreshTokenEntity} from "../../entity/refreshTokenEntity";
 import {UserEntity} from "../../entity/UserEntity";
 import {UserPayloadType} from "../../type/Type";
 import {DeleteResult} from "typeorm";
-import {createTokenService, createUserService} from "../../factories/ClassFactory";
+import {createTokenService, createUserService} from "../../factories/classFactory";
 
 
 export class AuthService {

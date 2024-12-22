@@ -1,7 +1,7 @@
 
 import { GroupRequest} from "../../interface/interface";
 import {NextFunction, Response} from "express";
-import { createMovieService} from "../../factories/ClassFactory";
+import { createMovieService} from "../../factories/classFactory";
 
 const movieService = createMovieService()
 export const getGroupMovie = async (req: GroupRequest, res: Response,next:NextFunction) => {

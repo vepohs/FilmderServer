@@ -1,8 +1,8 @@
-import {PreferenceRepository} from "../../repository/preference/PreferenceRepository";
+import {PreferenceRepository} from "../../repository/preference/preferenceRepository";
 import {GenreEntity} from "../../entity/GenreEntity";
 import {UserEntity} from "../../entity/UserEntity";
 import {ProviderEntity} from "../../entity/ProviderEntity";
-import {createEntityFactory} from "../../factories/ClassFactory";
+import {createEntityFactory} from "../../factories/classFactory";
 
 
 export class PreferenceService {

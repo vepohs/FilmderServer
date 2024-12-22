@@ -1,7 +1,7 @@
 import {Response, NextFunction} from 'express';
 import {BadAccessTokenError, NoAccessTokenError} from "../error/authError";
 import {AuthenticatedRequest} from "../interface/interface";
-import {createTokenService, createUserService} from "../factories/ClassFactory";
+import {createTokenService, createUserService} from "../factories/classFactory";
 
 const tokenService = createTokenService()
 const userService = createUserService()

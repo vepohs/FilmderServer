@@ -1,7 +1,7 @@
-import {PreferenceService} from "./PreferenceService";
+import {PreferenceService} from "./preferenceService";
 import {UserService} from "../user/userService";
 import {UserPayloadType} from "../../type/Type";
-import {createPreferenceService, createUserService} from "../../factories/ClassFactory";
+import {createPreferenceService, createUserService} from "../../factories/classFactory";
 import {UserEntity} from "../../entity/UserEntity";
 
 export class PreferenceUserService {

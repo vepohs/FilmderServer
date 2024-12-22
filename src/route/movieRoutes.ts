@@ -2,7 +2,7 @@
 import express from 'express';
 import {getMovie, getMovieLiked} from "../controller/movie/movieController";
 import {getGroupMovie} from "../controller/movie/getGroupMovieController";
-import {verifyGroup} from "../middlewares/VerifyGroup";
+import {verifyGroup} from "../middlewares/verifyGroup";
 const router = express.Router();
 router.post("/getMovie", getMovie);
 router.get("/getMovieLiked", getMovieLiked);

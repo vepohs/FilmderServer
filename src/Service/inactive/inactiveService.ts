@@ -1,5 +1,5 @@
 import cron from 'node-cron';
-import {createUserService} from "../../factories/ClassFactory";
+import {createUserService} from "../../factories/classFactory";
 import nodemailer from 'nodemailer';
 
 const userService = createUserService();

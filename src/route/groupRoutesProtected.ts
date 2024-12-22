@@ -4,7 +4,7 @@ import {groupJoin} from "../controller/group/groupJoinController";
 import {getGroupUsers} from "../controller/group/groupMovieLikedController";
 import {getGroupPreference, setGroupPreference} from "../controller/group/groupPreferenceController";
 import {getGroupMoviesCommon} from "../controller/group/getGroupMoviesCommonController";
-import {verifyGroup} from "../middlewares/VerifyGroup";
+import {verifyGroup} from "../middlewares/verifyGroup";
 import {swipeMovieGroup} from "../controller/group/swipeMovieGroup";
 
 const router = express.Router();

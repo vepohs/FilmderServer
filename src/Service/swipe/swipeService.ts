@@ -1,9 +1,9 @@
-import {SwipeRepository} from "../../repository/swipe/SwipeRepository";
+import {SwipeRepository} from "../../repository/swipe/swipeRepository";
 import {SwipeEntity} from "../../entity/SwipeEntity";
-import {createEntityFactory} from "../../factories/ClassFactory";
+import {createEntityFactory} from "../../factories/classFactory";
 import {UserEntity} from "../../entity/UserEntity";
 import {MovieEntity} from "../../entity/MovieEntity";
-import {FailedToSaveSwipeError} from "../../error/SwipeError";
+import {FailedToSaveSwipeError} from "../../error/swipeError";
 
 
 export class SwipeService {

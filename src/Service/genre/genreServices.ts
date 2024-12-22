@@ -1,9 +1,9 @@
 import {GenreEntity} from "../../entity/GenreEntity";
-import {GenreRepository} from "../../repository/genre/GenreRepository";
+import {GenreRepository} from "../../repository/genre/genreRepository";
 import axios from "axios";
 import {FailedToGetGenre, FailedToSaveGenreError} from "../../error/genreError";
-import {EntityFactory} from "../../factories/EntityFactory";
-import {createEntityFactory} from "../../factories/ClassFactory";
+import {EntityFactory} from "../../factories/entityFactory";
+import {createEntityFactory} from "../../factories/classFactory";
 
 export class GenreService {
     private readonly factory: EntityFactory = createEntityFactory()

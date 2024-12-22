@@ -1,7 +1,7 @@
 import {SwipeMovieGroupRepository} from "../../repository/group/swipeMovieGroupRepository";
 import {GroupEntity} from "../../entity/GroupEntity";
 import {MovieEntity} from "../../entity/MovieEntity";
-import {createEntityFactory} from "../../factories/ClassFactory";
+import {createEntityFactory} from "../../factories/classFactory";
 import {FailedToGetMovieGroupError, FailedToSaveSwipeMovieGroupError} from "../../error/movieGroupError";
 
 export class SwipeMovieGroupService {

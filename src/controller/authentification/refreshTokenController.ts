@@ -1,7 +1,7 @@
 
 import {Request, Response, NextFunction} from 'express';
 import {BadRefreshTokenError, NoRefreshTokenError} from "../../error/authError";
-import {createTokenService} from "../../factories/ClassFactory";
+import {createTokenService} from "../../factories/classFactory";
 
 
 const tokenService = createTokenService();

@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from "express";
 import {AuthenticatedRequest} from "../../interface/interface";
-import {createPreferenceService} from "../../factories/ClassFactory";
+import {createPreferenceService} from "../../factories/classFactory";
 
 const preferenceService = createPreferenceService()
 

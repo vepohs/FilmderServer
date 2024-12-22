@@ -1,5 +1,5 @@
 import express from "express";
-import movieRoutes from "./MovieRoutes";
+import movieRoutes from "./movieRoutes";
 import authRoutes from "./authRoutes";
 import userRoutes from "./userRoutes";
 import {authMiddleware} from "../middlewares/authMiddleware";

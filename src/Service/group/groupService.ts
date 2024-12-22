@@ -10,8 +10,8 @@ import {
     FailedToSaveGroupError,
     FailedToSaveGroupPreferenceError,
 } from "../../error/groupError";
-import {EntityFactory} from "../../factories/EntityFactory";
-import {createEntityFactory, createPreferenceService} from "../../factories/ClassFactory";
+import {EntityFactory} from "../../factories/entityFactory";
+import {createEntityFactory, createPreferenceService} from "../../factories/classFactory";
 import {GenreEntity} from "../../entity/GenreEntity";
 import {ProviderEntity} from "../../entity/ProviderEntity";
 

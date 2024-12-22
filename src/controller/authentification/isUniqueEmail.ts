@@ -1,5 +1,5 @@
 import {Request, Response, NextFunction} from "express";
-import {createUserService} from "../../factories/ClassFactory";
+import {createUserService} from "../../factories/classFactory";
 
 const userService = createUserService();
 export const isUniqueEmail = async (req: Request, res: Response, next: NextFunction) => {

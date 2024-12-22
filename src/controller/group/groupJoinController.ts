@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response} from 'express';
 import {GroupRequest} from "../../interface/interface";
-import {createGroupService} from "../../factories/ClassFactory";
+import {createGroupService} from "../../factories/classFactory";
 
 const groupService = createGroupService()
 export const groupJoin = async (req: GroupRequest, res: Response, next: NextFunction) => {

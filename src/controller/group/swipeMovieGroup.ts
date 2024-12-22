@@ -3,7 +3,7 @@ import {GroupRequest} from "../../interface/interface";
 import {
     createMovieService,
     createSwipeMovieGroupService
-} from "../../factories/ClassFactory";
+} from "../../factories/classFactory";
 
 const swipeMovieGroupService = createSwipeMovieGroupService()
 const movieService = createMovieService()
