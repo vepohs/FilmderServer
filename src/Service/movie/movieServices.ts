@@ -176,7 +176,6 @@ export class MovieServices {
     async getMovieForGroup(users: UserEntity[], user: UserEntity, group: GroupEntity, excludesIds: number[]): Promise<MovieEntity[]> {
         try {
             const userIds = users.map(this.getId);
-            const userPreference = await this.preferenceService.getGenrePreference(user);
             const excludedSwipedMovieIds = (await this.swipeService.getExcludedMovies(user)).map(this.getId);
             const excludedMovieIdsGroup = excludedSwipedMovieIds.concat(excludesIds);
             const swipedUserMovie = await this.swipeService.getSwipeMovie(user);
@@ -188,7 +187,7 @@ export class MovieServices {
                 (movie) => !swipedUserMovie.some((swipedMovie: MovieEntity) => swipedMovie.id === movie.id));
             let movieFiltered = movieFilteredNotHistory.filter((movie) => {
                 return movie.genres.some((genre) => {
-                    return userPreference.some((preference) => preference.id === genre.id);
+                    return groupGenrePreference.some((preference) => preference.id === genre.id);
                 });
             });
             movieFiltered = movieFiltered.slice(0, 20);
